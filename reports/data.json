@@ -1,0 +1,23 @@
+﻿{
+  "folder": {
+    "questionnaires": [
+      {
+        "id": "",
+        "name": "",
+        "order": "",
+        "ability": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "folders": []
+  }
+} 
