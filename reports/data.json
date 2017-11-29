@@ -88,12 +88,16 @@
           {
             "id": "",
             "name": "תלמיד 8"
+          },
+          {
+            "id": "",
+            "name": "תלמיד 8"
           }
         ]
       },
       {
         "questionnaire-order": 5,
-        "value": 10,
+        "value": 50,
         "students": [
           {
             "id": "",
