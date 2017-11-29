@@ -3,152 +3,42 @@
     "questionnaires": [
       {
         "id": "",
-        "name": "questionnaire 1",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 1"
       },
       {
         "id": "",
-        "name": "questionnaire 2",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 2"
       },
       {
         "id": "",
-        "name": "questionnaire 3",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 3"
       },
       {
         "id": "",
-        "name": "questionnaire 4",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 4"
       },
       {
         "id": "",
-        "name": "questionnaire 5",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 5"
       },
       {
         "id": "",
-        "name": "questionnaire 6",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 6"
       },
       {
         "id": "",
-        "name": "questionnaire 7",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 7"
       },
       {
         "id": "",
-        "name": "questionnaire 8",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 8"
       },
       {
         "id": "",
-        "name": "questionnaire 9",
-        "order": "",
-        "abilities": [
-          {
-            "value": "",
-            "students": [
-              {
-                "id": "",
-                "name": ""
-              }
-            ]
-          }
-        ]
+        "name": "שאלון 9"
       }
-
     ],
     "abilities": [
-
       {
         "questionnaire-order": 1,
         "value": 20,
@@ -156,7 +46,7 @@
         "students": [
           {
             "id": "",
-            "name": "student 1"
+            "name": "תלמיד 1"
           }
         ]
       },
@@ -166,19 +56,19 @@
         "students": [
           {
             "id": "",
-            "name": "student 2"
+            "name": "תלמיד 2"
           },
           {
             "id": "",
-            "name": "student 3"
+            "name": "תלמיד 3"
           },
           {
             "id": "",
-            "name": "student 4"
+            "name": "תלמיד 4"
           },
           {
             "id": "",
-            "name": "student 5"
+            "name": "תלמיד 5"
           }
         ]
       },
@@ -189,15 +79,15 @@
         "students": [
           {
             "id": "",
-            "name": "student 6"
+            "name": "תלמיד 6"
           },
           {
             "id": "",
-            "name": "student 7"
+            "name": "תלמיד 7"
           },
           {
             "id": "",
-            "name": "student 8"
+            "name": "תלמיד 8"
           }
         ]
       },
@@ -207,11 +97,11 @@
         "students": [
           {
             "id": "",
-            "name": "student 9"
+            "name": "תלמיד 9"
           },
           {
             "id": "",
-            "name": "student 10"
+            "name": "תלמיד 10"
           }
         ]
       },
@@ -221,11 +111,11 @@
         "students": [
           {
             "id": "",
-            "name": "student 11"
+            "name": "תלמיד 11"
           },
           {
             "id": "",
-            "name": "student 12"
+            "name": "תלמיד 12"
           }
         ]
       }
