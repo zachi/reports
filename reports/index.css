@@ -1,5 +1,6 @@
 ﻿body{
   margin:0;
+  font-family:Arial;
 }
 .axis path, .axis line {
   fill: none;
@@ -8,7 +9,7 @@
 }
 
 .dot {
-    fill-opacity: .5;
+    fill-opacity: .7;
 }
 
 .d3-tip{
@@ -19,5 +20,26 @@
     border-radius: 5px;
     padding: 20px;
     color: white;
+    text-align:right;
 
+}
+
+.report{
+  position:relative;
+      margin: 50px auto;
+    width: 1000px;
+}
+
+.header, .footer{
+    width: 100%;
+    height: 100px;
+    background-color: darkkhaki;
+    color: white;
+    text-align: center;
+    font-size: 41px;
+    line-height: 80px;
+}
+.footer{
+  position:absolute;
+  bottom:0;
 }
