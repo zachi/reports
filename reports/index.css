@@ -1,4 +1,7 @@
-﻿.axis path, .axis line {
+﻿body{
+  margin:0;
+}
+.axis path, .axis line {
   fill: none;
   stroke: rgba(0, 0, 0, 0.1);
   shape-rendering: crispEdges;
@@ -12,6 +15,9 @@
     position:absolute;
     top:0;
     left:0;
-    border:1px solid black;
+    background: grey;
+    border-radius: 5px;
+    padding: 20px;
+    color: white;
 
 }
