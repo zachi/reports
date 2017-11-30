@@ -2,3 +2,6 @@
 tooltip for questionaire name 
 preloader 
 ability on the last column
+add legends
+overlaping bubbles 
+questionnaire full names
