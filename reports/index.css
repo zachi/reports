@@ -38,6 +38,7 @@
   background-color: #3683BB;
   color: white;
   text-align: center;
+  /*zachi in pages*/
   font-size: 41px;
   line-height: 80px;
   direction:rtl;
@@ -46,4 +47,10 @@
 .footer {
   position: absolute;
   bottom: 0;
+  display:none;
+}
+
+.strong text{
+  font-weight:bold;
+  font-size:16px;
 }

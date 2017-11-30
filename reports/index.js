@@ -3,6 +3,10 @@
 
 (function () {
 
+  var texts = {
+  
+  }
+
   var measures = (function () {
     var margin = { top: 20, right: 20, bottom: 30, left: 50 },
       outerWidth = 1000,
@@ -31,9 +35,9 @@
       yAxisGroup = svg.append("g").classed("y axis", true).call(yAxis);
 
       axes.xAxisScale = d3.scaleLinear().domain([0, data.folder.questionnaires.length]).range([0, measures.width]);
-      var xAxis = d3.axisBottom(axes.xAxisScale).tickSize(-measures.height).tickFormat(function (d) { return d == 0 ? '' : data.folder.questionnaires[d - 1].name; });
+      var xAxis = d3.axisBottom(axes.xAxisScale).tickSize(-measures.height).tickFormat(function (d) { return d; });
       svg.append("g").classed("x axis", true).attr("transform", "translate(0," + measures.height + ")").call(xAxis);
-      var ticks = svg.selectAll('.tick text');
+      var ticks = svg.selectAll('.x .tick text');
       ticks.on("mouseover", function (tick) {
         questionnaireTip.html(function () { return data.folder.questionnaires[tick - 1].name });
 
@@ -74,7 +78,13 @@
         .classed("dot", true)
         .attr("r", "1")
         .attr("transform", transform)
-        .style("fill", function (ability) { return ability.finished ? "#00CF00" : "#32BBFF"; })
+        .style("fill", function (ability) {
+          for (var i = 0; i < ability.students.length; i++) {
+            if (ability.students[i].finished)
+              return "#00CF00";
+          }
+          return "#32BBFF";
+        })
         .on("mouseover", function (ability) {
           abilityTip.html(function () {
             var result = "";
@@ -89,10 +99,15 @@
           abilityTip.style("transform", "translate(" + left + "px ," + top + "px )")
             .style("opacity", .9);
 
+          
+          svg.selectAll(".x.axis .tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('strong', true);
+          svg.selectAll(".y.axis .tick:nth-child(" + ( 12 - (ability["value"] / 10) ) + ")").classed('strong', true);
 
         })
-        .on("mouseout", function (d) {
+        .on("mouseout", function (ability) {
           abilityTip.style("opacity", 0);
+          svg.selectAll(".x.axis .tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('strong', false);
+          svg.selectAll(".y.axis .tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('strong', false);
         })
         .transition().attr("r", function (ability) { return ability.students.length * 10; }).duration(1000);
 

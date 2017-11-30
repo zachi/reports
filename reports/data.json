@@ -75,7 +75,7 @@
       {
         "questionnaire-order": 5,
         "value": 60,
-        "finished": true,
+        
         "students": [
           {
             "id": "",
@@ -83,7 +83,8 @@
           },
           {
             "id": "",
-            "name": "תלמיד 7"
+            "name": "תלמיד 7",
+            "finished": true
           },
           {
             "id": "",
