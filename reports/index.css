@@ -35,15 +35,15 @@
 .header, .footer {
   width: 100%;
   height: 100px;
-  background-color: darkkhaki;
+  background-color: #3683BB;
   color: white;
   text-align: center;
   font-size: 41px;
   line-height: 80px;
+  direction:rtl;
 }
 
 .footer {
   position: absolute;
   bottom: 0;
-  display: none;
 }
