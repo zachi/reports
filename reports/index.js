@@ -66,7 +66,7 @@
         .append("text")
         .classed("axis-label", true)
         .attr("x", measures.width / 2 + 30)
-        .attr("y", measures.margin.bottom - 10)
+        .attr("y", measures.margin.bottom )
         .style("text-anchor", "end")
         .text(texts.questionnaires);;
 
@@ -160,7 +160,7 @@
       var top = axes.yAxisScale(ability["value"]) + measures.margin.top - (ability.students.length * 10) - (abilityTip.node().getBoundingClientRect().height);
       var left = axes.xAxisScale(ability["questionnaire-order"]) + measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
       abilityTip.style("transform", "translate(" + left + "px ," + top + "px )")
-        .style("opacity", .9);
+        .style("opacity", .8);
 
 
       svg.selectAll(".x.axis .tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('strong', true);
