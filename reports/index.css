@@ -1,12 +1,13 @@
 ﻿body {
   margin: 0;
   font-family: Arial;
+  color: rgba(0,0,0,.2);
 }
 
 .axis path, .axis line {
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.1);
-  shape-rendering: crispEdges;
+  stroke: rgba(0,0,0,.2);
+  stroke-width: 1px;
+  stroke-dasharray: 2px;
 }
 
 .dot {
@@ -38,7 +39,6 @@
   background-color: #3683BB;
   color: white;
   text-align: center;
-  /*zachi in pages*/
   font-size: 41px;
   line-height: 80px;
   direction:rtl;
@@ -47,10 +47,29 @@
 .footer {
   position: absolute;
   bottom: 0;
-  display:none;
 }
 
-.strong text{
-  font-weight:bold;
-  font-size:16px;
+text {
+  font-size: 1.4em;
+}
+
+.axis-label {
+  fill: #0000006e;
+  font-size: 18px;
+}
+
+.student--finished {
+  color: #00CF00;
+}
+
+.strong text {
+  font-weight: bold;
+  fill: #000000 !important;
+}
+
+.ability-tip__title {
+  color: black;
+  margin-bottom: 8px;
+  font-size: 18px;
+  border-bottom: 1px dashed;
 }
