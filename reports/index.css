@@ -18,7 +18,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: grey;
+  background: black;
   border-radius: 5px;
   padding: 20px;
   color: white;
@@ -68,8 +68,7 @@ text {
 }
 
 .ability-tip__title {
-  color: black;
   margin-bottom: 8px;
   font-size: 18px;
-  border-bottom: 1px dashed;
+  border-bottom: 1px outset;
 }
