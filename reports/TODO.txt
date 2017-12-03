@@ -1,8 +1,13 @@
-﻿tooltip animation
-tooltip for questionaire name 
-preloader 
-ability on the last column
-add legends
-overlaping bubbles 
-questionnaire full names
-fade tooltip in 
+﻿
+do we need language (for questionnaire)
+color blind
+search specific student
+check real data (long questionaire names)
+tooltip animation
+folder name, class name, 
+check actual resolutions
+mobile?
+
+
+
+

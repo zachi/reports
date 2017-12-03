@@ -196,7 +196,8 @@
         "students": [
           {
             "id": "",
-            "name": "תלמיד 2"
+            "name": "תלמיד 2",
+            "finished":  true
           },
           {
             "id": "",
@@ -260,7 +261,7 @@
         ]
       },
       {
-        "questionnaire-order": 8,
+        "questionnaire-order": 9,
         "value": 30,
         "finished": true,
         "students": [
