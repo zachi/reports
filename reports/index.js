@@ -187,12 +187,14 @@
         .data(sortedAbilities)
         .enter().append("circle")
         .classed("dot", true)
+        .attr("stroke", getAbilityColor)
+        .attr("stroke-width", "1")
         .attr("r", "1")
         .attr("transform", transform)
         .style("fill", getAbilityColor)
         .on("mouseover", showAbilityTooltip)
         .on("mouseout", hideAbilityTooltip)
-        .transition().attr("r", function (ability) { return ability.students.length * 10; }).duration(1000);
+        .transition().attr("r", function (ability) { return Math.sqrt( ability.students.length) * 13; }).duration(1000);
     }
 
     return {
