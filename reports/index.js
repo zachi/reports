@@ -2,11 +2,13 @@
 
 
 (function () {
-  
+
   var texts = {
     questionnaires: "שאלונים",
     abilities: "יכולות",
-    ability: "יכולת"
+    ability: "יכולת",
+    legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים."
+
 
   }
   var colors = {
@@ -17,7 +19,7 @@
   }
 
   var measures = (function () {
-    var margin = { top: 20, right: 20, bottom: 50, left: 50 },
+    var margin = { top: 40, right: 50, bottom: 50, left: 50 },
       outerWidth = 1000,
       outerHeight = 500,
       width = outerWidth - margin.left - margin.right,
@@ -50,12 +52,12 @@
         .classed("axis-label", true)
         .attr("transform", "rotate(-90)")
         .attr("y", -measures.width - measures.margin.left)
-        .attr("x", -( measures.height/2 - 20) )
-        
+        .attr("x", -(measures.height / 2 - 20))
+
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(texts.abilities);
-      
+
 
       axes.xAxisScale = d3.scaleLinear().domain([0, data.root.folder.questionnaires.length]).range([0, measures.width]);
       var xAxis = d3.axisBottom(axes.xAxisScale).tickSize(-measures.height).tickFormat(function (d) { return d; });
@@ -66,13 +68,13 @@
         .append("text")
         .classed("axis-label", true)
         .attr("x", measures.width / 2 + 30)
-        .attr("y", measures.margin.bottom )
+        .attr("y", measures.margin.bottom)
         .style("text-anchor", "end")
         .text(texts.questionnaires);;
 
       var ticks = svg.selectAll('.x .tick text');
       ticks.attr("y", measures.xLabelHeight);
-      
+
       ticks.on("mouseover", function (tick) {
         questionnaireTip.html(function () { return data.root.folder.questionnaires[tick - 1].name });
 
@@ -109,7 +111,7 @@
     function init(initData) {
 
       data.root = loadDataFromQueryIfNecessary(initData);
-      
+
     }
 
     function getQuestionaireNameByOrder(order) {
@@ -118,7 +120,7 @@
 
 
     return {
-      
+
       init: init,
       root: root,
       getQuestionaireNameByOrder: getQuestionaireNameByOrder
@@ -157,6 +159,7 @@
         return result;
       });
 
+      abilityTip.style("display", "");
       var top = axes.yAxisScale(ability["value"]) + measures.margin.top - (ability.students.length * 10) - (abilityTip.node().getBoundingClientRect().height);
       var left = axes.xAxisScale(ability["questionnaire-order"]) + measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
       abilityTip.style("transform", "translate(" + left + "px ," + top + "px )")
@@ -168,7 +171,7 @@
 
     }
     function hideAbilityTooltip(ability) {
-      abilityTip.style("opacity", 0);
+      abilityTip.style("display", "none");
       svg.selectAll(".x.axis .tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('strong', false);
       svg.selectAll(".y.axis .tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('strong', false);
     }
@@ -205,10 +208,25 @@
     abilities.init();
 
 
+    var legend = svg.append("g")
+      .classed("legend", true)
+      .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend.append("circle")
+        .attr("r", 10)
+        .attr("cx", measures.width - 7)
+        .attr("cy", -15)
+        .attr("fill", colors.abilityFinished);
+
+    legend.append("text")
+        .attr("y", -10)
+        .text(texts.legendGreenCircle)
+        .attr("x", measures.width -  20);
+
   });
 
 
-  
+
 
 
 })()

@@ -1,14 +1,13 @@
-﻿allow tooltip mouse over 3
-preloader 3
-ability on the last column/row 3
-add legends 3
-overlaping bubbles 3
+﻿
 do we need language (for questionnaire)
 color blind
-remove frame border 3
 search specific student
 check real data (long questionaire names)
 tooltip animation
-change name to dashboard - 2
-set website + source control - 4
-wrapping as plugin/iframe - 4
+folder name, class name, 
+check actual resolutions
+mobile?
+
+
+
+

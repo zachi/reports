@@ -62,8 +62,13 @@
   position: absolute;
   bottom: 0;
 }
+.legend text{
+    fill: rgba(0,0,0,.4);
+    font-size: 14px;
+    direction:rtl;
+}
 
-text {
+.tick text {
   font-size: 1.4em;
 }
 
@@ -89,4 +94,8 @@ text {
 
 .tick text {
   fill: rgba(0,0,0,.4);
+}
+
+svg{
+  overflow:auto;
 }
