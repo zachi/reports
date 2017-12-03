@@ -82,11 +82,12 @@
       },
       {
         "questionnaire-order": 3,
-        "value": 100,
+        "value": 90,
         "students": [
           {
             "id": "",
-            "name": "תלמיד 2"
+            "name": "תלמיד 2",
+            "finished":  true
           },
           {
             "id": "",

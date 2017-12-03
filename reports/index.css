@@ -16,7 +16,7 @@
 
 .ability-tip, .questionnaire-tip {
   position: absolute;
-  top: 0;
+  top: -10px;
   left: 0;
   background: black;
   border-radius: 5px;
@@ -24,6 +24,20 @@
   color: white;
   text-align: right;
 }
+  .ability-tip:after, .questionnaire-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 17px;
+    width: 100%;
+    line-height: 14px;
+    color: #000000;
+    opacity: 0.8;
+    content: "\25BC";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    text-align: center;
+  }
 
 
 
