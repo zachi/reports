@@ -8,6 +8,10 @@ folder name, class name,
 check actual resolutions
 mobile?
 
+30 questionaires
+tooltip position
+circle border
+
 
 
 
