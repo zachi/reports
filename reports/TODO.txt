@@ -1,12 +1,7 @@
 ﻿tooltip animation
-allow tooltip mouse over
+tooltip for questionaire name 
 preloader 
-ability on the last column/row
+ability on the last column
 add legends
 overlaping bubbles 
 questionnaire full names
-do we need language (for questionnaire)
-color blind
-remove frame border
-add tooltip triangels
-axes lable colors
