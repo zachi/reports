@@ -5,3 +5,4 @@ ability on the last column
 add legends
 overlaping bubbles 
 questionnaire full names
+fade tooltip in 
