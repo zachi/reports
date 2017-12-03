@@ -55,7 +55,7 @@
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(texts.abilities);
-      svg.selectAll('.y .tick text').style("fill", function (d) { return colors.texts; })
+      
 
       axes.xAxisScale = d3.scaleLinear().domain([0, data.root.folder.questionnaires.length]).range([0, measures.width]);
       var xAxis = d3.axisBottom(axes.xAxisScale).tickSize(-measures.height).tickFormat(function (d) { return d; });
@@ -72,7 +72,7 @@
 
       var ticks = svg.selectAll('.x .tick text');
       ticks.attr("y", measures.xLabelHeight);
-      ticks.style("fill", function (d) { return colors.texts; })
+      
       ticks.on("mouseover", function (tick) {
         questionnaireTip.html(function () { return data.root.folder.questionnaires[tick - 1].name });
 

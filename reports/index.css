@@ -20,7 +20,7 @@
   left: 0;
   background: black;
   border-radius: 5px;
-  padding: 20px;
+  padding: 10px;
   color: white;
   text-align: right;
 }
@@ -54,7 +54,7 @@ text {
 }
 
 .axis-label {
-  fill: #0000006e;
+  fill: rgba(0,0,0,.4);
   font-size: 18px;
 }
 
@@ -69,6 +69,10 @@ text {
 
 .ability-tip__title {
   margin-bottom: 8px;
-  font-size: 18px;
+  /*font-size: 18px;*/
   border-bottom: 1px outset;
+}
+
+.tick text {
+  fill: rgba(0,0,0,.4);
 }

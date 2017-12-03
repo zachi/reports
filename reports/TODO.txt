@@ -8,3 +8,5 @@ questionnaire full names
 do we need language (for questionnaire)
 color blind
 remove frame border
+add tooltip triangels
+axes lable colors
