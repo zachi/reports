@@ -1,27 +1,40 @@
-﻿body {
+﻿@grid-line-color: rgba(0,0,0,.2);
+@ability-color:#32BBFF;
+@ability-border-color: #28abec;
+
+@ability-finished-color: #00CF00;
+@ability-finished-border-color: #2fb72f;
+
+@axis-label-color: rgba(0,0,0,.4) ;
+
+body {
   margin: 0;
   font-family: Arial;
 }
-.axis path {
-  display: none;
+
+.axis path{
+  display:none;
 }
 .axis line {
-  stroke: rgba(0, 0, 0, 0.2);
+  stroke: @grid-line-color;
   stroke-width: 1px;
   stroke-dasharray: 2px;
 }
+
+
 .ability {
-  fill: #32BBFF;
+  fill: @ability-color;
   fill-opacity: .7;
-  stroke: #28abec;
+  stroke: @ability-border-color;
   stroke-width: 1;
 }
+
 .ability.finished {
-  fill: #00CF00;
-  stroke: #2fb72f;
-}
-.ability-tip,
-.questionnaire-tip {
+    fill: @ability-finished-color;
+    stroke: @ability-finished-border-color;
+  }
+
+.ability-tip, .questionnaire-tip {
   position: absolute;
   top: -10px;
   left: 0;
@@ -31,38 +44,43 @@
   color: white;
   text-align: right;
 }
-.ability-tip:after,
-.questionnaire-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 17px;
-  width: 100%;
-  line-height: 14px;
-  color: #000000;
-  opacity: 0.8;
-  content: "\25BC";
-  position: absolute;
-  top: 99%;
-  left: 0;
-  text-align: center;
-}
+
+.ability-tip:after, .questionnaire-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 17px;
+    width: 100%;
+    line-height: 14px;
+    color: #000000;
+    opacity: 0.8;
+    content: "\25BC";
+    position: absolute;
+    top: 99%;
+    left: 0;
+    text-align: center;
+  }
+
+
+
 .students-ability-chart {
   position: relative;
   margin: 50px auto;
   width: 1000px;
 }
+
 .students-ability-chart__preloader {
   position: absolute;
-  width: calc(0%);
+  width: calc(100% - 100px);
   height: 410px;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border: 1px dashed @grid-line-color;
+  
   margin: 40px 50px 50px 50px;
   text-align: center;
   line-height: 410px;
   font-size: 30px;
-}
-.header,
-.footer {
+} 
+
+.header, .footer {
   width: 100%;
   height: 100px;
   background-color: #3683BB;
@@ -72,37 +90,48 @@
   line-height: 80px;
   direction: rtl;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
 }
+
 .legend text {
-  fill: rgba(0, 0, 0, 0.4);
+  fill: rgba(0,0,0,.4);
   font-size: 14px;
   direction: rtl;
 }
+
 .tick text {
   font-size: 1.4em;
 }
+
 .axis-label {
-  fill: rgba(0, 0, 0, 0.4);
+  fill: @axis-label-color;
   font-size: 18px;
 }
+
 .student--finished {
-  color: #00CF00;
+  color: @ability-finished-color;
 }
+
 .strong text {
   font-weight: bold;
   fill: #000000 !important;
 }
+
 .ability-tip__title {
   margin-bottom: 8px;
   /*font-size: 18px;*/
   border-bottom: 1px outset;
 }
+
 .tick text {
-  fill: rgba(0, 0, 0, 0.4);
+  fill: @axis-label-color;
 }
+
 svg {
   overflow: auto;
 }
+
+
