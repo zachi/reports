@@ -21,7 +21,7 @@
   stroke-width: 1;
 }
 
-  .ability.finished {
+.ability.finished {
     fill: #00CF00;
     stroke: #2fb72f;
   }
@@ -54,7 +54,7 @@
 
 
 
-.report {
+.students-ability-chart {
   position: relative;
   margin: 50px auto;
   width: 1000px;

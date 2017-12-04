@@ -35,43 +35,53 @@
   })();
 
   var axes = (function () {
-    var questionnaireTip = d3.select(".report").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
+    var questionnaireTip = d3.select(".students-ability-chart").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
 
     function init() {
 
+      /**************************** Y AXIS **********************************/
+
       axes.yAxisScale = d3.scaleLinear().domain([100, 0]).range([0, measures.height]);
       var yAxis = d3.axisLeft(axes.yAxisScale).tickSize(measures.width);
-      yAxisGroup = app.svg.append("g")
+      var yAxisGroup = app.svg.append("g")
         .classed("y axis", true)
         .call(yAxis)
-        .attr("transform", "translate(" + measures.width + ", 0)")
-        .append("text")
+        .attr("transform", "translate(" + measures.width + ", 0)");
+
+        //set y axis title
+      yAxisGroup.append("text")
         .classed("axis-label", true)
         .attr("transform", "rotate(-90)")
         .attr("y", -measures.width - measures.margin.left)
         .attr("x", -(measures.height / 2 - 20))
-
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(texts.ability);
 
 
+      /**************************** X AXIS **********************************/
+
       axes.xAxisScale = d3.scaleLinear().domain([0, data.root.folder.questionnaires.length]).range([0, measures.width]);
-      var xAxis = d3.axisBottom(axes.xAxisScale).tickSize(-measures.height).tickFormat(function (d) { return d; });
-      app.svg.append("g")
+      var xAxis = d3.axisBottom(axes.xAxisScale).ticks(data.root.folder.questionnaires.length).tickSize(-measures.height).tickFormat(function (d) { return d; });
+      var xAxisGroup = app.svg.append("g")
         .classed("x axis", true)
         .attr("transform", "translate(0," + measures.height + ")")
-        .call(xAxis)
-        .append("text")
+        .call(xAxis);
+
+      //set x axis title
+      xAxisGroup.append("text")
         .classed("axis-label", true)
         .attr("x", measures.width / 2 + 30)
         .attr("y", measures.margin.bottom - 3)
         .style("text-anchor", "end")
         .text(texts.questionnaire);;
 
+      //set x axis lables height
       var ticks = app.svg.selectAll('.x .tick text');
       ticks.attr("y", measures.xLabelHeight);
 
+
+      //set ticks questionaire name tooltip
       ticks.on("mouseover", function (tick) {
         questionnaireTip.html(function () { return data.root.folder.questionnaires[tick - 1].name });
 
@@ -178,7 +188,7 @@
 
     function init() {
 
-      abilityTip = d3.select(".report").append("div").attr("class", "ability-tip").style("opacity", 0);
+      abilityTip = d3.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
       var sortedAbilities = data.root.folder.abilities.sort(function (a, b) { return b.students.length - a.students.length; })
       var objects = app.svg.append("svg").classed("objects", true).attr("width", measures.width).attr("height", measures.height);
       objects.selectAll(".ability")
@@ -201,7 +211,6 @@
 
   var app = (function () {
 
-
     function initLegend() {
       var legend = app.svg.append("g")
         .classed("legend", true)
@@ -213,7 +222,7 @@
         .attr("cy", -15)
         .classed("ability", true)
         .classed("finished", true);
-        
+
 
       legend.append("text")
         .attr("y", -10)
@@ -225,7 +234,7 @@
         .attr("r", 10)
         .attr("cx", measures.width - 135)
         .attr("cy", -15);
-        
+
 
       legend.append("text")
         .attr("y", -10)
@@ -233,9 +242,8 @@
         .attr("x", measures.width - 148);
     }
 
-
     d3.json("data.json", function (response) {
-      app.svg = d3.select(".report").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
+      app.svg = d3.select(".students-ability-chart").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
       data.init(response);
       axes.init();
       abilities.init();
@@ -245,12 +253,9 @@
 
     });
 
-
-
     return {
       svg: null
     }
-
 
   })();
 
