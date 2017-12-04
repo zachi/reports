@@ -10,7 +10,7 @@ mobile?
 
 30 questionaires
 tooltip position
-circle border
+replace report with abilities-chart 
 
 
 

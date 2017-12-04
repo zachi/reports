@@ -8,14 +8,10 @@
     questionnaire: "שאלון",
     abilities: "יכולות",
     ability: "יכולת",
-    legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים."
+    legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
+    legendAbilityFinished: "התיקיה הסתיימה",
+    legendAbility: "התיקיה לא הסתיימה"
 
-
-  }
-  var colors = {
-    texts: "#00000033",
-    ability: "#32BBFF",
-    abilityFinished: "#00CF00"
 
   }
 
@@ -69,7 +65,7 @@
         .append("text")
         .classed("axis-label", true)
         .attr("x", measures.width / 2 + 30)
-        .attr("y", measures.margin.bottom)
+        .attr("y", measures.margin.bottom - 3)
         .style("text-anchor", "end")
         .text(texts.questionnaire);;
 
@@ -137,12 +133,12 @@
       return "translate(" + axes.xAxisScale(ability["questionnaire-order"]) + "," + axes.yAxisScale(ability["value"]) + ")";
 
     }
-    function getAbilityColor(ability) {
+    function hasFinishedStudent(ability) {
       for (var i = 0; i < ability.students.length; i++) {
         if (ability.students[i].finished)
-          return colors.abilityFinished;
+          return true;
       }
-      return colors.ability;
+      return false;
     }
     function showAbilityTooltip(ability) {
       abilityTip.html(function () {
@@ -161,7 +157,7 @@
       });
 
       abilityTip.style("display", "");
-      var top = axes.yAxisScale(ability["value"]) + measures.margin.top - (ability.students.length * 10) - (abilityTip.node().getBoundingClientRect().height);
+      var top = axes.yAxisScale(ability["value"]) + measures.margin.top - getAbilityRadius(ability) - (abilityTip.node().getBoundingClientRect().height);
       var left = axes.xAxisScale(ability["questionnaire-order"]) + measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
       abilityTip.style("transform", "translate(" + left + "px ," + top + "px )")
         .transition().duration(350).style("opacity", .8);
@@ -172,29 +168,29 @@
 
     }
     function hideAbilityTooltip(ability) {
-      
+
       abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
       app.svg.selectAll(".x.axis .tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('strong', false);
       app.svg.selectAll(".y.axis .tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('strong', false);
     }
+
+    function getAbilityRadius(ability) { return Math.sqrt(ability.students.length) * 13; }
 
     function init() {
 
       abilityTip = d3.select(".report").append("div").attr("class", "ability-tip").style("opacity", 0);
       var sortedAbilities = data.root.folder.abilities.sort(function (a, b) { return b.students.length - a.students.length; })
       var objects = app.svg.append("svg").classed("objects", true).attr("width", measures.width).attr("height", measures.height);
-      objects.selectAll(".dot")
+      objects.selectAll(".ability")
         .data(sortedAbilities)
         .enter().append("circle")
-        .classed("dot", true)
-        .attr("stroke", getAbilityColor)
-        .attr("stroke-width", "1")
+        .classed("ability", true)
+        .classed("finished", hasFinishedStudent)
         .attr("r", "1")
         .attr("transform", transform)
-        .style("fill", getAbilityColor)
         .on("mouseover", showAbilityTooltip)
         .on("mouseout", hideAbilityTooltip)
-        .transition().attr("r", function (ability) { return Math.sqrt( ability.students.length) * 13; }).duration(1000);
+        .transition().attr("r", getAbilityRadius).duration(1000);
     }
 
     return {
@@ -205,24 +201,38 @@
 
   var app = (function () {
 
-    
+
     function initLegend() {
       var legend = app.svg.append("g")
         .classed("legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("circle")
-          .attr("r", 10)
-          .attr("cx", measures.width - 7)
-          .attr("cy", -15)
-          .attr("fill", colors.abilityFinished);
+        .attr("r", 10)
+        .attr("cx", measures.width - 7)
+        .attr("cy", -15)
+        .classed("ability", true)
+        .classed("finished", true);
+        
 
       legend.append("text")
-          .attr("y", -10)
-          .text(texts.legendGreenCircle)
-          .attr("x", measures.width - 20);
+        .attr("y", -10)
+        .text(texts.legendAbilityFinished)
+        .attr("x", measures.width - 20);
+
+      legend.append("circle")
+        .classed("ability", true)
+        .attr("r", 10)
+        .attr("cx", measures.width - 135)
+        .attr("cy", -15);
+        
+
+      legend.append("text")
+        .attr("y", -10)
+        .text(texts.legendAbility)
+        .attr("x", measures.width - 148);
     }
-    
+
 
     d3.json("data.json", function (response) {
       app.svg = d3.select(".report").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
@@ -231,16 +241,16 @@
       abilities.init();
       initLegend()
 
-      
+
 
     });
 
-    
+
 
     return {
       svg: null
     }
-    
+
 
   })();
 

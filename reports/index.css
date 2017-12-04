@@ -4,15 +4,27 @@
   color: rgba(0,0,0,.2);
 }
 
-.axis path, .axis line {
+.axis path{
+  display:none;
+}
+.axis line {
   stroke: rgba(0,0,0,.2);
   stroke-width: 1px;
   stroke-dasharray: 2px;
 }
 
-.dot {
+
+.ability {
+  fill: #32BBFF;
   fill-opacity: .7;
+  stroke: #28abec;
+  stroke-width: 1;
 }
+
+  .ability.finished {
+    fill: #00CF00;
+    stroke: #2fb72f;
+  }
 
 .ability-tip, .questionnaire-tip {
   position: absolute;
@@ -24,7 +36,8 @@
   color: white;
   text-align: right;
 }
-  .ability-tip:after, .questionnaire-tip:after {
+
+.ability-tip:after, .questionnaire-tip:after {
     box-sizing: border-box;
     display: inline;
     font-size: 17px;
@@ -34,7 +47,7 @@
     opacity: 0.8;
     content: "\25BC";
     position: absolute;
-    top: 100%;
+    top: 99%;
     left: 0;
     text-align: center;
   }
@@ -55,17 +68,18 @@
   text-align: center;
   font-size: 41px;
   line-height: 80px;
-  direction:rtl;
+  direction: rtl;
 }
 
 .footer {
   position: absolute;
   bottom: 0;
 }
-.legend text{
-    fill: rgba(0,0,0,.4);
-    font-size: 14px;
-    direction:rtl;
+
+.legend text {
+  fill: rgba(0,0,0,.4);
+  font-size: 14px;
+  direction: rtl;
 }
 
 .tick text {
@@ -96,10 +110,8 @@
   fill: rgba(0,0,0,.4);
 }
 
-svg{
-  overflow:auto;
+svg {
+  overflow: auto;
 }
 
-circle{
-  border: 1px solid black;
-}
+
