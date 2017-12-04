@@ -243,6 +243,7 @@
     }
 
     d3.json("data.json", function (response) {
+      document.querySelector('.students-ability-chart__preloader').remove();
       app.svg = d3.select(".students-ability-chart").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
       data.init(response);
       axes.init();
