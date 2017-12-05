@@ -3,86 +3,152 @@
     "questionnaires": [
       {
         "id": "",
-        "name": "שאלון 1"
+        "name": "שאלון 1",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 2"
+        "name": "שאלון 2",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 3"
+        "name": "שאלון 3",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 4"
+        "name": "שאלון 4",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 5"
+        "name": "שאלון 5",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 6"
+        "name": "שאלון 6",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 7"
+        "name": "שאלון 7",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 8"
+        "name": "שאלון 8",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       },
       {
         "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
-      },
-      {
-        "id": "",
-        "name": "שאלון 9"
+        "name": "שאלון 9",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
       }
+
     ],
     "abilities": [
+
       {
         "questionnaire-order": 1,
         "value": 20,
@@ -126,12 +192,12 @@
       },
       {
         "questionnaire-order": 3,
-        "value": 100,
+        "value": 90,
         "students": [
           {
             "id": "",
             "name": "תלמיד 2",
-            "finished": true
+            "finished":  true
           },
           {
             "id": "",
@@ -150,7 +216,7 @@
       {
         "questionnaire-order": 5,
         "value": 60,
-
+        "finished": true,
         "students": [
           {
             "id": "",
@@ -158,12 +224,7 @@
           },
           {
             "id": "",
-            "name": "תלמיד 7",
-            "finished": true
-          },
-          {
-            "id": "",
-            "name": "תלמיד 8"
+            "name": "תלמיד 7"
           },
           {
             "id": "",
@@ -173,7 +234,7 @@
       },
       {
         "questionnaire-order": 5,
-        "value": 50,
+        "value": 10,
         "students": [
           {
             "id": "",
@@ -219,48 +280,6 @@
           {
             "id": "",
             "name": "תלמיד 8"
-          }
-        ]
-      },
-      {
-        "questionnaire-order": 8,
-        "value": 50,
-        "students": [
-          {
-            "id": "",
-            "name": "תלמיד 9"
-          },
-          {
-            "id": "",
-            "name": "תלמיד 10"
-          },
-          {
-            "id": "",
-            "name": "תלמיד 10"
-          }
-        ]
-      },
-      {
-        "questionnaire-order": 8,
-        "value": 50,
-        "students": [
-          {
-            "id": "",
-            "name": "תלמיד 9"
-          }
-        ]
-      },
-      {
-        "questionnaire-order": 8,
-        "value": 50,
-        "students": [
-          {
-            "id": "",
-            "name": "תלמיד 9"
-          },
-          {
-            "id": "",
-            "name": "תלמיד 10"
           }
         ]
       }

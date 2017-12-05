@@ -1,0 +1,236 @@
+﻿{
+  "folder": {
+    "questionnaires": [
+      {
+        "id": "",
+        "name": "שאלון 1",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 2",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 3",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 4",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 5",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 6",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 7",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 8",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "",
+        "name": "שאלון 9",
+        "order": "",
+        "abilities": [
+          {
+            "value": "",
+            "students": [
+              {
+                "id": "",
+                "name": ""
+              }
+            ]
+          }
+        ]
+      }
+
+    ],
+    "abilities": [
+
+      {
+        "questionnaire-order": 1,
+        "value": 20,
+
+        "students": [
+          {
+            "id": "",
+            "name": "student 1"
+          }
+        ]
+      },
+      {
+        "questionnaire-order": 3,
+        "value": 90,
+        "students": [
+          {
+            "id": "",
+            "name": "student 2"
+          },
+          {
+            "id": "",
+            "name": "student 3"
+          },
+          {
+            "id": "",
+            "name": "student 4"
+          },
+          {
+            "id": "",
+            "name": "student 5"
+          }
+        ]
+      },
+      {
+        "questionnaire-order": 5,
+        "value": 60,
+        "finished": true,
+        "students": [
+          {
+            "id": "",
+            "name": "student 6"
+          },
+          {
+            "id": "",
+            "name": "student 7"
+          },
+          {
+            "id": "",
+            "name": "student 8"
+          }
+        ]
+      },
+      {
+        "questionnaire-order": 5,
+        "value": 10,
+        "students": [
+          {
+            "id": "",
+            "name": "student 9"
+          },
+          {
+            "id": "",
+            "name": "student 10"
+          }
+        ]
+      },
+      {
+        "questionnaire-order": 7,
+        "value": 60,
+        "students": [
+          {
+            "id": "",
+            "name": "student 11"
+          },
+          {
+            "id": "",
+            "name": "student 12"
+          }
+        ]
+      }
+    ],
+    "folders": []
+  }
+
+} 
