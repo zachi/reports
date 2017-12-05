@@ -1,16 +1,10 @@
 ﻿
 do we need language (for questionnaire)
-color blind
 search specific student
-check real data (long questionaire names)
-tooltip animation
-folder name, class name, 
 check actual resolutions
 mobile?
-
-30 questionaires
-tooltip position
-replace report with abilities-chart 
+set real preloader
+namespacing
 
 
 
