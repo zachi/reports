@@ -2,6 +2,21 @@
   margin: 0;
   font-family: Arial;
 }
+.header,
+.footer {
+  width: 100%;
+  height: 100px;
+  background-color: #a0af7c;
+  color: white;
+  text-align: center;
+  font-size: 41px;
+  line-height: 80px;
+  direction: rtl;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+}
 .axis path {
   display: none;
 }
@@ -11,13 +26,13 @@
   stroke-dasharray: 2px;
 }
 .ability {
-  fill: #32BBFF;
+  fill: #E8AE0C;
   fill-opacity: .7;
-  stroke: #28abec;
+  stroke: #e0b119;
   stroke-width: 1;
 }
 .ability.finished {
-  fill: #00CF00;
+  fill: #09bd09;
   stroke: #2fb72f;
 }
 .ability-tip,
@@ -39,7 +54,6 @@
   width: 100%;
   line-height: 14px;
   color: #000000;
-  opacity: 0.8;
   content: "\25BC";
   position: absolute;
   top: 99%;
@@ -53,7 +67,7 @@
 }
 .students-ability-chart__preloader {
   position: absolute;
-  width: calc(0%);
+  width: calc(100% - 100px);
   height: 410px;
   border: 1px dashed rgba(0, 0, 0, 0.2);
   margin: 40px 50px 50px 50px;
@@ -61,35 +75,21 @@
   line-height: 410px;
   font-size: 30px;
 }
-.header,
-.footer {
-  width: 100%;
-  height: 100px;
-  background-color: #3683BB;
-  color: white;
-  text-align: center;
-  font-size: 41px;
-  line-height: 80px;
-  direction: rtl;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-}
 .legend text {
-  fill: rgba(0, 0, 0, 0.4);
+  fill: rgba(0, 0, 0, 0.5);
   font-size: 14px;
   direction: rtl;
 }
 .tick text {
   font-size: 1.4em;
+  fill: rgba(0, 0, 0, 0.5);
 }
 .axis-label {
-  fill: rgba(0, 0, 0, 0.4);
+  fill: rgba(0, 0, 0, 0.5);
   font-size: 18px;
 }
 .student--finished {
-  color: #00CF00;
+  color: #09bd09;
 }
 .strong text {
   font-weight: bold;
@@ -100,9 +100,13 @@
   /*font-size: 18px;*/
   border-bottom: 1px outset;
 }
-.tick text {
-  fill: rgba(0, 0, 0, 0.4);
-}
 svg {
   overflow: auto;
+}
+.students-ability-chart__title {
+  margin: 10px auto 0;
+  width: 110px;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
 }

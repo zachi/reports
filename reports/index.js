@@ -9,14 +9,15 @@
     abilities: "יכולות",
     ability: "יכולת",
     legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
-    legendAbilityFinished: "התיקיה הסתיימה",
-    legendAbility: "התיקיה לא הסתיימה"
+    legendAbilityFinished: "סיים שלב",
+    legendAbility: "לא סיים שלב",
+    chartName: "יכולות תלמידים"
 
 
   }
 
   var measures = (function () {
-    var margin = { top: 40, right: 50, bottom: 50, left: 50 },
+    var margin = { top: 27, right: 50, bottom: 50, left: 50 },
       outerWidth = 1000,
       outerHeight = 500,
       width = outerWidth - margin.left - margin.right,
@@ -62,7 +63,7 @@
       /**************************** X AXIS **********************************/
 
       axes.xAxisScale = d3.scaleLinear().domain([0, data.root.folder.questionnaires.length]).range([0, measures.width]);
-      var xAxis = d3.axisBottom(axes.xAxisScale).ticks(data.root.folder.questionnaires.length).tickSize(-measures.height).tickFormat(function (d) { return d; });
+      var xAxis = d3.axisBottom(axes.xAxisScale).ticks(data.root.folder.questionnaires.length).tickSize(-measures.height).tickFormat(function (d) { return d === 0 ? "" : d ; });
       var xAxisGroup = app.svg.append("g")
         .classed("x axis", true)
         .attr("transform", "translate(0," + measures.height + ")")
@@ -74,7 +75,7 @@
         .attr("x", measures.width / 2 + 30)
         .attr("y", measures.margin.bottom - 3)
         .style("text-anchor", "end")
-        .text(texts.questionnaire);;
+        .text(texts.questionnaire);
 
       //set x axis lables height
       var ticks = app.svg.selectAll('.x .tick text');
@@ -83,16 +84,21 @@
 
       //set ticks questionaire name tooltip
       ticks.on("mouseover", function (tick) {
+        if (tick == 0)
+          return;
+          questionnaireTip.style("display", "");
         questionnaireTip.html(function () { return data.root.folder.questionnaires[tick - 1].name });
 
-        var top = axes.yAxisScale(0) + measures.margin.top - questionnaireTip.node().getBoundingClientRect().height - 5;
+        var top = axes.yAxisScale(0) + measures.margin.top - questionnaireTip.node().getBoundingClientRect().height +15;
 
         var left = axes.xAxisScale(tick) + measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
         questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )")
-          .style("opacity", .9);
+        .transition().duration(350).style("opacity", .8);
       })
         .on("mouseout", function (d) {
-          questionnaireTip.style("opacity", 0);
+          
+          questionnaireTip.transition().duration(350).style("opacity", .0).on("end", function () { questionnaireTip.style("display", "none") });
+
         });
     }
 
@@ -165,7 +171,7 @@
         }
         return result;
       });
-      var tooltipTopMarginToPreventFlickering = 5;
+      var tooltipTopMarginToPreventFlickering = -12;
       abilityTip.style("display", "");
       var top = axes.yAxisScale(ability["value"]) + measures.margin.top - getAbilityRadius(ability) - (abilityTip.node().getBoundingClientRect().height) - tooltipTopMarginToPreventFlickering;
       var left = axes.xAxisScale(ability["questionnaire-order"]) + measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
@@ -232,23 +238,35 @@
       legend.append("circle")
         .classed("ability", true)
         .attr("r", 10)
-        .attr("cx", measures.width - 135)
+        .attr("cx", measures.width - 95)
         .attr("cy", -15);
 
 
       legend.append("text")
         .attr("y", -10)
         .text(texts.legendAbility)
-        .attr("x", measures.width - 148);
+        .attr("x", measures.width - 108);
+
+      var titleElement = document.createElement('div');
+      titleElement.classList.add('students-ability-chart__title');
+      titleElement.innerHTML = texts.chartName;
+      document.querySelector(".students-ability-chart").prepend(titleElement);
+      //legend.append("text")
+      //  .attr("y", -15)
+      //  .text(texts.chartName)
+      //  .attr("x", measures.width - 410);
     }
 
     d3.json("data.json", function (response) {
       document.querySelector('.students-ability-chart__preloader').remove();
+
       app.svg = d3.select(".students-ability-chart").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
+      initLegend();
+      
       data.init(response);
       axes.init();
       abilities.init();
-      initLegend()
+      
 
 
 

@@ -1,20 +1,38 @@
-﻿@grid-line-color: rgba(0,0,0,.2);
-@ability-color:#32BBFF;
-@ability-border-color: #28abec;
-
-@ability-finished-color: #00CF00;
+﻿
+@grid-line-color: rgba(0,0,0,.2);
+@ability-color: #E8AE0C;
+@ability-border-color: #e0b119;
+@ability-finished-color: #09bd09;
 @ability-finished-border-color: #2fb72f;
+@texts-color: rgba(0,0,0,.5);
 
-@axis-label-color: rgba(0,0,0,.4) ;
 
 body {
   margin: 0;
   font-family: Arial;
 }
 
-.axis path{
-  display:none;
+.header, .footer {
+  width: 100%;
+  height: 100px;
+  background-color: #a0af7c;
+  color: white;
+  text-align: center;
+  font-size: 41px;
+  line-height: 80px;
+  direction: rtl;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+}
+
+
+.axis path {
+  display: none;
+}
+
 .axis line {
   stroke: @grid-line-color;
   stroke-width: 1px;
@@ -30,9 +48,9 @@ body {
 }
 
 .ability.finished {
-    fill: @ability-finished-color;
-    stroke: @ability-finished-border-color;
-  }
+  fill: @ability-finished-color;
+  stroke: @ability-finished-border-color;
+}
 
 .ability-tip, .questionnaire-tip {
   position: absolute;
@@ -46,21 +64,18 @@ body {
 }
 
 .ability-tip:after, .questionnaire-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    font-size: 17px;
-    width: 100%;
-    line-height: 14px;
-    color: #000000;
-    opacity: 0.8;
-    content: "\25BC";
-    position: absolute;
-    top: 99%;
-    left: 0;
-    text-align: center;
-  }
-
-
+  box-sizing: border-box;
+  display: inline;
+  font-size: 17px;
+  width: 100%;
+  line-height: 14px;
+  color: #000000;
+  content: "\25BC";
+  position: absolute;
+  top: 99%;
+  left: 0;
+  text-align: center;
+}
 
 .students-ability-chart {
   position: relative;
@@ -70,44 +85,30 @@ body {
 
 .students-ability-chart__preloader {
   position: absolute;
-  width: calc(100% - 100px);
+  width: ~"calc(100% - 100px)";
   height: 410px;
   border: 1px dashed @grid-line-color;
-  
   margin: 40px 50px 50px 50px;
   text-align: center;
   line-height: 410px;
   font-size: 30px;
-} 
-
-.header, .footer {
-  width: 100%;
-  height: 100px;
-  background-color: #3683BB;
-  color: white;
-  text-align: center;
-  font-size: 41px;
-  line-height: 80px;
-  direction: rtl;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-}
+
 
 .legend text {
-  fill: rgba(0,0,0,.4);
+  fill: @texts-color;
   font-size: 14px;
   direction: rtl;
 }
 
 .tick text {
   font-size: 1.4em;
+  fill: @texts-color;
 }
 
 .axis-label {
-  fill: @axis-label-color;
+  fill: @texts-color;
   font-size: 18px;
 }
 
@@ -126,12 +127,16 @@ body {
   border-bottom: 1px outset;
 }
 
-.tick text {
-  fill: @axis-label-color;
-}
 
 svg {
   overflow: auto;
 }
 
 
+.students-ability-chart__title {
+  margin: 10px auto 0;
+  width: 110px;
+  line-height: 18px;
+  color: @texts-color;
+  font-size: 18px;
+}
