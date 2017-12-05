@@ -165,9 +165,9 @@
         }
         return result;
       });
-
+      var tooltipTopMarginToPreventFlickering = 5;
       abilityTip.style("display", "");
-      var top = axes.yAxisScale(ability["value"]) + measures.margin.top - getAbilityRadius(ability) - (abilityTip.node().getBoundingClientRect().height);
+      var top = axes.yAxisScale(ability["value"]) + measures.margin.top - getAbilityRadius(ability) - (abilityTip.node().getBoundingClientRect().height) - tooltipTopMarginToPreventFlickering;
       var left = axes.xAxisScale(ability["questionnaire-order"]) + measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
       abilityTip.style("transform", "translate(" + left + "px ," + top + "px )")
         .transition().duration(350).style("opacity", .8);
