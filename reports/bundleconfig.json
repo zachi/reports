@@ -1,0 +1,9 @@
+[
+  {
+    "outputFileName": "students-ability/index.min.js",
+    "inputFiles": [
+      "students-ability/students-ability-chart/index.js",
+      "students-ability/index.js"
+    ]
+  }
+]

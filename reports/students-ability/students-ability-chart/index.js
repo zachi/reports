@@ -49,7 +49,7 @@
         .call(yAxis)
         .attr("transform", "translate(" + measures.width + ", 0)");
 
-        //set y axis title
+      //set y axis title
       yAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
         .attr("transform", "rotate(-90)")
@@ -63,7 +63,7 @@
       /**************************** X AXIS **********************************/
 
       axes.xAxisScale = d34.scaleLinear().domain([0, data.root.folder.questionnaires.length]).range([0, measures.width]);
-      var xAxis = d34.axisBottom(axes.xAxisScale).ticks(data.root.folder.questionnaires.length).tickSize(-measures.height).tickFormat(function (d) { return d === 0 ? "" : d ; });
+      var xAxis = d34.axisBottom(axes.xAxisScale).ticks(data.root.folder.questionnaires.length).tickSize(-measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
       var xAxisGroup = app.svg.append("g")
         .classed("x axis", true)
         .attr("transform", "translate(0," + measures.height + ")")
@@ -81,23 +81,23 @@
       var xTicks = app.svg.selectAll('.x .tick text');
       xTicks.attr("y", measures.xLabelHeight);
 
-      
+
 
       //set ticks questionaire name tooltip
       xTicks.on("mouseover", function (tick) {
         if (tick == 0)
           return;
-          questionnaireTip.style("display", "");
+        questionnaireTip.style("display", "");
         questionnaireTip.html(function () { return data.root.folder.questionnaires[tick - 1].name });
 
-        var top = axes.yAxisScale(0) + measures.margin.top - questionnaireTip.node().getBoundingClientRect().height +15;
+        var top = axes.yAxisScale(0) + measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
 
         var left = axes.xAxisScale(tick) + measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
         questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )")
         .transition().duration(350).style("opacity", .8);
       })
         .on("mouseout", function (d) {
-          
+
           questionnaireTip.transition().duration(350).style("opacity", .0).on("end", function () { questionnaireTip.style("display", "none") });
 
         });
@@ -105,7 +105,7 @@
       app.svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
       app.svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
       app.svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
-      
+
     }
 
 
@@ -221,9 +221,9 @@
 
   })();
 
-  
-    var app = (function () {
-      
+
+  var app = (function () {
+
     function init() {
       var preloader = document.createElement("div");
       preloader.classList.add("students-ability-chart__preloader");
@@ -232,7 +232,7 @@
 
       d34.json("http://reports.dev.cet.ac.il/data/data.json", function (response) {
 
-        
+
         document.querySelector('.students-ability-chart__preloader').remove();
         app.svg = d34.select(".students-ability-chart").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
         initLegend();
@@ -279,23 +279,20 @@
       titleElement.classList.add('students-ability-chart__title');
       titleElement.innerHTML = texts.chartName;
       document.querySelector(".students-ability-chart").prepend(titleElement);
-      //legend.append("text")
-      //  .attr("y", -15)
-      //  .text(texts.chartName)
-      //  .attr("x", measures.width - 410);
+ 
     }
 
-    
+
 
     return {
       svg: null,
-      init:init
+      init: init
     }
 
   })();
 
-    window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-    cet.dashboard.studentsProgressCart = app;
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
+  cet.dashboard.studentsAbilityChart = app;
 
-})()
+})();
 
