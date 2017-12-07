@@ -17396,7 +17396,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       preloader.innerText = "loading...";
       document.querySelector(".students-ability-chart").appendChild(preloader);
 
-      d34.json("http://reports.dev.cet.ac.il/data/data.json", function (response) {
+      d34.json("/data/data.json", function (response) {
 
 
         var preloader = document.querySelector('.students-ability-chart__preloader');
