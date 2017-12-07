@@ -1,6 +1,10 @@
 ﻿[
   {
-    "outputFile": "index.css",
-    "inputFile": "index.less"
+    "outputFile": "students-ability-progress/bundle.css",
+    "inputFile": "students-ability-progress/students-ability-chart/index.less"
+  },
+  {
+    "outputFile": "students-ability-progress/students-ability-chart/index.css",
+    "inputFile": "students-ability-progress/students-ability-chart/index.less"
   }
 ]

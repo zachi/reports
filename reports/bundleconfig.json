@@ -1,0 +1,10 @@
+[
+  {
+    "outputFileName": "students-ability-progress/bundle.js",
+    "inputFiles": [
+      "lib/d3.v4.min.js",
+      "students-ability-progress/students-ability-chart/index.js",
+      "students-ability-progress/index.js"
+    ]
+  }
+]
