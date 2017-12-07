@@ -234,7 +234,9 @@
       d34.json("http://reports.dev.cet.ac.il/data/data.json", function (response) {
 
 
-        document.querySelector('.students-ability-chart__preloader').remove();
+        var preloader = document.querySelector('.students-ability-chart__preloader');
+        preloader.parentNode.removeChild(preloader);
+
         app.svg = d34.select(".students-ability-chart").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
         initLegend();
         data.init(response);
@@ -279,7 +281,10 @@
       var titleElement = document.createElement('div');
       titleElement.classList.add('students-ability-chart__title');
       titleElement.innerHTML = texts.chartName;
-      document.querySelector(".students-ability-chart").prepend(titleElement);
+      var chart = document.querySelector(".students-ability-chart");
+      chart.insertBefore(titleElement, chart.firstChild);
+      
+      
  
     }
 
