@@ -36,9 +36,10 @@
   })();
 
   var axes = (function () {
-    var questionnaireTip = d34.select(".students-ability-chart").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
 
     function init() {
+
+      var questionnaireTip = d34.select(".students-ability-chart").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
 
       /**************************** Y AXIS **********************************/
 
