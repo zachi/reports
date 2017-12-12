@@ -1,6 +1,8 @@
 ﻿.students-ability-chart {
   font-size: 16px;
   font-family: Arial;
+  position: relative;
+  margin: 50px auto;
 }
 .students-ability-chart .axis path {
   display: none;
@@ -16,9 +18,10 @@
   stroke: #e0b119;
   stroke-width: 1;
 }
-.ability.finished {
+.finished-part {
   fill: #09bd09;
   stroke: #2fb72f;
+  pointer-events: none;
 }
 .ability-tip,
 .questionnaire-tip {
@@ -44,11 +47,7 @@
   top: 99%;
   left: 0;
   text-align: center;
-}
-.students-ability-chart {
-  position: relative;
-  margin: 50px auto;
-  width: 1000px;
+  height: 12px;
 }
 .students-ability-chart__preloader {
   position: absolute;
@@ -63,7 +62,7 @@
 .students-ability-chart__legend-text {
   fill: rgba(0, 0, 0, 0.5);
   font-size: 14px;
-  direction: rtl;
+  /*direction: rtl;*/
 }
 .students-ability-chart__axis-tick-text {
   font-size: 1.4em;
@@ -73,6 +72,11 @@
   fill: rgba(0, 0, 0, 0.5);
   font-size: 18px;
 }
+.ability-tip__student {
+  float: right;
+  width: 50%;
+  font-size: 14px;
+}
 .ability-tip__student--finished {
   color: #09bd09;
 }
@@ -81,16 +85,18 @@
   fill: #000000 !important;
 }
 .ability-tip__title {
-  margin-bottom: 8px;
-  /*font-size: 18px;*/
-  border-bottom: 1px outset;
+  margin-bottom: 6px;
+  /* font-size: 18px; */
+  border-bottom: 2px outset #b7b5b5;
+  text-align: center;
+  padding-bottom: 4px;
 }
 .students-ability-chart svg {
   overflow: auto;
 }
 .students-ability-chart__title {
   margin: 10px auto 0;
-  width: 110px;
+  width: 143px;
   line-height: 18px;
   color: rgba(0, 0, 0, 0.5);
   font-size: 18px;

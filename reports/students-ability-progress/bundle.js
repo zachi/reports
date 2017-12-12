@@ -17164,30 +17164,33 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
 
-
-
 (function () {
 
-  var texts = {
-    questionnaires: "שאלונים",
-    questionnaire: "שאלון",
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
+  cet.dashboard.studentsAbilityChart.texts = {
+    questionnaires: "יחידות לימות",
+    questionnaire: "יחידת לימוד",
     abilities: "יכולות",
-    ability: "יכולת",
+    ability: "רמת יכולת",
     legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
-    legendAbilityFinished: "סיים שלב",
-    legendAbility: "לא סיים שלב",
-    chartName: "יכולות תלמידים"
-
-
+    legendAbilityFinished: "לומדים שסיימו נושא",
+    legendAbility: "לומדים שטרם סיימו נושא",
+    chartName: "רמת יכולות תלמידים"
   }
 
-  var measures = (function () {
+})();
+
+(function () {
+  
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
+  cet.dashboard.studentsAbilityChart.measures = (function () {
     var margin = { top: 27, right: 50, bottom: 50, left: 50 },
       outerWidth = 1000,
       outerHeight = 500,
       width = outerWidth - margin.left - margin.right,
       height = outerHeight - margin.top - margin.bottom,
       xLabelHeight = 10;
+
     return {
       margin: margin,
       outerWidth: outerWidth,
@@ -17197,10 +17200,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
       xLabelHeight: xLabelHeight
     }
 
-
   })();
 
-  var axes = (function () {
+})();
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
+  cet.dashboard.studentsAbilityChart.axes =  (function () {
 
     function init() {
 
@@ -17208,44 +17215,47 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       /**************************** Y AXIS **********************************/
 
-      axes.yAxisScale = d34.scaleLinear().domain([100, 0]).range([0, measures.height]);
-      var yAxis = d34.axisLeft(axes.yAxisScale).tickSize(measures.width);
-      var yAxisGroup = app.svg.append("g")
+      cet.dashboard.studentsAbilityChart.axes.yAxisScale = d34.scaleLinear().domain([100, 0]).range([0, cet.dashboard.studentsAbilityChart.measures.height]);
+      var yAxis = d34.axisLeft(cet.dashboard.studentsAbilityChart.axes.yAxisScale).tickSize(cet.dashboard.studentsAbilityChart.measures.width).tickFormat(function (d) {
+        
+        return d === 0 ? "" : (d / 10) ;
+      });
+      var yAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("y axis", true)
         .call(yAxis)
-        .attr("transform", "translate(" + measures.width + ", 0)");
+        .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.width + ", 0)");
 
       //set y axis title
       yAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
         .attr("transform", "rotate(-90)")
-        .attr("y", -measures.width - measures.margin.left)
-        .attr("x", -(measures.height / 2 - 20))
+        .attr("y", -cet.dashboard.studentsAbilityChart.measures.width - cet.dashboard.studentsAbilityChart.measures.margin.left)
+        .attr("x", -(cet.dashboard.studentsAbilityChart.measures.height / 2 - 20))
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text(texts.ability);
+        .text(cet.dashboard.studentsAbilityChart.texts.ability);
 
 
       /**************************** X AXIS **********************************/
 
-      axes.xAxisScale = d34.scaleLinear().domain([0, data.root.folder.questionnaires.length]).range([0, measures.width]);
-      var xAxis = d34.axisBottom(axes.xAxisScale).ticks(data.root.folder.questionnaires.length).tickSize(-measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
-      var xAxisGroup = app.svg.append("g")
+      cet.dashboard.studentsAbilityChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityChart.measures.width]);
+      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
+      var xAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("x axis", true)
-        .attr("transform", "translate(0," + measures.height + ")")
+        .attr("transform", "translate(0," + cet.dashboard.studentsAbilityChart.measures.height + ")")
         .call(xAxis);
 
       //set x axis title
       xAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
-        .attr("x", measures.width / 2 + 30)
-        .attr("y", measures.margin.bottom - 3)
+        .attr("x", cet.dashboard.studentsAbilityChart.measures.width / 2 + 30)
+        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 3)
         .style("text-anchor", "end")
-        .text(texts.questionnaire);
+        .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
 
       //set x axis lables height
-      var xTicks = app.svg.selectAll('.x .tick text');
-      xTicks.attr("y", measures.xLabelHeight);
+      var xTicks = cet.dashboard.studentsAbilityChart.app.svg.selectAll('.x .tick text');
+      xTicks.attr("y", cet.dashboard.studentsAbilityChart.measures.xLabelHeight);
 
 
 
@@ -17254,13 +17264,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
         if (tick == 0)
           return;
         questionnaireTip.style("display", "");
-        questionnaireTip.html(function () { return data.root.folder.questionnaires[tick - 1].name });
+        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires[tick - 1].name });
 
-        var top = axes.yAxisScale(0) + measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
-
-        var left = axes.xAxisScale(tick) + measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
-        questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )")
-        .transition().duration(350).style("opacity", .8);
+        var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
+        var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
+        questionnaireTip.style("top", top + "px");
+        questionnaireTip.style("left", left + "px");
+        questionnaireTip.transition().duration(350).style("opacity", .8);
+        
       })
         .on("mouseout", function (d) {
 
@@ -17268,9 +17279,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
         });
 
-      app.svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
-      app.svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
-      app.svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
 
     }
 
@@ -17283,10 +17294,78 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   })();
 
-  var data = (function () {
+})();
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
+  cet.dashboard.studentsAbilityChart.data = (function () {
 
     var root;
 
+    function getFinishedFraction(ability) {
+      var finishedCounter = 0;
+
+      for (var i = 0; i < ability.students.length; i++) {
+        if (ability.students[i].finished)
+          finishedCounter++;
+      }
+      var ssss = 0;
+
+      return finishedCounter / ability.students.length;
+    }
+
+
+    function performDataSchemeTransformation(before) {
+    
+      var after = {
+        "folder": {
+          "id": before.id,
+          "name": before.name,
+          "questionnaires": [],
+          "abilities": [],
+          "folders": []
+        }
+
+      };
+
+
+      for (var i = 0; i < before.questionnaires.length; i++) {
+        
+        var abilities = {};
+        for (var j = 0; j < before.questionnaires[i].students.length; j++) {
+          var ability = abilities[i + before.questionnaires[i].students[j].ability];
+          if (!ability) {
+            ability = {
+              "questionnaire-order": i + 1,
+              "value": before.questionnaires[i].students[j].ability,
+              "students": []
+            }
+          }
+
+          ability.students.push({
+            "id": before.questionnaires[i].students[j].id,
+            "name": before.questionnaires[i].students[j].name,
+            "finished": before.questionnaires[i].students[j].finished
+          })
+          abilities[i + before.questionnaires[i].students[j].ability] = ability;
+        }
+
+        var questionaire = {
+          "id": before.questionnaires[i].id,
+          "name": before.questionnaires[i].name,
+          "abilities": []
+        };
+        for (var key in abilities) {
+          abilities[key].finishedFraction = getFinishedFraction(abilities[key]);
+          after.folder.abilities.push(abilities[key]);
+        }
+
+        after.folder.questionnaires.push(questionaire);
+
+      }
+      return after;
+    }
     function loadDataFromQueryIfNecessary(response) {
       if (decodeURIComponent(document.location.search))
         return JSON.parse(decodeURIComponent(document.location.search.substring(1)));
@@ -17295,14 +17374,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
     function init(initData) {
 
-      data.root = loadDataFromQueryIfNecessary(initData);
+      cet.dashboard.studentsAbilityChart.data.root = loadDataFromQueryIfNecessary(initData);
+      cet.dashboard.studentsAbilityChart.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityChart.data.root);
 
     }
 
     function getQuestionaireNameByOrder(order) {
-      return data.root.folder.questionnaires[order - 1].name
+      return cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires[order - 1].name
     }
-
 
     return {
 
@@ -17314,13 +17393,19 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   })();
 
-  var abilities = (function () {
+})();
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
+  cet.dashboard.studentsAbilityChart.abilities = (function () {
     var abilityTip;
 
     function transform(ability) {
-      return "translate(" + axes.xAxisScale(ability["questionnaire-order"]) + "," + axes.yAxisScale(ability["value"]) + ")";
+      return "translate(" + cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"]) + ")";
 
     }
+
     function hasFinishedStudent(ability) {
       for (var i = 0; i < ability.students.length; i++) {
         if (ability.students[i].finished)
@@ -17328,57 +17413,88 @@ Object.defineProperty(exports, '__esModule', { value: true });
       }
       return false;
     }
+
     function showAbilityTooltip(ability) {
       abilityTip.html(function () {
         var result = "<div class=\"ability-tip__title\" >" +
-          data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
-          " - " + texts.ability + " " + ability["value"] +
+          ability["value"] + " " + cet.dashboard.studentsAbilityChart.texts.ability + "<br>" + cet.dashboard.studentsAbilityChart.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
           "</div>";
 
         for (var i = 0; i < ability.students.length; i++) {
-          var student = "<span>" + ability.students[i].name + "</span>" + "<br>";
+          var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
           if (ability.students[i].finished)
-            student = student.replace("span", "span class='ability-tip__student--finished'");
+            student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
+          
+          if( i%2 === 1 )
+            student = student + "<br>";
+
           result += student;
         }
         return result;
       });
-      var tooltipTopMarginToPreventFlickering = -12;
+      var tooltipTopMarginToPreventFlickering = -6;
       abilityTip.style("display", "");
-      var top = axes.yAxisScale(ability["value"]) + measures.margin.top - getAbilityRadius(ability) - (abilityTip.node().getBoundingClientRect().height) - tooltipTopMarginToPreventFlickering;
-      var left = axes.xAxisScale(ability["questionnaire-order"]) + measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
-      abilityTip.style("transform", "translate(" + left + "px ," + top + "px )")
-        .transition().duration(350).style("opacity", .8);
+      var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
+        + cet.dashboard.studentsAbilityChart.measures.margin.top
+        - getAbilityRadius(ability)
+        - (abilityTip.node().getBoundingClientRect().height)
+        - tooltipTopMarginToPreventFlickering;
+      var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + cet.dashboard.studentsAbilityChart.measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
+      abilityTip.style("top", top + "px");
+      abilityTip.style("left", left + "px");
+      abilityTip.transition().duration(350).style("opacity", .8);
 
 
-      app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
-      app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', true);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', true);
 
     }
+
     function hideAbilityTooltip(ability) {
 
       abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
-      app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', false);
-      app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', false);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', false);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', false);
     }
 
-    function getAbilityRadius(ability) { return Math.sqrt(ability.students.length) * 13; }
+    function getAbilityRadius(ability) {
+
+      var radius = Math.sqrt(ability.students.length) * 13;
+      if (ability.finishedPart)
+        radius = ability.finishedFraction * radius;
+      return radius;
+    }
 
     function init() {
 
       abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
-      var sortedAbilities = data.root.folder.abilities.sort(function (a, b) { return b.students.length - a.students.length; })
-      var objects = app.svg.append("svg").classed("objects", true).attr("width", measures.width).attr("height", measures.height);
+      var sortedAbilities = cet.dashboard.studentsAbilityChart.data.root.folder.abilities.sort(function (a, b) { return b.students.length - a.students.length; })
+
+      var sortedAbilitiesDoubled = [];
+      for (var i = 0; i < sortedAbilities.length; i++) {
+        sortedAbilitiesDoubled.push(sortedAbilities[i]);
+        var abilityFinishedPart = JSON.parse(JSON.stringify(sortedAbilities[i]));
+        abilityFinishedPart.finishedPart = true;
+        sortedAbilitiesDoubled.push(abilityFinishedPart);
+      }
+
+      var objects = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("objects", true).attr("width", cet.dashboard.studentsAbilityChart.measures.width).attr("height", cet.dashboard.studentsAbilityChart.measures.height);
       objects.selectAll(".ability")
-        .data(sortedAbilities)
+        .data(sortedAbilitiesDoubled)
         .enter().append("circle")
-        .classed("ability", true)
-        .classed("finished", hasFinishedStudent)
+        .classed("ability", function (ability) { return !ability.finishedPart; })
+        .classed("finished-part", function (ability) { return ability.finishedPart; })
         .attr("r", "1")
         .attr("transform", transform)
-        .on("mouseover", showAbilityTooltip)
-        .on("mouseout", hideAbilityTooltip)
+        //.on("mouseover", showAbilityTooltip)
+        //.on("mouseout", hideAbilityTooltip)
         .transition().attr("r", getAbilityRadius).duration(1000);
+
+
+      var fullAbilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".ability");
+      fullAbilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
+
+
     }
 
     return {
@@ -17387,38 +17503,46 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   })();
 
+})();
 
-  var app = (function () {
+(function () {
 
-    function init() {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
+  cet.dashboard.studentsAbilityChart.app = (function () {
+
+    var chart;
+
+    function init(options) {
       var preloader = document.createElement("div");
       preloader.classList.add("students-ability-chart__preloader");
       preloader.innerText = "loading...";
-      document.querySelector(".students-ability-chart").appendChild(preloader);
+      chart = document.querySelector(".students-ability-chart");
+      chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
+      chart.appendChild(preloader);
+      //"data/data.json"
 
-      d34.json("data/data.json", function (response) {
-
+      d34.json("/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId, function (response) {
 
         var preloader = document.querySelector('.students-ability-chart__preloader');
         preloader.parentNode.removeChild(preloader);
 
-        app.svg = d34.select(".students-ability-chart").append("svg").attr("width", measures.outerWidth).attr("height", measures.outerHeight).append("g").attr("transform", "translate(" + measures.margin.left + "," + measures.margin.top + ")");
+        cet.dashboard.studentsAbilityChart.app.svg = d34.select(".students-ability-chart").append("svg").attr("width", cet.dashboard.studentsAbilityChart.measures.outerWidth).attr("height", cet.dashboard.studentsAbilityChart.measures.outerHeight).append("g").attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.margin.left + "," + cet.dashboard.studentsAbilityChart.measures.margin.top + ")");
         initLegend();
-        data.init(response);
-        axes.init();
-        abilities.init();
+        cet.dashboard.studentsAbilityChart.data.init(response);
+        cet.dashboard.studentsAbilityChart.axes.init();
+        cet.dashboard.studentsAbilityChart.abilities.init();
 
       });
     }
 
     function initLegend() {
-      var legend = app.svg.append("g")
+      var legend = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("circle")
         .attr("r", 10)
-        .attr("cx", measures.width - 7)
+        .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
         .attr("cy", -15)
         .classed("ability", true)
         .classed("finished", true);
@@ -17426,34 +17550,34 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       legend.append("text")
         .attr("y", -10)
-        .text(texts.legendAbilityFinished)
-        .attr("x", measures.width - 20)
+        .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
+        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
+        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 127)
         .classed('students-ability-chart__legend-text', true);
 
       legend.append("circle")
         .classed("ability", true)
         .attr("r", 10)
-        .attr("cx", measures.width - 95)
+        .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 145)
         .attr("cy", -15);
 
 
       legend.append("text")
         .attr("y", -10)
-        .text(texts.legendAbility)
+        .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
         .classed('students-ability-chart__legend-text', true)
-        .attr("x", measures.width - 108);
+      //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
+      .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 293);
 
       var titleElement = document.createElement('div');
       titleElement.classList.add('students-ability-chart__title');
-      titleElement.innerHTML = texts.chartName;
-      var chart = document.querySelector(".students-ability-chart");
+      titleElement.innerHTML = cet.dashboard.studentsAbilityChart.texts.chartName;
+      
       chart.insertBefore(titleElement, chart.firstChild);
-      
-      
- 
+
+
+
     }
-
-
 
     return {
       svg: null,
@@ -17462,12 +17586,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   })();
 
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart = app;
+  cet.dashboard.studentsAbilityChart.init = function (options) {
+    cet.dashboard.studentsAbilityChart.app.init(options);
+  }
 
 })();
-
-
 
 (function () {
   

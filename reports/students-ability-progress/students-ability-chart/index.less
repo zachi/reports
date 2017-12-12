@@ -11,6 +11,10 @@
 .students-ability-chart{
   font-size:16px;
   font-family:Arial;
+
+  position: relative;
+  margin: 50px auto;
+
 }
 
 .students-ability-chart .axis path {
@@ -30,9 +34,10 @@
   stroke-width: 1;
 }
 
-.ability.finished {
+.finished-part {
   fill: @ability-finished-color;
   stroke: @ability-finished-border-color;
+  pointer-events: none;
 }
 
 .ability-tip, .questionnaire-tip {
@@ -47,24 +52,22 @@
 }
 
 .ability-tip:after, .questionnaire-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 17px;
-  width: 100%;
-  line-height: 14px;
-  color: #000000;
-  content: "\25BC";
-  position: absolute;
-  top: 99%;
-  left: 0;
-  text-align: center;
+      box-sizing: border-box;
+    display: inline;
+    font-size: 17px;
+    width: 100%;
+    line-height: 14px;
+    color: #000000;
+    content: "\25BC";
+    position: absolute;
+    top: 99%;
+    left: 0;
+    text-align: center;
+    
+    height: 12px;
 }
 
-.students-ability-chart {
-  position: relative;
-  margin: 50px auto;
-  width: 1000px;
-}
+
 
 .students-ability-chart__preloader {
   position: absolute;
@@ -80,7 +83,7 @@
 .students-ability-chart__legend-text {
   fill: @texts-color;
   font-size: 14px;
-  direction: rtl;
+  /*direction: rtl;*/ //should be on, but not on IE11
 }
 
 .students-ability-chart__axis-tick-text {
@@ -93,6 +96,11 @@
   font-size: 18px;
 }
 
+.ability-tip__student{
+  float:right;
+  width:50%;
+  font-size:14px;
+}
 .ability-tip__student--finished {
   color: @ability-finished-color;
 }
@@ -103,9 +111,11 @@
 }
 
 .ability-tip__title {
-  margin-bottom: 8px;
-  /*font-size: 18px;*/
-  border-bottom: 1px outset;
+    margin-bottom: 6px;
+    /* font-size: 18px; */
+    border-bottom: 2px outset #b7b5b5;
+    text-align: center;
+    padding-bottom: 4px;
 }
 
 .students-ability-chart svg {
@@ -114,7 +124,7 @@
 
 .students-ability-chart__title {
   margin: 10px auto 0;
-  width: 110px;
+  width: 143px;
   line-height: 18px;
   color: @texts-color;
   font-size: 18px;
