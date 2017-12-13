@@ -17167,6 +17167,21 @@ Object.defineProperty(exports, '__esModule', { value: true });
 (function () {
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
+  cet.dashboard.studentsAbilityChart.utils = (function () {
+
+    return {
+      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode;}
+    }
+
+  })();
+
+  
+
+})();
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
   cet.dashboard.studentsAbilityChart.texts = {
     questionnaires: "יחידות לימות",
     questionnaire: "יחידת לימוד",
@@ -17268,8 +17283,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
         var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
         var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
-        questionnaireTip.style("top", top + "px");
-        questionnaireTip.style("left", left + "px");
+
+        if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+          questionnaireTip.style("top", top + "px");
+          questionnaireTip.style("left", left + "px");
+        }
+        else {
+          questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )");
+        }
+        
         questionnaireTip.transition().duration(350).style("opacity", .8);
         
       })
@@ -17435,7 +17457,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
     function getAbilityTipPosition(ability) {
       abilityTip.html(ability.tipHtml);
-      var tooltipTopMarginToPreventFlickering = 34;
+      var tooltipTopMarginToPreventFlickering = 43;//34//when using css top, left to support IE11;
       var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
         + getAbilityRadius(ability)
@@ -17453,8 +17475,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       abilityTip.html(ability.tipHtml);
       abilityTip.style("display", "");
-      abilityTip.style("top", ability.tipPosition.top + "px");
-      abilityTip.style("left", ability.tipPosition.left + "px");
+      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+        abilityTip.style("top", (ability.tipPosition.top - 10) + "px");
+        abilityTip.style("left", ability.tipPosition.left + "px");
+      }
+      else {
+        abilityTip.style("transform", "translate(" + ability.tipPosition.left + "px ," + ability.tipPosition.top + "px )");
+      }
+      
       abilityTip.transition().duration(350).style("opacity", .8);
 
       //highlight axes 

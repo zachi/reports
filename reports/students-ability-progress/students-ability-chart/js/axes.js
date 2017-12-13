@@ -63,8 +63,15 @@
 
         var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
         var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
-        questionnaireTip.style("top", top + "px");
-        questionnaireTip.style("left", left + "px");
+
+        if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+          questionnaireTip.style("top", top + "px");
+          questionnaireTip.style("left", left + "px");
+        }
+        else {
+          questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )");
+        }
+        
         questionnaireTip.transition().duration(350).style("opacity", .8);
         
       })

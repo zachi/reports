@@ -4,6 +4,7 @@
     "outputFileName": "students-ability-progress/students-ability-chart/js/index.js",
     "inputFiles": [
       "lib/d3.v4.min.js",
+      "students-ability-progress/students-ability-chart/js/utils.js",
       "students-ability-progress/students-ability-chart/js/texts.js",
       "students-ability-progress/students-ability-chart/js/measures.js",
       "students-ability-progress/students-ability-chart/js/axes.js",

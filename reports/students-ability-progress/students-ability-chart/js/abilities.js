@@ -39,7 +39,7 @@
 
     function getAbilityTipPosition(ability) {
       abilityTip.html(ability.tipHtml);
-      var tooltipTopMarginToPreventFlickering = 34;
+      var tooltipTopMarginToPreventFlickering = 43;//34//when using css top, left to support IE11;
       var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
         + getAbilityRadius(ability)
@@ -57,8 +57,14 @@
 
       abilityTip.html(ability.tipHtml);
       abilityTip.style("display", "");
-      abilityTip.style("top", ability.tipPosition.top + "px");
-      abilityTip.style("left", ability.tipPosition.left + "px");
+      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+        abilityTip.style("top", (ability.tipPosition.top - 10) + "px");
+        abilityTip.style("left", ability.tipPosition.left + "px");
+      }
+      else {
+        abilityTip.style("transform", "translate(" + ability.tipPosition.left + "px ," + ability.tipPosition.top + "px )");
+      }
+      
       abilityTip.transition().duration(350).style("opacity", .8);
 
       //highlight axes 
