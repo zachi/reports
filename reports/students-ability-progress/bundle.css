@@ -51,7 +51,7 @@
 }
 .ability-tip:after {
   content: "\25B2";
-  top: -12px;
+  top: -11px;
   height: 12px;
 }
 .students-ability-chart__preloader {

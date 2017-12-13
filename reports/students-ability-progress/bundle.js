@@ -17551,6 +17551,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
   cet.dashboard.studentsAbilityChart.app = (function () {
 
     var chart;
+    function getUrl(options) {
+      if (document.location.href.indexOf('dashboard') !== -1)
+        return "/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId;
+      var baseUrl = "../";
+      if (document.location.href.indexOf('github') !== -1)
+        baseUrl = '/reports/reports/';
+      return baseUrl + "data/data.json";
+    }
 
     function init(options) {
       var preloader = document.createElement("div");
@@ -17559,15 +17567,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
       chart = document.querySelector(".students-ability-chart");
       chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
       chart.appendChild(preloader);
-      //"data/data.json"
-      //dfdfsdfsdf
 
 
-      var baseUrl = "../";
-      if (document.location.href.indexOf('github') !== -1)
-        baseUrl = '/reports/reports/';
 
-      d34.json(baseUrl + "data/data.json", function (response) {
+      d34.json(getUrl(options), function (response) {
 
         var preloader = document.querySelector('.students-ability-chart__preloader');
         preloader.parentNode.removeChild(preloader);
@@ -17590,8 +17593,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("r", 10)
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
         .attr("cy", -15)
-        .classed("ability", true)
-        .classed("finished", true);
+        .classed("finished-part", true);
 
 
       legend.append("text")
