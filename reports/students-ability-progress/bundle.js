@@ -17534,7 +17534,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
       //"data/data.json"
       //dfdfsdfsdf
 
-      d34.json("../data/data.json", function (response) {
+
+      var baseUrl = "../";
+      if (document.location.href.indexOf('github') == ! -1)
+        baseUrl = '/reports/reports/';
+
+      d34.json(baseUrl + "data/data.json", function (response) {
 
         var preloader = document.querySelector('.students-ability-chart__preloader');
         preloader.parentNode.removeChild(preloader);
