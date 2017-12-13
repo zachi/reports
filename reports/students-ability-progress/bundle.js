@@ -17534,7 +17534,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       //"data/data.json"
       //dfdfsdfsdf
 
-      d34.json("/data/data.json", function (response) {
+      d34.json("../data/data.json", function (response) {
 
         var preloader = document.querySelector('.students-ability-chart__preloader');
         preloader.parentNode.removeChild(preloader);
