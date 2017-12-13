@@ -4,6 +4,7 @@
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.abilities = (function () {
     var abilityTip;
+    var tipsHtml = [];
 
     function transform(ability) {
       return "translate(" + cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"]) + ")";
@@ -18,37 +19,49 @@
       return false;
     }
 
-    function showAbilityTooltip(ability) {
-      abilityTip.html(function () {
-        var result = "<div class=\"ability-tip__title\" >" +
-          ability["value"] + " " + cet.dashboard.studentsAbilityChart.texts.ability + "<br>" + cet.dashboard.studentsAbilityChart.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
-          "</div>";
+    function buildAbilityTipHtml(ability){
+      var result = "<div class=\"ability-tip__title\" >" +
+        ability["value"] + " " + cet.dashboard.studentsAbilityChart.texts.ability + "<br>" + cet.dashboard.studentsAbilityChart.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
+        "</div>";
 
-        for (var i = 0; i < ability.students.length; i++) {
-          var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
-          if (ability.students[i].finished)
-            student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
-          
-          if( i%2 === 1 )
-            student = student + "<br>";
+      for (var i = 0; i < ability.students.length; i++) {
+        var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
+        if (ability.students[i].finished)
+          student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
 
-          result += student;
-        }
-        return result;
-      });
-      var tooltipTopMarginToPreventFlickering = -6;
-      abilityTip.style("display", "");
+        if (i % 2 === 1)
+          student = student + "<br>";
+
+        result += student;
+      }
+      return result;
+    }
+
+    function getAbilityTipPosition(ability) {
+      abilityTip.html(ability.tipHtml);
+      var tooltipTopMarginToPreventFlickering = 3;
       var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
         - getAbilityRadius(ability)
         - (abilityTip.node().getBoundingClientRect().height)
-        - tooltipTopMarginToPreventFlickering;
+        + tooltipTopMarginToPreventFlickering;
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + cet.dashboard.studentsAbilityChart.measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
-      abilityTip.style("top", top + "px");
-      abilityTip.style("left", left + "px");
+
+      return {
+        top: top,
+        left: left
+      }
+    }
+
+    function showAbilityTooltip(ability) {
+
+      abilityTip.html(ability.tipHtml);
+      abilityTip.style("display", "");
+      abilityTip.style("top", ability.tipPosition.top + "px");
+      abilityTip.style("left", ability.tipPosition.left + "px");
       abilityTip.transition().duration(350).style("opacity", .8);
 
-
+      //highlight axes 
       cet.dashboard.studentsAbilityChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
       cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', true);
 
@@ -76,6 +89,8 @@
 
       var sortedAbilitiesDoubled = [];
       for (var i = 0; i < sortedAbilities.length; i++) {
+        sortedAbilities[i].tipHtml = buildAbilityTipHtml(sortedAbilities[i]);
+        sortedAbilities[i].tipPosition = getAbilityTipPosition(sortedAbilities[i]);
         sortedAbilitiesDoubled.push(sortedAbilities[i]);
         var abilityFinishedPart = JSON.parse(JSON.stringify(sortedAbilities[i]));
         abilityFinishedPart.finishedPart = true;
@@ -90,14 +105,11 @@
         .classed("finished-part", function (ability) { return ability.finishedPart; })
         .attr("r", "1")
         .attr("transform", transform)
-        //.on("mouseover", showAbilityTooltip)
-        //.on("mouseout", hideAbilityTooltip)
         .transition().attr("r", getAbilityRadius).duration(1000);
 
 
-      var fullAbilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".ability");
-      fullAbilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
-
+      var abilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".ability");
+      abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
     }
 
