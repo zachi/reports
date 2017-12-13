@@ -17536,7 +17536,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
       var baseUrl = "../";
-      if (document.location.href.indexOf('github') == ! -1)
+      if (document.location.href.indexOf('github') !== -1)
         baseUrl = '/reports/reports/';
 
       d34.json(baseUrl + "data/data.json", function (response) {
