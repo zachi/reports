@@ -13,9 +13,9 @@
   stroke-dasharray: 2px;
 }
 .ability {
-  fill: #E8AE0C;
+  fill: #808080;
   fill-opacity: .7;
-  stroke: #e0b119;
+  stroke: #808080;
   stroke-width: 1;
 }
 .finished-part {
@@ -47,6 +47,11 @@
   top: 99%;
   left: 0;
   text-align: center;
+  height: 12px;
+}
+.ability-tip:after {
+  content: "\25B2";
+  top: -12px;
   height: 12px;
 }
 .students-ability-chart__preloader {

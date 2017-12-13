@@ -39,11 +39,11 @@
 
     function getAbilityTipPosition(ability) {
       abilityTip.html(ability.tipHtml);
-      var tooltipTopMarginToPreventFlickering = 3;
+      var tooltipTopMarginToPreventFlickering = 34;
       var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
-        - getAbilityRadius(ability)
-        - (abilityTip.node().getBoundingClientRect().height)
+        + getAbilityRadius(ability)
+        //+ (abilityTip.node().getBoundingClientRect().height)
         + tooltipTopMarginToPreventFlickering;
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + cet.dashboard.studentsAbilityChart.measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
 
@@ -108,7 +108,7 @@
         .transition().attr("r", getAbilityRadius).duration(1000);
 
 
-      var abilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".ability");
+      var abilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".objects .ability");
       abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
     }
