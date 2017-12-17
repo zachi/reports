@@ -17552,11 +17552,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
     var chart;
     function getUrl(options) {
-      var baseUrl = options.domain || "/";
-      if (options.audienceId)
-        return baseUrl + "/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId;
-      if (document.location.href.indexOf('github') !== -1)
-        baseUrl = '/reports/reports/';
+      if (options.domain)
+      {
+        var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
+        return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
+      }
+      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
       return baseUrl + "dashboard/data/data.json";
     }
 
