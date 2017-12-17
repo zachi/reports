@@ -6,12 +6,12 @@
 
     var chart;
     function getUrl(options) {
-      if (document.location.href.indexOf('dashboard') !== -1)
-        return "/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId;
-      var baseUrl = "../";
+      var baseUrl = options.domain || "/";
+      if (options.audienceId)
+        return baseUrl + "/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId;
       if (document.location.href.indexOf('github') !== -1)
         baseUrl = '/reports/reports/';
-      return baseUrl + "data/data.json";
+      return baseUrl + "dashboard/data/data.json";
     }
 
     function init(options) {

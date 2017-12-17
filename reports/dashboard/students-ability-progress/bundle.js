@@ -17552,12 +17552,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
     var chart;
     function getUrl(options) {
-      if (document.location.href.indexOf('dashboard') !== -1)
-        return "/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId;
-      var baseUrl = "../";
+      var baseUrl = options.domain || "/";
+      if (options.audienceId)
+        return baseUrl + "/ability/dashboard-demo-data/" + options.audienceId + "/" + options.folderId;
       if (document.location.href.indexOf('github') !== -1)
         baseUrl = '/reports/reports/';
-      return baseUrl + "data/data.json";
+      return baseUrl + "dashboard/data/data.json";
     }
 
     function init(options) {
@@ -17639,3 +17639,31 @@ Object.defineProperty(exports, '__esModule', { value: true });
   }
 
 })();
+
+(function () {
+  
+    var app = (function () {
+      
+    function init(options) {
+      
+      var rootElement = document.createElement('div');
+      rootElement.classList.add("students-ability-dashboard");
+      document.querySelector(options.rootElementSelector).appendChild(rootElement);
+      
+      var studentsAbilityChartElement = document.createElement('div');
+      studentsAbilityChartElement.classList.add("students-ability-chart");
+      rootElement.appendChild(studentsAbilityChartElement);
+      cet.dashboard.studentsAbilityChart.init(options);
+      
+    }
+
+    return {
+      init:init
+    }
+
+  })();
+
+    window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
+    cet.dashboard.studentsAbilityProgress = app;
+
+})()
