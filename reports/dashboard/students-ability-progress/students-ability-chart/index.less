@@ -10,7 +10,7 @@
 
 .students-ability-chart{
   font-size:16px;
-  font-family:Arial;
+  font-family: 'Assistant', sans-serif;
 
   position: relative;
   margin: 50px auto;
@@ -38,6 +38,7 @@
   fill: @ability-finished-color;
   stroke: @ability-finished-border-color;
   pointer-events: none;
+  fill-opacity: 0.6;
 }
 
 .ability-tip, .questionnaire-tip {
@@ -106,7 +107,12 @@
 .ability-tip__student{
   float:right;
   width:50%;
+  min-width:85px;
   font-size:14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  overflow: hidden;
 }
 .ability-tip__student--finished {
   color: @ability-finished-color;
@@ -126,7 +132,7 @@
 }
 
 .students-ability-chart svg {
-  overflow: auto;
+  overflow: visible;
 }
 
 .students-ability-chart__title {

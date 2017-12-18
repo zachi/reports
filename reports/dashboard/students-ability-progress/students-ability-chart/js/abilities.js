@@ -45,8 +45,11 @@
         + getAbilityRadius(ability)
         //+ (abilityTip.node().getBoundingClientRect().height)
         + tooltipTopMarginToPreventFlickering;
-      var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + cet.dashboard.studentsAbilityChart.measures.margin.left - (abilityTip.node().getBoundingClientRect().width / 2);
-
+      var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"])
+        + cet.dashboard.studentsAbilityChart.measures.margin.left
+        - (abilityTip.node().getBoundingClientRect().width / 2);
+      abilityTip.html('');
+      //console.log(abilityTip.node().getBoundingClientRect().width);
       return {
         top: top,
         left: left
