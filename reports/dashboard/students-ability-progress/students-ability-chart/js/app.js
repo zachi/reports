@@ -3,16 +3,16 @@
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.app = (function () {
-
     var chart;
+
     function getUrl(options) {
-      if (options.domain)
-      {
+      if (options.domain) {
         var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
       var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
       return baseUrl + "dashboard/data/data.json";
+
     }
 
     function init(options) {
@@ -22,8 +22,6 @@
       chart = document.querySelector(".students-ability-chart");
       chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
       chart.appendChild(preloader);
-
-
 
       d34.json(getUrl(options), function (response) {
 
@@ -45,7 +43,7 @@
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("circle")
-        .attr("r", 10)
+        .attr("r", 8)
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
         .attr("cy", -15)
         .classed("finished-part", true);
@@ -55,12 +53,13 @@
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
         //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 127)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 115)
         .classed('students-ability-chart__legend-text', true);
 
       legend.append("circle")
         .classed("ability", true)
-        .attr("r", 10)
+        .attr("r", 8)
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 145)
         .attr("cy", -15);
 
@@ -69,13 +68,14 @@
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
         .classed('students-ability-chart__legend-text', true)
-      //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
-      .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 293);
+        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
+        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 276)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
 
       var titleElement = document.createElement('div');
       titleElement.classList.add('students-ability-chart__title');
       titleElement.innerHTML = cet.dashboard.studentsAbilityChart.texts.chartName;
-      
+
       chart.insertBefore(titleElement, chart.firstChild);
 
 

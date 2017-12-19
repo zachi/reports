@@ -4,10 +4,11 @@
     var app = (function () {
       
     function init(options) {
-      
+      var containerElement = document.querySelector(options.rootElementSelector);
+      containerElement.innerHTML = '';
       var rootElement = document.createElement('div');
       rootElement.classList.add("students-ability-dashboard");
-      document.querySelector(options.rootElementSelector).appendChild(rootElement);
+      containerElement.appendChild(rootElement);
       
       var studentsAbilityChartElement = document.createElement('div');
       studentsAbilityChartElement.classList.add("students-ability-chart");

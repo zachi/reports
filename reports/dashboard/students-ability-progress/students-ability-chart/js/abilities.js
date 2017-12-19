@@ -29,8 +29,10 @@
         if (ability.students[i].finished)
           student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
 
-        if (i % 2 === 1)
-          student = student + "<br>";
+        if (i % 2 === 0)
+          student = "<div class='ability-tip__row'>" + student;
+        else
+          student = student + "</div>";
 
         result += student;
       }
@@ -38,8 +40,7 @@
     }
 
     function getAbilityTipPosition(ability) {
-      abilityTip.html(ability.tipHtml);
-      var tooltipTopMarginToPreventFlickering = 43;//34//when using css top, left to support IE11;
+      var tooltipTopMarginToPreventFlickering = 43;
       var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
         + getAbilityRadius(ability)
@@ -48,8 +49,7 @@
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"])
         + cet.dashboard.studentsAbilityChart.measures.margin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
-      abilityTip.html('');
-      //console.log(abilityTip.node().getBoundingClientRect().width);
+      
       return {
         top: top,
         left: left
@@ -60,12 +60,13 @@
 
       abilityTip.html(ability.tipHtml);
       abilityTip.style("display", "");
+      var tipPosition = getAbilityTipPosition(ability);
       if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
-        abilityTip.style("top", (ability.tipPosition.top - 10) + "px");
-        abilityTip.style("left", ability.tipPosition.left + "px");
+        abilityTip.style("top", (tipPosition.top - 10) + "px");
+        abilityTip.style("left", tipPosition.left + "px");
       }
       else {
-        abilityTip.style("transform", "translate(" + ability.tipPosition.left + "px ," + ability.tipPosition.top + "px )");
+        abilityTip.style("transform", "translate(" + tipPosition.left + "px ," + tipPosition.top + "px )");
       }
       
       abilityTip.transition().duration(350).style("opacity", .8);
@@ -99,7 +100,7 @@
       var sortedAbilitiesDoubled = [];
       for (var i = 0; i < sortedAbilities.length; i++) {
         sortedAbilities[i].tipHtml = buildAbilityTipHtml(sortedAbilities[i]);
-        sortedAbilities[i].tipPosition = getAbilityTipPosition(sortedAbilities[i]);
+        
         sortedAbilitiesDoubled.push(sortedAbilities[i]);
         var abilityFinishedPart = JSON.parse(JSON.stringify(sortedAbilities[i]));
         abilityFinishedPart.finishedPart = true;

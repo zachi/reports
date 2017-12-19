@@ -13,15 +13,18 @@
   stroke-dasharray: 2px;
 }
 .ability {
-  fill: #808080;
+  fill: #9e9c9c;
   fill-opacity: .7;
-  stroke: #808080;
+  stroke: #9e9c9c;
   stroke-width: 1;
+  stroke-opacity: 0.9;
 }
 .finished-part {
-  fill: #09bd09;
-  stroke: #2fb72f;
+  fill: #5ede04;
+  stroke: #5ede04;
   pointer-events: none;
+  fill-opacity: 0.6;
+  stroke-opacity: 0.8;
 }
 .ability-tip,
 .questionnaire-tip {
@@ -29,8 +32,8 @@
   top: -10px;
   left: 0;
   background: black;
-  border-radius: 5px;
-  padding: 10px;
+  /*border-radius: 3px;*/
+  padding: 10px 20px;
   color: white;
   text-align: right;
 }
@@ -44,7 +47,7 @@
   color: #000000;
   content: "\25BC";
   position: absolute;
-  top: 99%;
+  top: calc(100% - 1px);
   left: 0;
   text-align: center;
   height: 12px;
@@ -64,26 +67,34 @@
   line-height: 410px;
   font-size: 30px;
 }
+.legend .finished-part {
+  fill: #4baf04;
+}
 .students-ability-chart__legend-text {
-  fill: rgba(0, 0, 0, 0.5);
-  font-size: 14px;
+  fill: #a2a0a0;
+  font-size: 13px;
   /*direction: rtl;*/
 }
 .students-ability-chart__axis-tick-text {
   font-size: 1.4em;
-  fill: rgba(0, 0, 0, 0.5);
+  fill: #a2a0a0;
 }
 .students-ability-chart__axis-label {
-  fill: rgba(0, 0, 0, 0.5);
+  fill: #a2a0a0;
   font-size: 18px;
 }
 .ability-tip__student {
   float: right;
   width: 50%;
+  min-width: 85px;
   font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  overflow: hidden;
 }
 .ability-tip__student--finished {
-  color: #09bd09;
+  color: #5ede04;
 }
 .students-ability-chart__axis-tick--strong text {
   font-weight: bold;
@@ -91,18 +102,19 @@
 }
 .ability-tip__title {
   margin-bottom: 6px;
-  /* font-size: 18px; */
   border-bottom: 2px outset #b7b5b5;
   text-align: center;
   padding-bottom: 4px;
+  line-height: 18px;
 }
 .students-ability-chart svg {
-  overflow: auto;
+  overflow: visible;
 }
 .students-ability-chart__title {
   margin: 10px auto 0;
   width: 143px;
   line-height: 18px;
-  color: rgba(0, 0, 0, 0.5);
+  color: #a2a0a0;
   font-size: 18px;
+  font-weight: 600;
 }

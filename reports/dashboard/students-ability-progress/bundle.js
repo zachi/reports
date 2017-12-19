@@ -17183,14 +17183,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
   cet.dashboard.studentsAbilityChart.texts = {
-    questionnaires: "יחידות לימות",
+    questionnaires: "יחידות לימוד",
     questionnaire: "יחידת לימוד",
     abilities: "יכולות",
     ability: "רמת יכולת",
     legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
     legendAbilityFinished: "לומדים שסיימו נושא",
     legendAbility: "לומדים שטרם סיימו נושא",
-    chartName: "רמת יכולות תלמידים"
+    chartName: "רמת יכולות תלמידים",
+    fontFamily: "'Assistant', sans-serif"
   }
 
 })();
@@ -17241,15 +17242,15 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.width + ", 0)");
 
       //set y axis title
-      yAxisGroup.append("text")
+      var yAxisTitle = yAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
         .attr("transform", "rotate(-90)")
-        .attr("y", -cet.dashboard.studentsAbilityChart.measures.width - cet.dashboard.studentsAbilityChart.measures.margin.left)
-        .attr("x", -(cet.dashboard.studentsAbilityChart.measures.height / 2 - 20))
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .attr("y", -cet.dashboard.studentsAbilityChart.measures.width - cet.dashboard.studentsAbilityChart.measures.margin.left + 16)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(cet.dashboard.studentsAbilityChart.texts.ability);
-
+      yAxisTitle.attr("x", -(( cet.dashboard.studentsAbilityChart.measures.height - yAxisTitle.node().getBoundingClientRect().height) / 2))
 
       /**************************** X AXIS **********************************/
 
@@ -17261,12 +17262,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .call(xAxis);
 
       //set x axis title
-      xAxisGroup.append("text")
+      var xAxisTitle = xAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width / 2 + 30)
-        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 3)
+        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 8)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
         .style("text-anchor", "end")
         .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
+      xAxisTitle.attr("x", (cet.dashboard.studentsAbilityChart.measures.width + xAxisTitle.node().getBoundingClientRect().width) / 2);
 
       //set x axis lables height
       var xTicks = cet.dashboard.studentsAbilityChart.app.svg.selectAll('.x .tick text');
@@ -17352,7 +17354,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       };
 
 
-      for (var i = 0; i < before.questionnaires.length; i++) {
+      for (var i = 0; before.questionnaires && i < before.questionnaires.length; i++) {
         
         var abilities = {};
         for (var j = 0; j < before.questionnaires[i].students.length; j++) {
@@ -17447,8 +17449,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
         if (ability.students[i].finished)
           student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
 
-        if (i % 2 === 1)
-          student = student + "<br>";
+        if (i % 2 === 0)
+          student = "<div class='ability-tip__row'>" + student;
+        else
+          student = student + "</div>";
 
         result += student;
       }
@@ -17456,8 +17460,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
     }
 
     function getAbilityTipPosition(ability) {
-      abilityTip.html(ability.tipHtml);
-      var tooltipTopMarginToPreventFlickering = 43;//34//when using css top, left to support IE11;
+      var tooltipTopMarginToPreventFlickering = 43;
       var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
         + getAbilityRadius(ability)
@@ -17466,8 +17469,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"])
         + cet.dashboard.studentsAbilityChart.measures.margin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
-      abilityTip.html('');
-      //console.log(abilityTip.node().getBoundingClientRect().width);
+      
       return {
         top: top,
         left: left
@@ -17478,12 +17480,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       abilityTip.html(ability.tipHtml);
       abilityTip.style("display", "");
+      var tipPosition = getAbilityTipPosition(ability);
       if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
-        abilityTip.style("top", (ability.tipPosition.top - 10) + "px");
-        abilityTip.style("left", ability.tipPosition.left + "px");
+        abilityTip.style("top", (tipPosition.top - 10) + "px");
+        abilityTip.style("left", tipPosition.left + "px");
       }
       else {
-        abilityTip.style("transform", "translate(" + ability.tipPosition.left + "px ," + ability.tipPosition.top + "px )");
+        abilityTip.style("transform", "translate(" + tipPosition.left + "px ," + tipPosition.top + "px )");
       }
       
       abilityTip.transition().duration(350).style("opacity", .8);
@@ -17517,7 +17520,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       var sortedAbilitiesDoubled = [];
       for (var i = 0; i < sortedAbilities.length; i++) {
         sortedAbilities[i].tipHtml = buildAbilityTipHtml(sortedAbilities[i]);
-        sortedAbilities[i].tipPosition = getAbilityTipPosition(sortedAbilities[i]);
+        
         sortedAbilitiesDoubled.push(sortedAbilities[i]);
         var abilityFinishedPart = JSON.parse(JSON.stringify(sortedAbilities[i]));
         abilityFinishedPart.finishedPart = true;
@@ -17552,16 +17555,16 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.app = (function () {
-
     var chart;
+
     function getUrl(options) {
-      if (options.domain)
-      {
+      if (options.domain) {
         var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
       var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
       return baseUrl + "dashboard/data/data.json";
+
     }
 
     function init(options) {
@@ -17571,8 +17574,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
       chart = document.querySelector(".students-ability-chart");
       chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
       chart.appendChild(preloader);
-
-
 
       d34.json(getUrl(options), function (response) {
 
@@ -17594,7 +17595,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("circle")
-        .attr("r", 10)
+        .attr("r", 8)
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
         .attr("cy", -15)
         .classed("finished-part", true);
@@ -17604,12 +17605,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
         //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 127)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 115)
         .classed('students-ability-chart__legend-text', true);
 
       legend.append("circle")
         .classed("ability", true)
-        .attr("r", 10)
+        .attr("r", 8)
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 145)
         .attr("cy", -15);
 
@@ -17618,13 +17620,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
         .classed('students-ability-chart__legend-text', true)
-      //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
-      .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 293);
+        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
+        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 276)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
 
       var titleElement = document.createElement('div');
       titleElement.classList.add('students-ability-chart__title');
       titleElement.innerHTML = cet.dashboard.studentsAbilityChart.texts.chartName;
-      
+
       chart.insertBefore(titleElement, chart.firstChild);
 
 
@@ -17649,10 +17652,11 @@ Object.defineProperty(exports, '__esModule', { value: true });
     var app = (function () {
       
     function init(options) {
-      
+      var containerElement = document.querySelector(options.rootElementSelector);
+      containerElement.innerHTML = '';
       var rootElement = document.createElement('div');
       rootElement.classList.add("students-ability-dashboard");
-      document.querySelector(options.rootElementSelector).appendChild(rootElement);
+      containerElement.appendChild(rootElement);
       
       var studentsAbilityChartElement = document.createElement('div');
       studentsAbilityChartElement.classList.add("students-ability-chart");

@@ -1,7 +1,7 @@
 [
 
   {
-    "outputFileName": "dashboard/students-ability-progress/students-ability-chart/js/index.js",
+    "outputFileName": "dashboard/students-ability-progress/bundle.js",
     "inputFiles": [
       "dashboard/lib/d3.v4.min.js",
       "dashboard/students-ability-progress/students-ability-chart/js/utils.js",
@@ -10,13 +10,7 @@
       "dashboard/students-ability-progress/students-ability-chart/js/axes.js",
       "dashboard/students-ability-progress/students-ability-chart/js/data.js",
       "dashboard/students-ability-progress/students-ability-chart/js/abilities.js",
-      "dashboard/students-ability-progress/students-ability-chart/js/app.js"
-    ]
-  },
-  {
-    "outputFileName": "dashboard/students-ability-progress/bundle.js",
-    "inputFiles": [
-      "dashboard/students-ability-progress/students-ability-chart/js/index.js",
+      "dashboard/students-ability-progress/students-ability-chart/js/app.js",
       "dashboard/students-ability-progress/index.js"
     ]
   }

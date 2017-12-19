@@ -21,15 +21,15 @@
         .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.width + ", 0)");
 
       //set y axis title
-      yAxisGroup.append("text")
+      var yAxisTitle = yAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
         .attr("transform", "rotate(-90)")
-        .attr("y", -cet.dashboard.studentsAbilityChart.measures.width - cet.dashboard.studentsAbilityChart.measures.margin.left)
-        .attr("x", -(cet.dashboard.studentsAbilityChart.measures.height / 2 - 20))
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .attr("y", -cet.dashboard.studentsAbilityChart.measures.width - cet.dashboard.studentsAbilityChart.measures.margin.left + 16)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text(cet.dashboard.studentsAbilityChart.texts.ability);
-
+      yAxisTitle.attr("x", -(( cet.dashboard.studentsAbilityChart.measures.height - yAxisTitle.node().getBoundingClientRect().height) / 2))
 
       /**************************** X AXIS **********************************/
 
@@ -41,12 +41,13 @@
         .call(xAxis);
 
       //set x axis title
-      xAxisGroup.append("text")
+      var xAxisTitle = xAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width / 2 + 30)
-        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 3)
+        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 8)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
         .style("text-anchor", "end")
         .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
+      xAxisTitle.attr("x", (cet.dashboard.studentsAbilityChart.measures.width + xAxisTitle.node().getBoundingClientRect().width) / 2);
 
       //set x axis lables height
       var xTicks = cet.dashboard.studentsAbilityChart.app.svg.selectAll('.x .tick text');

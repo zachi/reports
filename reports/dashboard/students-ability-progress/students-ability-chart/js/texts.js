@@ -3,14 +3,15 @@
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
   cet.dashboard.studentsAbilityChart.texts = {
-    questionnaires: "יחידות לימות",
+    questionnaires: "יחידות לימוד",
     questionnaire: "יחידת לימוד",
     abilities: "יכולות",
     ability: "רמת יכולת",
     legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
     legendAbilityFinished: "לומדים שסיימו נושא",
     legendAbility: "לומדים שטרם סיימו נושא",
-    chartName: "רמת יכולות תלמידים"
+    chartName: "רמת יכולות תלמידים",
+    fontFamily: "'Assistant', sans-serif"
   }
 
 })();

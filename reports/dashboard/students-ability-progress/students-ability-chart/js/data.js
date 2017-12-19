@@ -33,7 +33,7 @@
       };
 
 
-      for (var i = 0; i < before.questionnaires.length; i++) {
+      for (var i = 0; before.questionnaires && i < before.questionnaires.length; i++) {
         
         var abilities = {};
         for (var j = 0; j < before.questionnaires[i].students.length; j++) {
