@@ -2,7 +2,7 @@
 (function () {
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart.data = (function () {
+  cet.dashboard.studentsAbilityProgress.data = (function () {
 
     var root;
 
@@ -37,11 +37,12 @@
         
         var abilities = {};
         for (var j = 0; j < before.questionnaires[i].students.length; j++) {
-          var ability = abilities[i + before.questionnaires[i].students[j].ability];
+          var abilityGrade = Math.round( before.questionnaires[i].students[j].ability / 10);
+          var ability = abilities[i + abilityGrade];
           if (!ability) {
             ability = {
               "questionnaire-order": i + 1,
-              "value": before.questionnaires[i].students[j].ability,
+              "value": abilityGrade,
               "students": []
             }
           }
@@ -51,7 +52,7 @@
             "name": before.questionnaires[i].students[j].name,
             "finished": before.questionnaires[i].students[j].finished
           })
-          abilities[i + before.questionnaires[i].students[j].ability] = ability;
+          abilities[i + abilityGrade] = ability;
         }
 
         var questionaire = {
@@ -77,13 +78,13 @@
 
     function init(initData) {
 
-      cet.dashboard.studentsAbilityChart.data.root = loadDataFromQueryIfNecessary(initData);
-      cet.dashboard.studentsAbilityChart.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityChart.data.root);
+      cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
+      cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
 
     }
 
     function getQuestionaireNameByOrder(order) {
-      return cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires[order - 1].name
+      return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order - 1].name
     }
 
     return {

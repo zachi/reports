@@ -10,7 +10,7 @@
     legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
     legendAbilityFinished: "לומדים שסיימו נושא",
     legendAbility: "לומדים שטרם סיימו נושא",
-    chartName: "רמת יכולות תלמידים",
+    chartName: "רמת יכולות לומדים",
     fontFamily: "'Assistant', sans-serif"
   }
 

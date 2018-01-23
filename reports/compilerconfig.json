@@ -1,10 +1,18 @@
 ﻿[
   {
-    "outputFile": "dashboard/students-ability-progress/bundle.css",
+    "outputFile": "dashboard/students-ability-progress/students-ability-chart/index.css",
     "inputFile": "dashboard/students-ability-progress/students-ability-chart/index.less"
   },
   {
-    "outputFile": "dashboard/students-ability-progress/students-ability-chart/index.css",
-    "inputFile": "dashboard/students-ability-progress/students-ability-chart/index.less"
+    "outputFile": "dashboard/students-ability-progress/students-ability-history-chart/index.css",
+    "inputFile": "dashboard/students-ability-progress/students-ability-history-chart/index.less"
+  },
+  {
+    "outputFile": "dashboard/students-ability-progress/student-average-ability-list/index.css",
+    "inputFile": "dashboard/students-ability-progress/student-average-ability-list/index.less"
+  },
+  {
+    "outputFile": "dashboard/students-ability-progress/index.css",
+    "inputFile": "dashboard/students-ability-progress/index.less"
   }
 ]

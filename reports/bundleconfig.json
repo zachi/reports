@@ -8,10 +8,27 @@
       "dashboard/students-ability-progress/students-ability-chart/js/texts.js",
       "dashboard/students-ability-progress/students-ability-chart/js/measures.js",
       "dashboard/students-ability-progress/students-ability-chart/js/axes.js",
-      "dashboard/students-ability-progress/students-ability-chart/js/data.js",
       "dashboard/students-ability-progress/students-ability-chart/js/abilities.js",
       "dashboard/students-ability-progress/students-ability-chart/js/app.js",
-      "dashboard/students-ability-progress/index.js"
+      "dashboard/students-ability-progress/students-ability-history-chart/js/texts.js",
+      "dashboard/students-ability-progress/students-ability-history-chart/js/axes.js",
+      "dashboard/students-ability-progress/students-ability-history-chart/js/abilities.js",
+      "dashboard/students-ability-progress/students-ability-history-chart/js/measures.js",
+      "dashboard/students-ability-progress/students-ability-history-chart/js/app.js",
+      "dashboard/students-ability-progress/student-average-ability-list/js/app.js",
+      "dashboard/students-ability-progress/student-average-ability-list/js/texts.js",
+      "dashboard/students-ability-progress/js/measures.js",
+      "dashboard/students-ability-progress/js/data.js",
+      "dashboard/students-ability-progress/js/app.js"
+    ]
+  },
+  {
+    "outputFileName": "dashboard/students-ability-progress/bundle.css",
+    "inputFiles": [
+      "dashboard/students-ability-progress/index.css",
+      "dashboard/students-ability-progress/students-ability-chart/index.css",
+      "dashboard/students-ability-progress/students-ability-history-chart/index.css",
+      "dashboard/students-ability-progress/student-average-ability-list/index.css"
     ]
   }
 ]

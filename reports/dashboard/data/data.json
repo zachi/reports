@@ -1,185 +1,247 @@
 ﻿{
-  "id": "5960ef8a-cc8f-49a6-9255-e840c57a41ee",
+  "id": "4c9a96db-cec0-4af3-b8d2-ea61a952d12b",
   "questionnaires": [
     {
-      "id": "cf22512a-a517-496c-b314-db3397115f27",
-      "name": "שברים שהמכנים שלהם שונים",
+      "id": "d2f36130-b066-48fd-b9bc-3a60f7f1d367",
+      "name": "שברים במילים (שלישים ושישיות) - 1 ",
       "students": [
         {
-          "id": "b27c1eb2-a324-45fd-ae2d-bad6e7e8cf45",
-          "name": "דני קושמרו",
-          "ability": 20,
-          "finished": false
+          "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+          "firstName": "תלמיד",
+          "lastName": "בדיקה",
+          "ability": 100,
+          "score": 100.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         },
         {
-          "id": "b27c1eb2-a324-45fd-ae2d-bad6e7e8cf45",
-          "name": "נעמי גורבט",
-          "ability": 20,
-          "finished": false
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 100,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
+        }
+      ]
+    },
+    {
+      "id": "f732d75d-9372-4de2-b828-966270bdc06a",
+      "name": "שברים במילים (שלישים ושישיות) - 2",
+      "students": [
+        {
+          "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+          "firstName": "תלמיד",
+          "lastName": "בדיקה",
+          "ability": 80,
+          "score": 80.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": true,
+          "isHighestSubmitted": true
         },
         {
-          "id": "7aa34461-272f-4f34-ba5b-399420cbe80e",
-          "name": "יאיר לפיד",
-          "ability": 30,
-          "finished": false
-        },
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 100,
+          "score": 100.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": true,
+          "isHighestSubmitted": true
+        }
+      ]
+    },
+    {
+      "id": "d9696263-7e0a-4d64-af86-f88a307a7b0c",
+      "name": "שברים במילים (שלישים ושישיות) - 3",
+      "students": []
+    },
+    {
+      "id": "c977b3cc-7848-4ee8-92f3-783e26942f0d",
+      "name": "שברים במילים (שלישים ושישיות) - 4",
+      "students": []
+    },
+    {
+      "id": "a85dd01e-9704-4bae-9be7-c4f3a2af6dfc",
+      "name": "שברים במילים (שלישים ושישיות) - 5",
+      "students": []
+    },
+    {
+      "id": "76b34b43-108e-49b4-8543-6e4d3c99a5c3",
+      "name": "שברים במילים (שלישים ושישיות) - 6",
+      "students": []
+    },
+    {
+      "id": "69cf5c5f-89ac-498d-926e-acf8edb2c9c5",
+      "name": "שברים במילים (שלישים ושישיות) - 7",
+      "students": []
+    },
+    {
+      "id": "402db1ef-499c-4be5-ba8b-0e38be30331a",
+      "name": "עמוד 8",
+      "students": [
         {
-          "id": "7aa34461-272f-4f34-ba5b-399420cbe80e",
-          "name": "פורט ליאור",
+          "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+          "firstName": "תלמיד",
+          "lastName": "בדיקה",
           "ability": 40,
-          "finished": false
+          "score": 100.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         },
         {
-          "id": "7aa34461-272f-4f34-ba5b-399420cbe80e",
-          "name": "נתניהו ביבי",
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
           "ability": 40,
-          "finished": false
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75554",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 60,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         }
       ]
     },
     {
-      "id": "1395ed08-7b16-4a23-a1c0-4272f7e9762c",
-      "name": "שברים שהמכנים שלהם שונים",
+      "id": "5e138da7-e71a-47ab-a111-52a3eca8647b",
+      "name": "שברים במילים (שלישים ושישיות) - 9",
+      "students": []
+    },
+    {
+      "id": "aff88038-3ca6-4f1f-bdd4-c17c2b2030f0",
+      "name": "שברים במילים (שלישים ושישיות) - 10",
+      "students": []
+    },
+    {
+      "id": "137b0823-8125-44da-aa45-40513b8a31f2",
+      "name": "שברים במילים (שלישים ושישיות) - 11",
       "students": [
         {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 20,
-          "finished": false
+          "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+          "firstName": "תלמיד",
+          "lastName": "בדיקה",
+          "ability": 70,
+          "score": 100.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         },
         {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 20,
-          "finished": false
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 70,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         },
         {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 20,
-          "finished": false
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 70,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         },
         {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבוייםםםםםםםםםםםםםםםםם ",
-          "ability": 20,
-          "finished": false
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 20,
-          "finished": false
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 20,
-          "finished": false
-        },
-        {
-          "id": "087db026-d3f4-4888-98b2-9710d61ced79",
-          "name": "וינסטון צ'רצ'יל",
-          "ability": 60,
-          "finished": false
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 70,
+          "score": 67.0,
+          "isScopeFinished": false,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true
         }
       ]
     },
     {
-      "id": "1395ed08-7b16-4a23-a1c0-4272f7e9762c",
-      "name": "שברים שהמכנים שלהם שונים",
-      "students": [
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 80,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 80,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים דב אלבויים דב אלבויים",
-          "ability": 80,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 80,
-          "finished": false
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 80,
-          "finished": false
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 80,
-          "finished": false
-        },
-        {
-          "id": "087db026-d3f4-4888-98b2-9710d61ced79",
-          "name": "וינסטון צ'רצ'יל",
-          "ability": 60,
-          "finished": false
-        }
-      ]
+      "id": "b414c013-fa18-4b81-86cc-9d8202ebb7e8",
+      "name": "שברים במילים (שלישים ושישיות) - 12",
+      "students": []
     },
     {
-      "id": "1395ed08-7b16-4a23-a1c0-4272f7e9762c",
-      "name": "שברים שהמכנים שלהם שונים",
-      "students": [
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 90,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 90,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 90,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 90,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 90,
-          "finished": true
-        },
-        {
-          "id": "70102af8-43ad-49b0-9df8-f66cfe23d468",
-          "name": "דב אלבויים",
-          "ability": 90,
-          "finished": true
-        },
-        {
-          "id": "087db026-d3f4-4888-98b2-9710d61ced79",
-          "name": "וינסטון צ'רצ'יל",
-          "ability": 60,
-          "finished": true
-        }
-      ]
+      "id": "53dc2ace-4277-4b8f-be2a-d6b19dc38dc3",
+      "name": "שברים במילים (שלישים ושישיות) - 13",
+      "students": []
     }
+  ],
+  "students": [
+    {
+      "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+      "firstName": "תלמיד",
+      "lastName": "בדיקה",
+      "avgAbility": 90.0,
+      "avgScore": 90.0,
+      "isScopeFinished": false
+    },
+    {
+      "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+      "firstName": "תלמיד",
+      "lastName": "דמו",
+      "avgAbility": 100.0,
+      "avgScore": 83.5,
+      "isScopeFinished": false
+    },
+    {
+      "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
+      "firstName": "תלמיד",
+      "lastName": "דמו",
+      "avgAbility": 100.0,
+      "avgScore": 83.5,
+      "isScopeFinished": false
+    },
+    {
+      "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
+      "firstName": "תלמיד",
+      "lastName": "דמו",
+      "avgAbility": 100.0,
+      "avgScore": 83.5,
+      "isScopeFinished": false
+    },
+    {
+      "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75554",
+      "firstName": "תלמיד",
+      "lastName": "דמו",
+      "avgAbility": 100.0,
+      "avgScore": 83.5,
+      "isScopeFinished": false
+    }
+
   ]
 }

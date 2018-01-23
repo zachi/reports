@@ -1,24 +1,19 @@
-﻿
-(function () {
-  
+﻿(function () {
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.measures = (function () {
-    var margin = { top: 27, right: 50, bottom: 50, left: 50 },
-      outerWidth = 1000,
-      outerHeight = 500,
-      width = outerWidth - margin.left - margin.right,
-      height = outerHeight - margin.top - margin.bottom,
-      xLabelHeight = 10;
 
-    return {
-      margin: margin,
-      outerWidth: outerWidth,
-      outerHeight: outerHeight,
-      width: width,
-      height: height,
-      xLabelHeight: xLabelHeight
+    function init(options) {
+      var self = cet.dashboard.studentsAbilityChart.measures;
+      self.margin = { top: 27, right: 50, bottom: 85, left: 50 };
+      self.outerWidth = options.width,
+      self.outerHeight = options.height,
+      self.width = self.outerWidth - self.margin.left - self.margin.right,
+      self.height = self.outerHeight - self.margin.top - self.margin.bottom;
+      self.xLabelHeight = 10;
     }
 
+    return {
+      init: init
+    }
   })();
-
 })();

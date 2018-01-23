@@ -13,7 +13,7 @@
 
     .header, .footer {
       width: 100%;
-      height: 100px;
+      height: 80px;
       background-color: #a0af7c;
       color: white;
       text-align: center;
@@ -25,6 +25,7 @@
     .footer {
       position: absolute;
       bottom: 0;
+      display:none;
     }
   </style>
 </head>
@@ -37,7 +38,10 @@
    //domain: 'http://dashboard.dev.cet.ac.il',
    audienceId: '087db026-d3f4-4888-98b2-9710d61ced79',
    folderId: '087db026-d3f4-4888-98b2-9710d61ced79',
-   useDemoData: true
+   useDemoData: true,
+   title:'דמו יכולות תלמידים',
+   width: window.outerWidth * 0.85 - ((window.outerWidth > 1280) ? 410 : 0),
+   height: window.innerHeight * 0.85 - 102
  });</script>
   <div class="footer">בית ספר ליידי דייויס</div>
 </body>

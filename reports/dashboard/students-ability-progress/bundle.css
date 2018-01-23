@@ -1,8 +1,40 @@
-﻿.students-ability-chart {
+.students-ability-dashboard {
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.students-ability-chart,
+.students-ability-history-chart,
+.student-average-ability-list {
+  box-shadow: 1px 1px 10px grey;
+  height: 55%;
+}
+.student-average-ability-list,
+.students-ability-history-chart {
+  margin-top: 12px;
+  height: calc( 50% - 30px );
+}
+.students-ability-chart {
+  width: 100%;
+  margin-top: 20px;
+}
+.students-ability-history-chart {
+  width: 75%;
+}
+.student-average-ability-list {
+  width: calc( 25% - 20px );
+}
+.students-ability-dashboard__title {
+  text-align: center;
+  text-decoration: underline;
+  font-size: 1.4em;
+  margin: 0.83em auto;
+}
+.students-ability-chart {
   font-size: 16px;
   font-family: 'Assistant', sans-serif;
   position: relative;
-  margin: 50px auto;
 }
 .students-ability-chart .axis path {
   display: none;
@@ -13,9 +45,9 @@
   stroke-dasharray: 2px;
 }
 .ability {
-  fill: #9e9c9c;
+  fill: #929090;
   fill-opacity: .7;
-  stroke: #9e9c9c;
+  stroke: #929090;
   stroke-width: 1;
   stroke-opacity: 0.9;
 }
@@ -26,46 +58,29 @@
   fill-opacity: 0.6;
   stroke-opacity: 0.8;
 }
-.ability-tip,
-.questionnaire-tip {
-  position: absolute;
-  top: -10px;
-  left: 0;
-  background: black;
-  /*border-radius: 3px;*/
-  padding: 10px 20px;
-  color: white;
-  text-align: right;
-}
-.ability-tip:after,
-.questionnaire-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 17px;
-  width: 100%;
-  line-height: 14px;
-  color: #000000;
-  content: "\25BC";
-  position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
-  text-align: center;
-  height: 12px;
-}
-.ability-tip:after {
-  content: "\25B2";
-  top: -11px;
-  height: 12px;
-}
 .students-ability-chart__preloader {
   position: absolute;
-  width: calc(100% - 100px);
-  height: 410px;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  margin: 40px 50px 50px 50px;
+  width: 100%;
+  height: 100%;
   text-align: center;
-  line-height: 410px;
+  line-height: 350px;
   font-size: 30px;
+}
+.students-ability-chart__axis-tick--strong text {
+  font-weight: bold;
+  fill: #000000 !important;
+}
+.students-ability-chart svg {
+  overflow: visible;
+}
+.students-ability-chart__title,
+.students-ability-history-chart__title {
+  margin: 10px auto 0;
+  width: 143px;
+  line-height: 18px;
+  color: #a2a0a0;
+  font-size: 18px;
+  font-weight: 600;
 }
 .legend .finished-part {
   fill: #4baf04;
@@ -83,22 +98,55 @@
   fill: #a2a0a0;
   font-size: 18px;
 }
+.ability-tip,
+.questionnaire-tip {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  background: black;
+  /*border-radius: 3px;*/
+  padding: 10px 20px;
+  color: white;
+  text-align: right;
+  direction: rtl;
+}
+.ability-tip {
+  max-width: 350px;
+  min-width: 150px;
+  top: 12px;
+}
+.ability-tip:after,
+.questionnaire-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 17px;
+  width: 100%;
+  line-height: 13px;
+  color: #000000;
+  content: "\25BC";
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 0;
+  text-align: center;
+  height: 12px;
+}
+.ability-tip:after {
+  content: "\25B2";
+  top: -11px;
+  height: 12px;
+}
 .ability-tip__student {
-  float: right;
-  width: 50%;
-  min-width: 85px;
+  display: block;
+  max-width: 175px;
   font-size: 14px;
   text-overflow: ellipsis;
   white-space: nowrap;
   direction: rtl;
   overflow: hidden;
+  /*min-width: @ability-tip-max-width/4;*/
 }
 .ability-tip__student--finished {
   color: #5ede04;
-}
-.students-ability-chart__axis-tick--strong text {
-  font-weight: bold;
-  fill: #000000 !important;
 }
 .ability-tip__title {
   margin-bottom: 6px;
@@ -107,14 +155,189 @@
   padding-bottom: 4px;
   line-height: 18px;
 }
-.students-ability-chart svg {
+.ability-tip__students {
+  display: flex;
+  flex-direction: row;
+}
+.ability-tip__students-column {
+  display: flex;
+  flex-direction: column;
+}
+.ability-tip__students-column:first-child {
+  margin-left: 15px;
+}
+#adaptive-progress-report {
+  width: calc(100% - 405px + 56px);
+  margin: 0px 0 0 50px;
+}
+#adaptive-progress-container {
+  padding: 100px 0 0 0;
+}
+@media screen and (max-width: 1280px) {
+  #adaptive-progress-report {
+    width: auto;
+    margin: 50px 0 0 0;
+  }
+  #adaptive-progress-container {
+    padding: 50px 0 0 0;
+  }
+  .students-ability-chart {
+    margin-left: 20px;
+  }
+}
+.selected-ability {
+  /*stroke: #000;
+    stroke-width: 3px;*/
+}
+.students-ability-history-chart .axis path {
+  display: none;
+}
+.students-ability-history-chart__grid-line {
+  stroke: rgba(0, 0, 0, 0.2);
+  stroke-width: 1px;
+  stroke-dasharray: 2px;
+}
+/*.students-ability-history-chart{
+  height:400px;
+  width:800px;
+}*/
+.students-ability-history-chart svg {
   overflow: visible;
 }
-.students-ability-chart__title {
-  margin: 10px auto 0;
-  width: 143px;
-  line-height: 18px;
-  color: #a2a0a0;
-  font-size: 18px;
-  font-weight: 600;
+.students-ability-history-chart circle {
+  stroke: transparent;
+  fill: transparent;
+}
+.students-ability-history-chart__title {
+  margin-top: 0;
+  padding-top: 10px;
+  width: 98px;
+}
+.student-average-ability-list__button {
+  background-color: #808080;
+  color: #fff;
+  border: none;
+  padding: 3px;
+  margin: 0 0 0 3px;
+  text-align: right;
+  cursor: pointer;
+  font-size: 14px;
+}
+.student-average-ability-list {
+  direction: rtl;
+  padding: 16px 0 16px 16px;
+  box-sizing: border-box;
+}
+.student-average-ability-list__buttons {
+  margin: 0 24px 8px 0;
+  display: flex;
+}
+.student-average-ability-list__show-btn {
+  background-color: #808080;
+  color: #fff;
+  border: none;
+  padding: 3px;
+  margin: 0 0 0 3px;
+  text-align: right;
+  cursor: pointer;
+  font-size: 14px;
+  width: 36px;
+  text-align: center;
+}
+.student-average-ability-list__order-name-btn {
+  background-color: #808080;
+  color: #fff;
+  border: none;
+  padding: 3px;
+  margin: 0 0 0 3px;
+  text-align: right;
+  cursor: pointer;
+  font-size: 14px;
+  flex-grow: 1;
+}
+.student-average-ability-list__order-average-btn {
+  background-color: #808080;
+  color: #fff;
+  border: none;
+  padding: 3px;
+  margin: 0 0 0 3px;
+  text-align: right;
+  cursor: pointer;
+  font-size: 14px;
+  width: 86px;
+}
+.student-average-ability-list__students {
+  margin: 0 10px;
+  padding: 0 6px 0 0;
+  overflow-y: auto;
+  direction: ltr;
+  height: 89%;
+}
+.student-average-ability-list__students::-webkit-scrollbar-track {
+  background-color: #e6e6e6;
+}
+.student-average-ability-list__students::-webkit-scrollbar {
+  width: 6px;
+  background-color: #F5F5F5;
+}
+.student-average-ability-list__students::-webkit-scrollbar-thumb {
+  background-color: #666;
+}
+.student-average-ability-list__item {
+  margin: 5px 0;
+  padding: 0;
+  list-style: none;
+  direction: rtl;
+  text-align: right;
+  font-size: 15px;
+}
+.student-average-ability-list__item.student-average-ability-list__item--is-disabled {
+  color: #ccc;
+}
+.student-average-ability-list__item.student-average-ability-list__item--is-disabled .student-average-ability-list__item__checkbox {
+  border: solid 1px #ccc;
+  cursor: default;
+}
+.student-average-ability-list__item__checkbox {
+  width: 12px;
+  height: 12px;
+  border: solid 1px #444;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 13px;
+  position: relative;
+  top: 1px;
+  cursor: pointer;
+}
+.student-average-ability-list__item__checkbox.student-average-ability-list__item__checkbox--is-checked {
+  background-color: #444;
+}
+.student-average-ability-list__item__checkbox.student-average-ability-list__item__checkbox--is-checked:after {
+  content: '✔';
+  color: #fff;
+  font-size: 9px;
+  position: absolute;
+  top: -1px;
+  left: 2px;
+}
+.student-average-ability-list__item__name {
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  width: calc(100% - 86px);
+  display: inline-block;
+}
+.student-average-ability-list__item__average {
+  width: 86px;
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+}
+.sorting-arrows {
+  font-size: 7px;
+  float: left;
+  height: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

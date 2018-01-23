@@ -17190,34 +17190,29 @@ Object.defineProperty(exports, '__esModule', { value: true });
     legendGreenCircle: "מציין כי השאלון הינו האחרון בתיקיה עבור חלק מהתלמידים.",
     legendAbilityFinished: "לומדים שסיימו נושא",
     legendAbility: "לומדים שטרם סיימו נושא",
-    chartName: "רמת יכולות תלמידים",
+    chartName: "רמת יכולות לומדים",
     fontFamily: "'Assistant', sans-serif"
   }
 
 })();
-
 (function () {
-  
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.measures = (function () {
-    var margin = { top: 27, right: 50, bottom: 50, left: 50 },
-      outerWidth = 1000,
-      outerHeight = 500,
-      width = outerWidth - margin.left - margin.right,
-      height = outerHeight - margin.top - margin.bottom,
-      xLabelHeight = 10;
 
-    return {
-      margin: margin,
-      outerWidth: outerWidth,
-      outerHeight: outerHeight,
-      width: width,
-      height: height,
-      xLabelHeight: xLabelHeight
+    function init(options) {
+      var self = cet.dashboard.studentsAbilityChart.measures;
+      self.margin = { top: 27, right: 50, bottom: 85, left: 50 };
+      self.outerWidth = options.width,
+      self.outerHeight = options.height,
+      self.width = self.outerWidth - self.margin.left - self.margin.right,
+      self.height = self.outerHeight - self.margin.top - self.margin.bottom;
+      self.xLabelHeight = 10;
     }
 
+    return {
+      init: init
+    }
   })();
-
 })();
 
 (function () {
@@ -17231,10 +17226,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       /**************************** Y AXIS **********************************/
 
-      cet.dashboard.studentsAbilityChart.axes.yAxisScale = d34.scaleLinear().domain([100, 0]).range([0, cet.dashboard.studentsAbilityChart.measures.height]);
+      cet.dashboard.studentsAbilityChart.axes.yAxisScale = d34.scaleLinear().domain([10, 0]).range([0, cet.dashboard.studentsAbilityChart.measures.height]);
       var yAxis = d34.axisLeft(cet.dashboard.studentsAbilityChart.axes.yAxisScale).tickSize(cet.dashboard.studentsAbilityChart.measures.width).tickFormat(function (d) {
         
-        return d === 0 ? "" : (d / 10) ;
+        return d === 0 ? "" : d ;
       });
       var yAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("y axis", true)
@@ -17254,8 +17249,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       /**************************** X AXIS **********************************/
 
-      cet.dashboard.studentsAbilityChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityChart.measures.width]);
-      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
+      cet.dashboard.studentsAbilityChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityChart.measures.width]);
+      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
       var xAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("x axis", true)
         .attr("transform", "translate(0," + cet.dashboard.studentsAbilityChart.measures.height + ")")
@@ -17264,7 +17259,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       //set x axis title
       var xAxisTitle = xAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
-        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 8)
+        .attr("y", 40)
         .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
         .style("text-anchor", "end")
         .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
@@ -17274,16 +17269,23 @@ Object.defineProperty(exports, '__esModule', { value: true });
       var xTicks = cet.dashboard.studentsAbilityChart.app.svg.selectAll('.x .tick text');
       xTicks.attr("y", cet.dashboard.studentsAbilityChart.measures.xLabelHeight);
 
-
+      
+      var titlesHeight = document.querySelector('.students-ability-chart__title').getBoundingClientRect().height;
+      
 
       //set ticks questionaire name tooltip
       xTicks.on("mouseover", function (tick) {
         if (tick == 0)
           return;
         questionnaireTip.style("display", "");
-        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires[tick - 1].name });
+        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[tick - 1].name });
 
-        var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
+        var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0)
+          + cet.dashboard.studentsAbilityChart.measures.margin.top
+          + titlesHeight
+          - questionnaireTip.node().getBoundingClientRect().height
+          + 15;
+
         var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
 
         if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
@@ -17323,112 +17325,33 @@ Object.defineProperty(exports, '__esModule', { value: true });
 (function () {
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart.data = (function () {
-
-    var root;
-
-    function getFinishedFraction(ability) {
-      var finishedCounter = 0;
-
-      for (var i = 0; i < ability.students.length; i++) {
-        if (ability.students[i].finished)
-          finishedCounter++;
-      }
-      var ssss = 0;
-
-      return finishedCounter / ability.students.length;
-    }
-
-
-    function performDataSchemeTransformation(before) {
-    
-      var after = {
-        "folder": {
-          "id": before.id,
-          "name": before.name,
-          "questionnaires": [],
-          "abilities": [],
-          "folders": []
-        }
-
-      };
-
-
-      for (var i = 0; before.questionnaires && i < before.questionnaires.length; i++) {
-        
-        var abilities = {};
-        for (var j = 0; j < before.questionnaires[i].students.length; j++) {
-          var ability = abilities[i + before.questionnaires[i].students[j].ability];
-          if (!ability) {
-            ability = {
-              "questionnaire-order": i + 1,
-              "value": before.questionnaires[i].students[j].ability,
-              "students": []
-            }
-          }
-
-          ability.students.push({
-            "id": before.questionnaires[i].students[j].id,
-            "name": before.questionnaires[i].students[j].name,
-            "finished": before.questionnaires[i].students[j].finished
-          })
-          abilities[i + before.questionnaires[i].students[j].ability] = ability;
-        }
-
-        var questionaire = {
-          "id": before.questionnaires[i].id,
-          "name": before.questionnaires[i].name,
-          "abilities": []
-        };
-        for (var key in abilities) {
-          abilities[key].finishedFraction = getFinishedFraction(abilities[key]);
-          after.folder.abilities.push(abilities[key]);
-        }
-
-        after.folder.questionnaires.push(questionaire);
-
-      }
-      return after;
-    }
-    function loadDataFromQueryIfNecessary(response) {
-      if (decodeURIComponent(document.location.search))
-        return JSON.parse(decodeURIComponent(document.location.search.substring(1)));
-      return response;
-    }
-
-    function init(initData) {
-
-      cet.dashboard.studentsAbilityChart.data.root = loadDataFromQueryIfNecessary(initData);
-      cet.dashboard.studentsAbilityChart.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityChart.data.root);
-
-    }
-
-    function getQuestionaireNameByOrder(order) {
-      return cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires[order - 1].name
-    }
-
-    return {
-
-      init: init,
-      root: root,
-      getQuestionaireNameByOrder: getQuestionaireNameByOrder
-
-    }
-
-  })();
-
-})();
-
-(function () {
-
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.abilities = (function () {
     var abilityTip;
     var tipsHtml = [];
+    var titlesHeight;
 
     function transform(ability) {
       return "translate(" + cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"]) + ")";
 
+    }
+
+    function getAbilityTitlesHeight() {
+      if (!titlesHeight) {
+        titlesHeight = document.querySelector('.students-ability-chart__title').getBoundingClientRect().height;
+      }
+      return titlesHeight;
+
+
+      //var chart = document.querySelector('.students-ability-dashboard')
+      //var svg;
+
+      //if (!chart) return 0;
+
+      //svg = chart.querySelector('svg');
+
+      //if (!svg) return 0;
+
+      //return svg.getBoundingClientRect().top - chart.getBoundingClientRect().top
     }
 
     function hasFinishedStudent(ability) {
@@ -17439,37 +17362,55 @@ Object.defineProperty(exports, '__esModule', { value: true });
       return false;
     }
 
-    function buildAbilityTipHtml(ability){
+    function buildAbilityTipHtml(ability) {
       var result = "<div class=\"ability-tip__title\" >" +
-        ability["value"] + " " + cet.dashboard.studentsAbilityChart.texts.ability + "<br>" + cet.dashboard.studentsAbilityChart.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
+        cet.dashboard.studentsAbilityChart.texts.ability + " " + ability["value"] + "<br>" + cet.dashboard.studentsAbilityProgress.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
         "</div>";
 
+      var firstColumnStudents = "";
+      var secondColumnStudents = "";
+
       for (var i = 0; i < ability.students.length; i++) {
-        var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
+
+        var student = "<span class='ability-tip__student'>" + ability.students[i].firstName + ' ' + ability.students[i].lastName + "</span>";
         if (ability.students[i].finished)
           student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
 
         if (i % 2 === 0)
-          student = "<div class='ability-tip__row'>" + student;
+          firstColumnStudents += student;
         else
-          student = student + "</div>";
+          secondColumnStudents += student;
 
-        result += student;
+
       }
+
+      result += "<div class=\"ability-tip__students\">" +
+                " <div class=\"ability-tip__students-column\">" + firstColumnStudents + "</div>" +
+                " <div class=\"ability-tip__students-column\">" + secondColumnStudents + "</div>" +
+                "</div>";
+      //console.info('==========================')
+      //console.info(result);
+      //console.info('==========================')
       return result;
     }
 
     function getAbilityTipPosition(ability) {
-      var tooltipTopMarginToPreventFlickering = 43;
-      var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
+
+      var titlesHeight = getAbilityTitlesHeight();
+      var triangleHeight = 14;
+
+      var top = titlesHeight
+        + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
         + cet.dashboard.studentsAbilityChart.measures.margin.top
         + getAbilityRadius(ability)
-        //+ (abilityTip.node().getBoundingClientRect().height)
-        + tooltipTopMarginToPreventFlickering;
+        + triangleHeight
+
+
+
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"])
         + cet.dashboard.studentsAbilityChart.measures.margin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
-      
+
       return {
         top: top,
         left: left
@@ -17480,6 +17421,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       abilityTip.html(ability.tipHtml);
       abilityTip.style("display", "");
+
       var tipPosition = getAbilityTipPosition(ability);
       if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top - 10) + "px");
@@ -17488,20 +17430,20 @@ Object.defineProperty(exports, '__esModule', { value: true });
       else {
         abilityTip.style("transform", "translate(" + tipPosition.left + "px ," + tipPosition.top + "px )");
       }
-      
+
       abilityTip.transition().duration(350).style("opacity", .8);
 
       //highlight axes 
       cet.dashboard.studentsAbilityChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
-      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', true);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - ability["value"]) + ")").classed('students-ability-chart__axis-tick--strong', true);
 
     }
 
     function hideAbilityTooltip(ability) {
-      return;
+
       abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
       cet.dashboard.studentsAbilityChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', false);
-      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - (ability["value"] / 10)) + ")").classed('students-ability-chart__axis-tick--strong', false);
+      cet.dashboard.studentsAbilityChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - ability["value"]) + ")").classed('students-ability-chart__axis-tick--strong', false);
     }
 
     function getAbilityRadius(ability) {
@@ -17515,12 +17457,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
     function init() {
 
       abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
-      var sortedAbilities = cet.dashboard.studentsAbilityChart.data.root.folder.abilities.sort(function (a, b) { return b.students.length - a.students.length; })
+
+      var sortedAbilities = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().sort(function (a, b) { return b.students.length - a.students.length; })
 
       var sortedAbilitiesDoubled = [];
       for (var i = 0; i < sortedAbilities.length; i++) {
         sortedAbilities[i].tipHtml = buildAbilityTipHtml(sortedAbilities[i]);
-        
+
         sortedAbilitiesDoubled.push(sortedAbilities[i]);
         var abilityFinishedPart = JSON.parse(JSON.stringify(sortedAbilities[i]));
         abilityFinishedPart.finishedPart = true;
@@ -17539,8 +17482,29 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
       var abilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".objects .ability");
+
       abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
+      abilities.on("click", function (event) {
+        if (window.location.href.indexOf('.lab.') > -1) {
+          console.log('%c Dashboard is in phase 1 mode. remove this if statement to go into phase 2', 'font-size:24px; color: red;');
+          //return;
+        }
+
+        var selectedClass = 'selected-ability'
+        var selectedAbility = document.querySelector('.' + selectedClass);
+
+        if (selectedAbility) {
+          selectedAbility.classList.remove(selectedClass);
+        }
+
+        this.classList.add(selectedClass);
+
+        cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(event);
+      })
+      //document.body.addEventListener('click', function (event) {
+      //  abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
+      //});
     }
 
     return {
@@ -17550,42 +17514,48 @@ Object.defineProperty(exports, '__esModule', { value: true });
   })();
 
 })();
-
 (function () {
-
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
   cet.dashboard.studentsAbilityChart.app = (function () {
     var chart;
 
-    function getUrl(options) {
-      if (options.domain) {
-        var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
-        return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
-      }
-      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
-      return baseUrl + "dashboard/data/data.json";
-
-    }
-
+   
     function init(options) {
+      cet.dashboard.studentsAbilityChart.measures.init(options);
+      var report = document.getElementById('adaptive-progress-report');
       var preloader = document.createElement("div");
+
       preloader.classList.add("students-ability-chart__preloader");
       preloader.innerText = "loading...";
       chart = document.querySelector(".students-ability-chart");
-      chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
+      //chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
+      //chart.style.height = cet.dashboard.studentsAbilityChart.measures.outerHeight + "px";
       chart.appendChild(preloader);
 
-      d34.json(getUrl(options), function (response) {
-
+      
+      
+      if (options.direction === 'ltr') {
+        chart.style.marginLeft = 'auto';
+        report.style.marginLeft = 'auto';
+      }
+      cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
+        
         var preloader = document.querySelector('.students-ability-chart__preloader');
-        preloader.parentNode.removeChild(preloader);
+        if (preloader && preloader.parentNode) {
+          preloader.parentNode.removeChild(preloader);
+        }
+        d34.select(".students-ability-chart").selectAll("*").remove();
 
-        cet.dashboard.studentsAbilityChart.app.svg = d34.select(".students-ability-chart").append("svg").attr("width", cet.dashboard.studentsAbilityChart.measures.outerWidth).attr("height", cet.dashboard.studentsAbilityChart.measures.outerHeight).append("g").attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.margin.left + "," + cet.dashboard.studentsAbilityChart.measures.margin.top + ")");
+        cet.dashboard.studentsAbilityChart.app.svg = d34.select(".students-ability-chart")
+                  .append("svg")
+                  .attr("width", cet.dashboard.studentsAbilityChart.measures.width)
+                  .attr("height", cet.dashboard.studentsAbilityChart.measures.height)
+                  .append("g")
+                  .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.margin.left + "," + cet.dashboard.studentsAbilityChart.measures.margin.top + ")");
         initLegend();
-        cet.dashboard.studentsAbilityChart.data.init(response);
+        
         cet.dashboard.studentsAbilityChart.axes.init();
         cet.dashboard.studentsAbilityChart.abilities.init();
-
       });
     }
 
@@ -17599,7 +17569,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
         .attr("cy", -15)
         .classed("finished-part", true);
-
 
       legend.append("text")
         .attr("y", -10)
@@ -17615,7 +17584,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
         .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 145)
         .attr("cy", -15);
 
-
       legend.append("text")
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
@@ -17628,50 +17596,939 @@ Object.defineProperty(exports, '__esModule', { value: true });
       titleElement.classList.add('students-ability-chart__title');
       titleElement.innerHTML = cet.dashboard.studentsAbilityChart.texts.chartName;
 
-      chart.insertBefore(titleElement, chart.firstChild);
-
-
-
+      if (chart.childNodes[1])
+        chart.insertBefore(titleElement, chart.childNodes[1]);
+      else
+        chart.insertBefore(titleElement, chart.firstChild);
     }
 
     return {
       svg: null,
       init: init
     }
-
   })();
 
   cet.dashboard.studentsAbilityChart.init = function (options) {
     cet.dashboard.studentsAbilityChart.app.init(options);
   }
+})();
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityHistoryChart = cet.dashboard.studentsAbilityHistoryChart || {}
+  cet.dashboard.studentsAbilityHistoryChart.texts = {
+    
+    chartName: "מסלולי למידה",
+    
+  }
 
 })();
 
 (function () {
-  
-    var app = (function () {
-      
-    function init(options) {
-      var containerElement = document.querySelector(options.rootElementSelector);
-      containerElement.innerHTML = '';
-      var rootElement = document.createElement('div');
-      rootElement.classList.add("students-ability-dashboard");
-      containerElement.appendChild(rootElement);
-      
-      var studentsAbilityChartElement = document.createElement('div');
-      studentsAbilityChartElement.classList.add("students-ability-chart");
-      rootElement.appendChild(studentsAbilityChartElement);
-      cet.dashboard.studentsAbilityChart.init(options);
-      
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityHistoryChart = cet.dashboard.studentsAbilityHistoryChart || {}
+  cet.dashboard.studentsAbilityHistoryChart.axes =  (function () {
+
+    function init() {
+
+      var questionnaireTip = d34.select(".students-ability-chart").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
+
+      /**************************** Y AXIS **********************************/
+
+      cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale = d34.scaleLinear().domain([10, 0]).range([0, cet.dashboard.studentsAbilityHistoryChart.measures.height]);
+      var yAxis = d34.axisLeft(cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale).tickSize(cet.dashboard.studentsAbilityHistoryChart.measures.width).tickFormat(function (d) {
+        
+        return d === 0 ? "" : d ;
+      });
+      var yAxisGroup = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("g")
+        .classed("y axis", true)
+        .call(yAxis)
+        .attr("transform", "translate(" + cet.dashboard.studentsAbilityHistoryChart.measures.width + ", 0)");
+
+      //set y axis title
+      var yAxisTitle = yAxisGroup.append("text")
+        .classed("students-ability-chart__axis-label", true)
+        .attr("transform", "rotate(-90)")
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .attr("y", -cet.dashboard.studentsAbilityHistoryChart.measures.width - cet.dashboard.studentsAbilityHistoryChart.measures.margin.left + 16)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text(cet.dashboard.studentsAbilityChart.texts.ability);
+      yAxisTitle.attr("x", -(( cet.dashboard.studentsAbilityHistoryChart.measures.height - yAxisTitle.node().getBoundingClientRect().height) / 2))
+
+      /**************************** X AXIS **********************************/
+
+      cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityHistoryChart.measures.width]);
+      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityHistoryChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
+      var xAxisGroup = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("g")
+        .classed("x axis", true)
+        .attr("transform", "translate(0," + cet.dashboard.studentsAbilityHistoryChart.measures.height + ")")
+        .call(xAxis);
+
+      //set x axis title
+      var xAxisTitle = xAxisGroup.append("text")
+        .classed("students-ability-chart__axis-label", true)
+        .attr("y", 40)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .style("text-anchor", "end")
+        .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
+      xAxisTitle.attr("x", (cet.dashboard.studentsAbilityHistoryChart.measures.width + xAxisTitle.node().getBoundingClientRect().width) / 2);
+
+      //set x axis lables height
+      var xTicks = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.x .tick text');
+      xTicks.attr("y", cet.dashboard.studentsAbilityHistoryChart.measures.xLabelHeight);
+
+
+
+      //set ticks questionaire name tooltip
+      xTicks.on("mouseover", function (tick) {
+        if (tick === 0)
+          return;
+        questionnaireTip.style("display", "");
+        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[tick - 1].name });
+
+        var top = cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
+        var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
+
+        if (cet.dashboard.studentsAbilityHistoryChart.utils.isIE()) {
+          questionnaireTip.style("top", top + "px");
+          questionnaireTip.style("left", left + "px");
+        }
+        else {
+          questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )");
+        }
+        
+        questionnaireTip.transition().duration(350).style("opacity", .8);
+        
+      })
+        .on("mouseout", function (d) {
+
+          questionnaireTip.transition().duration(350).style("opacity", .0).on("end", function () { questionnaireTip.style("display", "none") });
+
+        });
+
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
+
     }
 
+
     return {
-      init:init
+      yAxisScale: null,
+      xAxisScale: null,
+      init: init
     }
 
   })();
 
-    window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-    cet.dashboard.studentsAbilityProgress = app;
+})();
+
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
+  cet.dashboard.studentsAbilityHistoryChart.abilities = (function () {
+    var abilityTip;
+    var tipsHtml = [];
+
+    function transform(ability) {
+      return "translate(" + cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"]) + ")";
+
+    }
+
+    function getAbilityTitlesHeight() {
+      var chart = document.querySelector('.students-ability-dashboard')
+      var svg;
+
+      if (!chart) return 0;
+
+      svg = chart.querySelector('svg');
+
+      if (!svg) return 0;
+
+      return svg.getBoundingClientRect().top - chart.getBoundingClientRect().top
+    }
+
+    function hasFinishedStudent(ability) {
+      for (var i = 0; i < ability.students.length; i++) {
+        if (ability.students[i].finished)
+          return true;
+      }
+      return false;
+    }
+
+    function buildAbilityTipHtml(ability) {
+      var result = "<div class=\"ability-tip__title\" >" +
+        cet.dashboard.studentsAbilityChart.texts.ability + " " + ability["value"] + "<br>" + cet.dashboard.studentsAbilityProgress.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
+        "</div>";
+
+      var firstColumnStudents = "";
+      var secondColumnStudents = "";
+
+      for (var i = 0; i < ability.students.length; i++) {
+
+        var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
+        if (ability.students[i].finished)
+          student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
+
+        if (i % 2 === 0)
+          firstColumnStudents += student;
+        else
+          secondColumnStudents += student;
+
+
+      }
+
+      result += "<div class=\"ability-tip__students\">" +
+                " <div class=\"ability-tip__students-column\">" + firstColumnStudents + "</div>" +
+                " <div class=\"ability-tip__students-column\">" + secondColumnStudents + "</div>" +
+                "</div>";
+
+      return result;
+    }
+
+    function getAbilityTipPosition(ability) {
+      var tooltipTopMarginToPreventFlickering = getAbilityTitlesHeight();
+      var top = cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"])
+        + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top
+        + getAbilityRadius(ability)
+        //+ (abilityTip.node().getBoundingClientRect().height)
+        + tooltipTopMarginToPreventFlickering;
+      var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"])
+        + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left
+        - (abilityTip.node().getBoundingClientRect().width / 2);
+
+      return {
+        top: top,
+        left: left
+      }
+    }
+
+    function showAbilityTooltip(ability) {
+
+      abilityTip.html(ability.tipHtml);
+      abilityTip.style("display", "");
+
+      var tipPosition = getAbilityTipPosition(ability);
+      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+        abilityTip.style("top", (tipPosition.top - 10) + "px");
+        abilityTip.style("left", tipPosition.left + "px");
+      }
+      else {
+        abilityTip.style("transform", "translate(" + tipPosition.left + "px ," + tipPosition.top + "px )");
+      }
+
+      abilityTip.transition().duration(350).style("opacity", .8);
+
+      //highlight axes 
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - ability["value"]) + ")").classed('students-ability-chart__axis-tick--strong', true);
+
+    }
+
+    function hideAbilityTooltip(ability) {
+
+      abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', false);
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - ability["value"]) + ")").classed('students-ability-chart__axis-tick--strong', false);
+    }
+
+    function getAbilityRadius(ability) {
+      var radius = Math.sqrt(ability.students.length) * 13;
+      if (ability.finishedPart)
+        radius = ability.finishedFraction * radius;
+      return radius;
+    }
+
+
+
+    function init() {
+
+      //abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
+
+      //var abilities = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".objects .ability");
+      //abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
+      //abilities.on("click", function (e) {
+      //  cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(e);
+      //})
+      ////document.body.addEventListener('click', function (event) {
+      ////  abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
+      ////});
+
+
+      var data = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+      var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
+
+
+      var arc = d34.arc().innerRadius(0),
+          pie = d34.pie();
+
+      //var nodeData = root.children;
+      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", cet.dashboard.studentsAbilityHistoryChart.measures.width).attr("height", cet.dashboard.studentsAbilityHistoryChart.measures.height);
+
+
+      var nodes = svg.selectAll("g.node")
+          .data(data).enter().append("g")
+          .attr("class", "node")
+          .attr("transform", transform);
+
+      nodes.selectAll("circle")
+        .data(function (d) { return [d]; })
+        .enter().append("circle")
+        .attr("r", function (ability) {
+          return Math.sqrt(ability.students.length) * 13;
+        });
+
+      var arcsData = nodes.selectAll("g.arc")
+          .data(function (d) {
+            //every student has the same weight: arcs are equal 
+            var weights = d.students.map(function (s) { return 1; })
+            var arcsData = pie(weights);
+            var radius = Math.sqrt(d.students.length) * 13;
+            for (var j = 0; j < arcsData.length; j++) {
+              arcsData[j].radius = radius;
+              arcsData[j].studentId = d.students[j].id
+            }
+            return arcsData;
+          });
+
+
+      arcsData.enter()
+        .append("g")
+        .attr("class", "arc")
+        .append("path")
+        .attr("d", function (d) {
+          arc.outerRadius(d.radius)(d);
+          return arc(d);
+        })
+        .style("fill", function (d, i) {
+          return studentsColors.getStudentColor(d.studentId);
+        });
+
+    }
+
+    return {
+      init: init
+    }
+
+  })();
+
+  var studentsColors = (function () {
+    var colorBank = ["#ffaacb", "#dba388", "#3cbac9", "#74a9cf", "#94af8c"];
+    var dynamicColors = JSON.parse(JSON.stringify(colorBank));
+    var currentAllocation = {};
+    function reset() {
+      currentAllocation = {};
+      dynamicColors = JSON.parse(JSON.stringify(colorBank));
+    }
+    function getStudentColor(id) {
+      if (!currentAllocation[id])
+        currentAllocation[id] = dynamicColors.pop();
+      return currentAllocation[id];
+    }
+
+    return {
+      getStudentColor: getStudentColor,
+      reset: reset
+    }
+  })();
+
+})();
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
+  cet.dashboard.studentsAbilityHistoryChart.measures = (function () {
+
+    function init(options) {
+      
+      var self = cet.dashboard.studentsAbilityHistoryChart.measures;
+      self.margin = { top: 50, right: 50, bottom: 50, left: 50 };
+      self.outerWidth = options.width,
+      self.outerHeight = options.height,
+      self.width = self.outerWidth - self.margin.left - self.margin.right,
+      self.height = self.outerHeight - self.margin.top - self.margin.bottom// - cet.dashboard.studentsAbilityHistoryChart.app.getTitleHeight();
+      
+      self.xLabelHeight = 10;
+
+      
+    }
+
+    return {
+      init: init
+    }
+  })();
+})();
+
+(function () {
+
+  var app = (function () {
+    var titleHeight;
+
+    function init(options) {
+
+      chart = document.querySelector(".students-ability-history-chart");
+      var titleElement = document.createElement('div');
+      titleElement.classList.add('students-ability-history-chart__title');
+      titleElement.innerHTML = cet.dashboard.studentsAbilityHistoryChart.texts.chartName;
+      chart.appendChild(titleElement, chart.firstChild);
+      titleHeight = titleElement.getBoundingClientRect().height;
+      titleHeight = 28;
+
+      var preloader = document.createElement("div");
+      preloader.classList.add("students-ability-history-chart__preloader");
+      preloader.innerText = "loading...";
+      chart.appendChild(preloader);
+
+      cet.dashboard.studentsAbilityHistoryChart.measures.init(options);
+
+      if (options.direction === 'ltr') {
+        chart.style.marginLeft = 'auto';
+      }
+      cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
+        
+        var preloader = document.querySelector('.students-ability-history-chart__preloader');
+        if (preloader && preloader.parentNode) {
+          preloader.parentNode.removeChild(preloader);
+        }
+
+
+        cet.dashboard.studentsAbilityHistoryChart.app.svg = d34.select(".students-ability-history-chart")
+                  .append("svg")
+                  .attr("width", cet.dashboard.studentsAbilityHistoryChart.measures.outerWidth)
+                  .attr("height", cet.dashboard.studentsAbilityHistoryChart.measures.outerHeight - getTitleHeight())
+                  .append("g")
+                  .attr("transform", "translate(50,20)");
+                  //.attr("transform", "translate(" + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left + "," + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top + ")");
+        //initLegend();
+
+        cet.dashboard.studentsAbilityHistoryChart.axes.init();
+        cet.dashboard.studentsAbilityHistoryChart.abilities.init();
+      });
+    }
+
+    function initLegend() {
+      var legend = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("g")
+        .classed("legend", true)
+        .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+
+      legend.append("circle")
+        .attr("r", 8)
+        .attr("cx", cet.dashboard.studentsAbilityHistoryChart.measures.width - 7)
+        .attr("cy", -15)
+        .classed("finished-part", true);
+
+      legend.append("text")
+        .attr("y", -10)
+        .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
+        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+        .attr("x", cet.dashboard.studentsAbilityHistoryChart.measures.width - 115)
+        .classed('students-ability-history-chart__legend-text', true);
+
+      legend.append("circle")
+        .classed("ability", true)
+        .attr("r", 8)
+        .attr("cx", cet.dashboard.studentsAbilityHistoryChart.measures.width - 145)
+        .attr("cy", -15);
+
+      legend.append("text")
+        .attr("y", -10)
+        .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
+        .classed('students-ability-history-chart__legend-text', true)
+        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
+        .attr("x", cet.dashboard.studentsAbilityHistoryChart.measures.width - 276)
+        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
+
+     
+    }
+
+    function getTitleHeight() {
+      return titleHeight;
+    }
+
+    return {
+      init: init,
+      getTitleHeight: getTitleHeight
+    }
+
+  })();
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
+  cet.dashboard.studentsAbilityHistoryChart.app = app;
+  cet.dashboard.studentsAbilityHistoryChart.init = app.init;
+
+})();
+
+
+// Array.prototype.forEach.call(document.getElementsByName('selectedStudents'), function(checkbox) {console.log(checkbox.checked)})
+(function () {
+
+  var app = (function () {
+    var sortByProp = 'lastName', sortByDir = 1;
+    var selectedItems = [];
+
+    function handleSortBy(event) {
+      event.preventDefault();
+
+      if (sortByProp === event.target.dataset.type) {
+        sortByDir *= -1;
+      } else {
+        sortByProp = event.target.dataset.type;
+        sortByDir = 1;
+      }
+
+      createStudentList();
+    }
+
+    function handleSortMouseEnter(event) {
+      toggleArrows(this, 'visible');
+    }
+
+    function handleSortMouseLeave(event) {
+      toggleArrows(this, 'hidden');
+    }
+
+    function toggleArrows(button, visbility) {
+      var sortingArrows = button.querySelector('.sorting-arrows')
+      
+      if (button.dataset.type !== sortByProp && sortingArrows) {
+        sortingArrows.style.visibility = visbility;
+        var arrows = sortingArrows.querySelectorAll('div');
+        if (arrows) {
+          Array.prototype.forEach.call(arrows, function (arrow) {
+            arrow.style.visibility = visbility;
+          })
+        }
+      }
+
+    }
+
+    function handleItemSelect(event) {
+      toggleItemSelection(this.dataset.id);
+
+      if (selectedItems.indexOf(this.dataset.id) < 0) {
+        // Add item to selected items
+        if (selectedItems.length < 5) {
+          selectedItems.push(this.dataset.id);
+        }
+      } else {
+        // Add item to selected items        
+        selectedItems.splice(selectedItems.indexOf(this.dataset.id), 1);
+      }
+
+      toggleItemSelection(this.dataset.id);
+    }
+
+    function toggleItemSelection(id) {
+      var item = document.querySelector('.student-average-ability-list__item[data-id="' + id + '"]');
+      var checkbox = item.querySelector('.student-average-ability-list__item__checkbox');
+      if (!checkbox) return;
+
+      if (selectedItems.indexOf(id) < 0) {
+        checkbox.classList.remove('student-average-ability-list__item__checkbox--is-checked');
+      } else {
+        checkbox.classList.add('student-average-ability-list__item__checkbox--is-checked');
+      }
+      
+      if (selectedItems.length >= 5) {
+        disableNotSelectedItems();
+      } else {
+        enableAllItems()
+      }
+    }
+
+    function disableNotSelectedItems() {
+      var items = document.querySelectorAll('.student-average-ability-list__item');
+      Array.prototype.forEach.call(items, function (item) {
+        if (selectedItems.indexOf(item.dataset.id) < 0) {
+          item.classList.add('student-average-ability-list__item--is-disabled');
+        }
+      });
+    }
+
+    function enableAllItems() {
+      var items = document.querySelectorAll('.student-average-ability-list__item');
+      Array.prototype.forEach.call(items, function (item) {
+        item.classList.remove('student-average-ability-list__item--is-disabled');
+      });
+    }
+
+    function bindButtonsEventListeners() {
+
+      var sortByButtons = document.querySelectorAll('.student-average-ability-list__sort')
+
+      Array.prototype.forEach.call(sortByButtons, function (btn) {
+        btn.addEventListener('click', handleSortBy);
+        btn.addEventListener('mouseenter', handleSortMouseEnter);
+        btn.addEventListener('mouseleave', handleSortMouseLeave);
+      })
+    }
+
+    function createStudentListHeader() {
+      return [
+        '<div class="student-average-ability-list__buttons">',
+        ' <div class="student-average-ability-list__show-btn">', cet.dashboard.studentAverageAbilityList.texts.showButton, '</div>',
+        ' <button data-type="lastName" class="student-average-ability-list__sort student-average-ability-list__order-name-btn">',
+        cet.dashboard.studentAverageAbilityList.texts.orderByNameButton,
+        '   <div class="sorting-arrows" ', (sortByProp === 'lastName' ? '' : 'style="visibility:hidden"'), '>',
+        '     <div ', (sortByProp === 'lastName' && sortByDir === 1 ? '' : 'style="visibility:hidden"'), ' class="arrow-up">▲</div>',
+        '     <div ', (sortByProp === 'lastName' && sortByDir === -1 ? '' : 'style="visibility:hidden"'), 'class="arrow-down">▼</div>',
+        '   </div>',
+        ' </button>',
+        ' <button data-type="avgAbility" class="student-average-ability-list__sort student-average-ability-list__order-average-btn">',
+        cet.dashboard.studentAverageAbilityList.texts.orderByAverageButton,
+        '   <div class="sorting-arrows" ', (sortByProp === 'average' ? '' : 'style="visibility:hidden"'), '>',
+        '     <div ', (sortByProp === 'avgAbility' && sortByDir === 1 ? '' : 'style="visibility:hidden"'), ' class="arrow-up">▲</div>',
+        '     <div ', (sortByProp === 'avgAbility' && sortByDir === -1 ? '' : 'style="visibility:hidden"'), 'class="arrow-down">▼</div>',
+        '   </div>',
+        ' </div>',
+        '</button>'
+      ].join('');
+    }
+
+    function createStudentList() {
+      var selectedAbility = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.filter(function (a) { return a.isSelected })[0];
+      var sortedStudents = selectedAbility.students.sort(function (a, b) {
+        if (sortByDir > 0) return a[sortByProp] > b[sortByProp];
+
+        return a[sortByProp] <= b[sortByProp]
+      });
+
+      var studentsList = document.querySelector('.student-average-ability-list');
+
+      var ul, li;
+      if (selectedAbility) {
+        ul = document.createElement('ul');
+        ul.className = 'student-average-ability-list__students'
+        sortedStudents.forEach(function (st) {
+          li = document.createElement('li');
+          li.className = 'student-average-ability-list__item'
+          li.innerHTML = ['',
+                          '<label class="student-average-ability-list__item__name"><span class="student-average-ability-list__item__checkbox"></span>', st.lastName, ' ' , st.firstName, '</label>',
+                          '<span class="student-average-ability-list__item__average">', st.avgAbility, '</span>'].join('');
+
+          li.dataset.id = st.id;
+          li.addEventListener('click', handleItemSelect);
+
+          ul.appendChild(li);         
+        });
+
+        studentsList.innerHTML = createStudentListHeader();
+        studentsList.appendChild(ul);
+
+        sortedStudents.forEach(function (st) {
+          toggleItemSelection(st.id);
+        });
+
+        bindButtonsEventListeners();
+      }
+    }
+
+    function init(options) {
+      var studentsList = document.querySelector('.student-average-ability-list');
+      //studentsList.style = ['width: ', options.width, 'px;',
+      //  'height: ', options.height, 'px;'
+      //].join('');
+
+      cet.dashboard.studentsAbilityProgress.data.on('data-selection', createStudentList);
+    }
+
+    return {
+      init: init
+    }
+
+  })();
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentAverageAbilityList = window.cet.dashboard.studentAverageAbilityList || {};
+  cet.dashboard.studentAverageAbilityList.app = app;
+  cet.dashboard.studentAverageAbilityList.init = app.init;
+
+})();
+
+
+
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentAverageAbilityList = cet.dashboard.studentAverageAbilityList || {}
+  cet.dashboard.studentAverageAbilityList.texts = {
+    showButton: 'הצג',
+    orderByNameButton: 'שם הלומד/ת',
+    orderByAverageButton: 'ממוצע יכולות'
+  }
+
+})();
+
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityProgress = window.cet.dashboard.studentsAbilityProgress || {};
+  cet.dashboard.studentsAbilityProgress.measures = (function () {
+    function init(options) {
+      var self = cet.dashboard.studentsAbilityProgress.measures;
+   
+        self.width = options.width,
+        self.height = options.height,
+        self.studentsAbilityChart = { width: self.width, height: self.height * 0.5 };
+        //self.studentsAbilityHistoryChart = { width: 600, height: 200 };
+        self.studentsAbilityHistoryChart = { width: self.width * 0.75, height: (self.height * 0.5) - 30 };
+        self.studentAverageAbilityList = { width: self.width * 0.1, height: self.height * 0.5 };
+    }
+    return {
+      init: init
+    }
+  })();
+})();
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityProgress = window.cet.dashboard.studentsAbilityProgress || {};
+  cet.dashboard.studentsAbilityProgress.data = (function () {
+
+    var root;
+
+    function getFinishedFraction(ability) {
+      var finishedCounter = 0;
+
+      for (var i = 0; i < ability.students.length; i++) {
+        if (ability.students[i].finished)
+          finishedCounter++;
+      }
+      var ssss = 0;
+
+      return finishedCounter / ability.students.length;
+    }
+
+    function performDataSchemeTransformation(before) {
+      if (!before) return;
+      var after = {
+        "folder": {
+          "id": before.id,
+          "name": before.name,
+          "questionnaires": [],
+          "abilities": [],
+          "folders": []
+        }
+
+      };
+
+      for (var i = 0; before.questionnaires && i < before.questionnaires.length; i++) {
+        var abilities = {};
+        for (var j = 0; j < before.questionnaires[i].students.length; j++) {
+          var abilityGrade = Math.round(before.questionnaires[i].students[j].ability / 10);
+          var ability = abilities[i + abilityGrade];
+          if (!ability) {
+            ability = {
+              "questionnaire-order": i + 1,
+              "value": abilityGrade,
+              "students": []
+            }
+          }
+
+          var currentStudent = {}, avgAbilityForStudent = 0, avgScoreForStudent = 0;
+          if (before.students) {
+            currentStudent = before.students.filter(function (st) { return before.questionnaires[i].students[j].id === st.id })[0];
+            avgAbilityForStudent = Number(currentStudent.avgAbility).toFixed(1);
+            avgScoreForStudent = Number(currentStudent.avgScore).toFixed(1);
+          }
+          //if (before.questionnaires[i].students[j].isHighestSubmitted) {
+            ability.students.push({
+              "id": before.questionnaires[i].students[j].id,
+              "firstName": before.questionnaires[i].students[j].firstName,
+              "lastName": before.questionnaires[i].students[j].lastName,
+              "finished": before.questionnaires[i].students[j].isScopeFinished,
+              "highestSubmitted": before.questionnaires[i].students[j].isHighestSubmitted,
+              "avgAbility": avgAbilityForStudent,
+              "avgScore": avgScoreForStudent
+              
+            })
+          //}
+          abilities[i + abilityGrade] = ability;
+        }
+
+        var questionaire = {
+          "id": before.questionnaires[i].id,
+          "name": before.questionnaires[i].name,
+          "abilities": []
+        };
+        for (var key in abilities) {
+          abilities[key].finishedFraction = getFinishedFraction(abilities[key]);
+          after.folder.abilities.push(abilities[key]);
+        }
+
+        after.folder.questionnaires.push(questionaire);
+
+      }
+      return after;
+    }
+
+    function loadDataFromQueryIfNecessary(response) {
+      if (decodeURIComponent(document.location.search))
+        return JSON.parse(decodeURIComponent(document.location.search.substring(1)));
+      return response;
+    }
+
+    function init(initData) {
+
+      cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
+      cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
+      
+      document.body.dispatchEvent(new Event('ready'));
+    }
+
+    function getQuestionaireNameByOrder(order) {
+      return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order - 1].name
+    }
+
+    function resetSelectedAbilities() {
+      cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.forEach(function (ability) {
+        ability.isSelected = false;
+      });
+    }
+
+    function setSelectedAbilities(ability) {
+      resetSelectedAbilities();
+      ability.isSelected = true;
+
+      window.document.body.dispatchEvent(new Event('data-selection'));
+    }
+
+    function on(eventName, method) {
+      document.body.addEventListener(eventName, method);
+    }
+
+    function getAbilitiesOfHighestSubmitted() {
+
+      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+      var result = [];
+      for (var i = 0; i < allAbilities.length; i++) {
+        
+        var highestSubmittedStudents = allAbilities[i].students.filter((student) => { return student.highestSubmitted; })
+        if (highestSubmittedStudents.length == 0)
+          continue;
+        var ability = {
+          "questionnaire-order": allAbilities[i]["questionnaire-order"],
+          "value": allAbilities[i].value,
+          "students": highestSubmittedStudents,
+        }
+        ability.finishedFraction = getFinishedFraction(ability);
+        result.push(ability);
+        
+      }
+      return result;
+    }
+
+    return {
+
+      init: init,
+      root: root,
+      getQuestionaireNameByOrder: getQuestionaireNameByOrder,
+      setSelectedAbilities: setSelectedAbilities,
+      on: on,
+      getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted
+
+    }
+
+  })();
+
+})();
+
+(function () {
+
+  var app = (function () {
+
+    function getUrl(options) {
+      if (options.domain) {
+        var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
+        return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
+      }
+      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
+      return baseUrl + "dashboard/data/data.json";
+    }
+
+    function getStudentsAbilityChartOptions(options) {
+      var newOptions = JSON.parse(JSON.stringify(options));
+      newOptions.height = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityChart.height;
+      return newOptions;
+    }
+
+    function getStudentAverageAbilityListOptions(options) {
+      var newOptions = JSON.parse(JSON.stringify(options));
+      newOptions.height = cet.dashboard.studentsAbilityProgress.measures.studentAverageAbilityList.height;
+      newOptions.width = cet.dashboard.studentsAbilityProgress.measures.studentAverageAbilityList.width;
+      newOptions.rootElementSelector = '.student-average-ability-list';
+
+      return newOptions;
+    }
+
+    function getstudentsAbilityHistoryChart(options) {
+      var newOptions = JSON.parse(JSON.stringify(options));
+      newOptions.height = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityHistoryChart.height;
+      newOptions.width = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityHistoryChart.width;
+      newOptions.rootElementSelector = '.students-ability-history-chart';
+      return newOptions;
+    }
+
+
+    function init(options) {
+      // Set default width and hegit when not passed in options
+      if (!options || !options.width) {
+        options.width = window.outerWidth * 0.85 - ((window.outerWidth > 1280) ? 410 : 0);
+      }
+
+      if (!options || !options.height) {
+        options.height = window.innerHeight * 0.85 - 102;
+      }
+
+      var containerElement = document.querySelector(options.rootElementSelector);
+      containerElement.innerHTML = '';
+
+      var rootElement = document.createElement('div');
+      rootElement.classList.add("students-ability-dashboard");
+      containerElement.appendChild(rootElement);
+
+
+      cet.dashboard.studentsAbilityProgress.measures.init(options);
+
+      rootElement.style.width = options.width + 'px';
+      rootElement.style.height = options.height + 'px';
+
+      if (options.title) {
+        var titleElement = document.createElement('h2');
+        titleElement.classList.add('students-ability-dashboard__title');
+        titleElement.innerHTML = options.title;
+        rootElement.appendChild(titleElement);
+      }
+
+      var studentsAbilityChartElement = document.createElement('div');
+      studentsAbilityChartElement.classList.add("students-ability-chart");
+      rootElement.appendChild(studentsAbilityChartElement);
+      cet.dashboard.studentsAbilityChart.init(getStudentsAbilityChartOptions(options));
+
+      if (window.location.href.indexOf('.lab.') == -1) {
+
+        var studentsAbilityHistoryChartElement = document.createElement('div');
+        studentsAbilityHistoryChartElement.classList.add("students-ability-history-chart");
+        rootElement.appendChild(studentsAbilityHistoryChartElement);
+        cet.dashboard.studentsAbilityHistoryChart.init(getstudentsAbilityHistoryChart(options));
+
+        var studentAverageAbilityListElement = document.createElement('div');
+        studentAverageAbilityListElement.classList.add("student-average-ability-list");
+        rootElement.appendChild(studentAverageAbilityListElement);
+        cet.dashboard.studentAverageAbilityList.init(getStudentAverageAbilityListOptions(options));
+      }
+      d34.json(getUrl(options), function (response) {
+
+        cet.dashboard.studentsAbilityProgress.data.init(response);
+
+      });
+
+
+
+    }
+
+    return {
+      init: init
+    }
+
+  })();
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityProgress = window.cet.dashboard.studentsAbilityProgress || {};
+  cet.dashboard.studentsAbilityProgress.app = app;
+  cet.dashboard.studentsAbilityProgress.init = app.init;
 
 })()

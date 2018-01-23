@@ -10,10 +10,10 @@
 
       /**************************** Y AXIS **********************************/
 
-      cet.dashboard.studentsAbilityChart.axes.yAxisScale = d34.scaleLinear().domain([100, 0]).range([0, cet.dashboard.studentsAbilityChart.measures.height]);
+      cet.dashboard.studentsAbilityChart.axes.yAxisScale = d34.scaleLinear().domain([10, 0]).range([0, cet.dashboard.studentsAbilityChart.measures.height]);
       var yAxis = d34.axisLeft(cet.dashboard.studentsAbilityChart.axes.yAxisScale).tickSize(cet.dashboard.studentsAbilityChart.measures.width).tickFormat(function (d) {
         
-        return d === 0 ? "" : (d / 10) ;
+        return d === 0 ? "" : d ;
       });
       var yAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("y axis", true)
@@ -33,8 +33,8 @@
 
       /**************************** X AXIS **********************************/
 
-      cet.dashboard.studentsAbilityChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityChart.measures.width]);
-      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
+      cet.dashboard.studentsAbilityChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityChart.measures.width]);
+      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
       var xAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
         .classed("x axis", true)
         .attr("transform", "translate(0," + cet.dashboard.studentsAbilityChart.measures.height + ")")
@@ -43,7 +43,7 @@
       //set x axis title
       var xAxisTitle = xAxisGroup.append("text")
         .classed("students-ability-chart__axis-label", true)
-        .attr("y", cet.dashboard.studentsAbilityChart.measures.margin.bottom - 8)
+        .attr("y", 40)
         .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
         .style("text-anchor", "end")
         .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
@@ -53,16 +53,23 @@
       var xTicks = cet.dashboard.studentsAbilityChart.app.svg.selectAll('.x .tick text');
       xTicks.attr("y", cet.dashboard.studentsAbilityChart.measures.xLabelHeight);
 
-
+      
+      var titlesHeight = document.querySelector('.students-ability-chart__title').getBoundingClientRect().height;
+      
 
       //set ticks questionaire name tooltip
       xTicks.on("mouseover", function (tick) {
         if (tick == 0)
           return;
         questionnaireTip.style("display", "");
-        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityChart.data.root.folder.questionnaires[tick - 1].name });
+        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[tick - 1].name });
 
-        var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
+        var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0)
+          + cet.dashboard.studentsAbilityChart.measures.margin.top
+          + titlesHeight
+          - questionnaireTip.node().getBoundingClientRect().height
+          + 15;
+
         var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
 
         if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
