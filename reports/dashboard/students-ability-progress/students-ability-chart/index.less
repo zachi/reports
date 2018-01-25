@@ -6,29 +6,29 @@
 @texts-color: #a2a0a0;
 @ability-tip-max-width: 350px;
 
-.students-ability-chart {
-    font-size: 16px;
-    font-family: 'Assistant', sans-serif;
-    position: relative;
+.students-ability-chart, .students-ability-history-chart {
+  font-size: 16px;
+  font-family: 'Assistant', sans-serif;
+  position: relative;
 }
 
-.students-ability-chart .axis path {
+.students-ability-chart .axis path, .students-ability-history-chart .axis path {
     display: none;
 }
 
-.students-ability-chart__grid-line {
+.students-ability-chart__grid-line, .students-ability-history-chart__grid-line {
     stroke: @grid-line-color;
     stroke-width: 1px;
     stroke-dasharray: 2px;
 }
 
 //TODO add prefix students-ability-chart
-.ability {
-    fill: @ability-color;
-    fill-opacity: .7;
-    stroke: @ability-border-color;
-    stroke-width: 1;
-    stroke-opacity: 0.9;
+.students-ability-chart .ability {
+  fill: @ability-color;
+  fill-opacity: .7;
+  stroke: @ability-border-color;
+  stroke-width: 1;
+  stroke-opacity: 0.9;
 }
 
 .finished-part {
@@ -53,7 +53,7 @@
     fill: #000000 !important;
 }
 
-.students-ability-chart svg {
+.students-ability-chart svg, .students-ability-history-chart svg {
     overflow: visible;
 }
 
@@ -72,10 +72,10 @@
     fill: #4baf04;
 }
 
-.students-ability-chart__legend-text {
-    fill: @texts-color;
-    font-size: 13px;
-    /*direction: rtl;*/ //should be on, but not on IE11
+.students-ability-chart__legend-text, .students-ability-history-chart__legend-text {
+  fill: @texts-color;
+  font-size: 13px;
+  /*direction: rtl;*/ //should be on, but not on IE11
 }
 
 .students-ability-chart__axis-tick-text {

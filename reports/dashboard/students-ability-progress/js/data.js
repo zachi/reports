@@ -137,6 +137,18 @@
       return result;
     }
 
+    function getSelectedStudents() {
+      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+      var result = [];
+      for (var i = 0; i < allAbilities.length; i++) {
+        for (var j = 0; j < allAbilities[i].students.length; j++) {
+          if (result.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0)
+            result.push(allAbilities[i].students[j]);
+        }
+      }
+      return result;
+    }
+
     return {
 
       init: init,
@@ -144,7 +156,8 @@
       getQuestionaireNameByOrder: getQuestionaireNameByOrder,
       setSelectedAbilities: setSelectedAbilities,
       on: on,
-      getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted
+      getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted,
+      getSelectedStudents: getSelectedStudents
 
     }
 

@@ -4,13 +4,14 @@
   cet.dashboard.studentsAbilityHistoryChart.abilities = (function () {
     var abilityTip;
     var tipsHtml = [];
+    var measures;
 
     function transform(ability) {
       return "translate(" + cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"]) + ")";
 
     }
 
-    function getAbilityTitlesHeight() {
+    /*function getAbilityTitlesHeight() {
       var chart = document.querySelector('.students-ability-dashboard')
       var svg;
 
@@ -21,7 +22,7 @@
       if (!svg) return 0;
 
       return svg.getBoundingClientRect().top - chart.getBoundingClientRect().top
-    }
+    }*/
 
     function hasFinishedStudent(ability) {
       for (var i = 0; i < ability.students.length; i++) {
@@ -41,7 +42,7 @@
 
       for (var i = 0; i < ability.students.length; i++) {
 
-        var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
+        var student = "<span class='ability-tip__student' style=\"color: " + cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(ability.students[i].id) + "\" >" + ability.students[i].firstName + ' ' + ability.students[i].lastName + "</span>";
         if (ability.students[i].finished)
           student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
 
@@ -54,22 +55,23 @@
       }
 
       result += "<div class=\"ability-tip__students\">" +
-                " <div class=\"ability-tip__students-column\">" + firstColumnStudents + "</div>" +
-                " <div class=\"ability-tip__students-column\">" + secondColumnStudents + "</div>" +
-                "</div>";
+        " <div class=\"ability-tip__students-column\">" + firstColumnStudents + "</div>" +
+        " <div class=\"ability-tip__students-column\">" + secondColumnStudents + "</div>" +
+        "</div>";
 
       return result;
     }
 
     function getAbilityTipPosition(ability) {
-      var tooltipTopMarginToPreventFlickering = getAbilityTitlesHeight();
+      var tooltipTopMarginToPreventFlickering = 0;//getAbilityTitlesHeight();
       var top = cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"])
-        + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top
-        + getAbilityRadius(ability)
+        + measures.titleHeight
+        + measures.gridMargin.top
+        + getAbilityRadius(ability);
         //+ (abilityTip.node().getBoundingClientRect().height)
-        + tooltipTopMarginToPreventFlickering;
+        //+ tooltipTopMarginToPreventFlickering;
       var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"])
-        + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left
+        + measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
 
       return {
@@ -84,7 +86,7 @@
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top - 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
@@ -116,35 +118,34 @@
 
 
 
-    function init() {
+    function init(measuresl) {
+      measures = measuresl;
+      abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
-      //abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
+      
 
-      //var abilities = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".objects .ability");
-      //abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
-      //abilities.on("click", function (e) {
-      //  cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(e);
-      //})
-      ////document.body.addEventListener('click', function (event) {
-      ////  abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
-      ////});
+      
 
+        var abilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
 
-      var data = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-      var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
+        for (var i = 0; i < abilities.length; i++) {
+          abilities[i].tipHtml = buildAbilityTipHtml(abilities[i]);
+        }
+
+        var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
 
 
       var arc = d34.arc().innerRadius(0),
-          pie = d34.pie();
+        pie = d34.pie();
 
       //var nodeData = root.children;
-      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", cet.dashboard.studentsAbilityHistoryChart.measures.width).attr("height", cet.dashboard.studentsAbilityHistoryChart.measures.height);
+      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", measures.gridWidth).attr("height", measures.gridHeight);
 
 
       var nodes = svg.selectAll("g.node")
-          .data(data).enter().append("g")
-          .attr("class", "node")
-          .attr("transform", transform);
+        .data(abilities).enter().append("g")
+        .attr("class", "node ability")
+        .attr("transform", transform);
 
       nodes.selectAll("circle")
         .data(function (d) { return [d]; })
@@ -154,17 +155,17 @@
         });
 
       var arcsData = nodes.selectAll("g.arc")
-          .data(function (d) {
-            //every student has the same weight: arcs are equal 
-            var weights = d.students.map(function (s) { return 1; })
-            var arcsData = pie(weights);
-            var radius = Math.sqrt(d.students.length) * 13;
-            for (var j = 0; j < arcsData.length; j++) {
-              arcsData[j].radius = radius;
-              arcsData[j].studentId = d.students[j].id
-            }
-            return arcsData;
-          });
+        .data(function (d) {
+          //every student has the same weight: arcs are equal 
+          var weights = d.students.map(function (s) { return 1; })
+          var arcsData = pie(weights);
+          var radius = Math.sqrt(d.students.length) * 13;
+          for (var j = 0; j < arcsData.length; j++) {
+            arcsData[j].radius = radius;
+            arcsData[j].studentId = d.students[j].id
+          }
+          return arcsData;
+        });
 
 
       arcsData.enter()
@@ -176,8 +177,30 @@
           return arc(d);
         })
         .style("fill", function (d, i) {
-          return studentsColors.getStudentColor(d.studentId);
+          return cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(d.studentId);
         });
+
+      var abilities = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".objects .ability");
+
+      abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
+
+      abilities.on("click", function (event) {
+        if (window.location.href.indexOf('.lab.') > -1) {
+          console.log('%c Dashboard is in phase 1 mode. remove this if statement to go into phase 2', 'font-size:24px; color: red;');
+          //return;
+        }
+
+        var selectedClass = 'selected-ability'
+        var selectedAbility = document.querySelector('.' + selectedClass);
+
+        if (selectedAbility) {
+          selectedAbility.classList.remove(selectedClass);
+        }
+
+        this.classList.add(selectedClass);
+
+        cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(event);
+      })
 
     }
 
@@ -187,24 +210,6 @@
 
   })();
 
-  var studentsColors = (function () {
-    var colorBank = ["#ffaacb", "#dba388", "#3cbac9", "#74a9cf", "#94af8c"];
-    var dynamicColors = JSON.parse(JSON.stringify(colorBank));
-    var currentAllocation = {};
-    function reset() {
-      currentAllocation = {};
-      dynamicColors = JSON.parse(JSON.stringify(colorBank));
-    }
-    function getStudentColor(id) {
-      if (!currentAllocation[id])
-        currentAllocation[id] = dynamicColors.pop();
-      return currentAllocation[id];
-    }
-
-    return {
-      getStudentColor: getStudentColor,
-      reset: reset
-    }
-  })();
+  
 
 })();

@@ -164,9 +164,9 @@
 
     function init(options) {
       var studentsList = document.querySelector('.student-average-ability-list');
-      //studentsList.style = ['width: ', options.width, 'px;',
-      //  'height: ', options.height, 'px;'
-      //].join('');
+      studentsList.style = ['width: ', options.width, 'px;',
+        'height: ', options.height, 'px;'
+      ].join('');
 
       cet.dashboard.studentsAbilityProgress.data.on('data-selection', createStudentList);
     }

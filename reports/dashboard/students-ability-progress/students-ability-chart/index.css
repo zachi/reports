@@ -1,17 +1,20 @@
-﻿.students-ability-chart {
+﻿.students-ability-chart,
+.students-ability-history-chart {
   font-size: 16px;
   font-family: 'Assistant', sans-serif;
   position: relative;
 }
-.students-ability-chart .axis path {
+.students-ability-chart .axis path,
+.students-ability-history-chart .axis path {
   display: none;
 }
-.students-ability-chart__grid-line {
+.students-ability-chart__grid-line,
+.students-ability-history-chart__grid-line {
   stroke: rgba(0, 0, 0, 0.2);
   stroke-width: 1px;
   stroke-dasharray: 2px;
 }
-.ability {
+.students-ability-chart .ability {
   fill: #929090;
   fill-opacity: .7;
   stroke: #929090;
@@ -37,7 +40,8 @@
   font-weight: bold;
   fill: #000000 !important;
 }
-.students-ability-chart svg {
+.students-ability-chart svg,
+.students-ability-history-chart svg {
   overflow: visible;
 }
 .students-ability-chart__title,
@@ -52,7 +56,8 @@
 .legend .finished-part {
   fill: #4baf04;
 }
-.students-ability-chart__legend-text {
+.students-ability-chart__legend-text,
+.students-ability-history-chart__legend-text {
   fill: #a2a0a0;
   font-size: 13px;
   /*direction: rtl;*/

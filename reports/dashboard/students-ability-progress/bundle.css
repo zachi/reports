@@ -8,43 +8,45 @@
 .students-ability-history-chart,
 .student-average-ability-list {
   box-shadow: 1px 1px 10px grey;
-  height: 55%;
+  /*height: 55%;*/
 }
 .student-average-ability-list,
 .students-ability-history-chart {
   margin-top: 12px;
-  height: calc( 50% - 30px );
 }
 .students-ability-chart {
-  width: 100%;
-  margin-top: 20px;
+  /*width: 100%;*/
 }
 .students-ability-history-chart {
-  width: 75%;
+  /*width: 75%;*/
 }
 .student-average-ability-list {
-  width: calc( 25% - 20px );
+  /*width: ~"calc( 25% - 20px )";*/
 }
 .students-ability-dashboard__title {
   text-align: center;
   text-decoration: underline;
   font-size: 1.4em;
-  margin: 0.83em auto;
+  margin: 0 auto;
+  padding: 0.83em 0;
 }
-.students-ability-chart {
+.students-ability-chart,
+.students-ability-history-chart {
   font-size: 16px;
   font-family: 'Assistant', sans-serif;
   position: relative;
 }
-.students-ability-chart .axis path {
+.students-ability-chart .axis path,
+.students-ability-history-chart .axis path {
   display: none;
 }
-.students-ability-chart__grid-line {
+.students-ability-chart__grid-line,
+.students-ability-history-chart__grid-line {
   stroke: rgba(0, 0, 0, 0.2);
   stroke-width: 1px;
   stroke-dasharray: 2px;
 }
-.ability {
+.students-ability-chart .ability {
   fill: #929090;
   fill-opacity: .7;
   stroke: #929090;
@@ -70,7 +72,8 @@
   font-weight: bold;
   fill: #000000 !important;
 }
-.students-ability-chart svg {
+.students-ability-chart svg,
+.students-ability-history-chart svg {
   overflow: visible;
 }
 .students-ability-chart__title,
@@ -85,7 +88,8 @@
 .legend .finished-part {
   fill: #4baf04;
 }
-.students-ability-chart__legend-text {
+.students-ability-chart__legend-text,
+.students-ability-history-chart__legend-text {
   fill: #a2a0a0;
   font-size: 13px;
   /*direction: rtl;*/
@@ -189,29 +193,14 @@
   /*stroke: #000;
     stroke-width: 3px;*/
 }
-.students-ability-history-chart .axis path {
-  display: none;
-}
-.students-ability-history-chart__grid-line {
-  stroke: rgba(0, 0, 0, 0.2);
-  stroke-width: 1px;
-  stroke-dasharray: 2px;
-}
-/*.students-ability-history-chart{
-  height:400px;
-  width:800px;
-}*/
-.students-ability-history-chart svg {
-  overflow: visible;
-}
-.students-ability-history-chart circle {
-  stroke: transparent;
-  fill: transparent;
-}
 .students-ability-history-chart__title {
   margin-top: 0;
   padding-top: 10px;
-  width: 98px;
+  width: 105px;
+}
+.students-ability-history-chart .ability {
+  fill: transparent;
+  stroke: transparent;
 }
 .student-average-ability-list__button {
   background-color: #808080;

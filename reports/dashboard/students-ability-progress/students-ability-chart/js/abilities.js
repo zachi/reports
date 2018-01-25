@@ -6,6 +6,7 @@
     var abilityTip;
     var tipsHtml = [];
     var titlesHeight;
+    var measures;
 
     function transform(ability) {
       return "translate(" + cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"]) + ")";
@@ -78,14 +79,14 @@
 
       var top = titlesHeight
         + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
-        + cet.dashboard.studentsAbilityChart.measures.margin.top
+        + cet.dashboard.studentsAbilityChart.measures.gridMargin.top
         + getAbilityRadius(ability)
         + triangleHeight
 
 
 
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"])
-        + cet.dashboard.studentsAbilityChart.measures.margin.left
+        + cet.dashboard.studentsAbilityChart.measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
 
       return {
@@ -100,7 +101,7 @@
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top - 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
@@ -131,8 +132,8 @@
       return radius;
     }
 
-    function init() {
-
+    function init(measures) {
+      
       abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
       var sortedAbilities = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().sort(function (a, b) { return b.students.length - a.students.length; })
@@ -147,7 +148,7 @@
         sortedAbilitiesDoubled.push(abilityFinishedPart);
       }
 
-      var objects = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("objects", true).attr("width", cet.dashboard.studentsAbilityChart.measures.width).attr("height", cet.dashboard.studentsAbilityChart.measures.height);
+      var objects = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("objects", true).attr("width", measures.width).attr("height", measures.height);
       objects.selectAll(".ability")
         .data(sortedAbilitiesDoubled)
         .enter().append("circle")

@@ -17167,21 +17167,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 (function () {
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
-  cet.dashboard.studentsAbilityChart.utils = (function () {
-
-    return {
-      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode;}
-    }
-
-  })();
-
-  
-
-})();
-
-(function () {
-
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
   cet.dashboard.studentsAbilityChart.texts = {
     questionnaires: "יחידות לימוד",
     questionnaire: "יחידת לימוד",
@@ -17196,129 +17181,129 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })();
 (function () {
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart.measures = (function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityChart = window.cet.dashboard.studentsAbilityChart || {};
+  cet.dashboard.studentsAbilityChart.measuresClass = function (options) {
 
-    function init(options) {
-      var self = cet.dashboard.studentsAbilityChart.measures;
-      self.margin = { top: 27, right: 50, bottom: 85, left: 50 };
-      self.outerWidth = options.width,
-      self.outerHeight = options.height,
-      self.width = self.outerWidth - self.margin.left - self.margin.right,
-      self.height = self.outerHeight - self.margin.top - self.margin.bottom;
-      self.xLabelHeight = 10;
-    }
 
-    return {
-      init: init
-    }
-  })();
+
+    var self = this;
+
+    self.titleHeight = 28;
+    self.width = options.width;
+    self.height = options.height;
+    self.gridMargin = { top: 30, right: 50, left: 50, bottom: 60 };
+
+    self.gridWidth = self.width - self.gridMargin.left - self.gridMargin.right;
+    self.gridHeight = self.height - self.gridMargin.top - self.gridMargin.bottom - self.titleHeight;
+
+    self.svgHeight = self.height - self.titleHeight;
+
+    self.xLabelHeight = 10;
+
+
+
+
+
+  }
 })();
 
 (function () {
 
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
-  cet.dashboard.studentsAbilityChart.axes =  (function () {
+  cet.dashboard.studentsAbilityChart.axesClass = function (svg, measures, chartClassName) {
+    var self = this;
+    var texts = cet.dashboard.studentsAbilityChart.texts
+    self.questionnaireTip = d34.select("." + chartClassName ).append("div").attr("class", "questionnaire-tip").style("opacity", 0);
+    
+    /**************************** Y AXIS **********************************/
 
-    function init() {
+    self.yAxisScale = d34.scaleLinear().domain([10, 0]).range([0, measures.gridHeight]);
+    var yAxis = d34.axisLeft(this.yAxisScale).tickSize(measures.gridWidth).tickFormat(function (d) {
+      return d === 0 ? "" : d;
+    });
+    var yAxisGroup = svg.append("g")
+      .classed("y axis", true)
+      .call(yAxis)
+      .attr("transform", "translate(" + measures.gridWidth + ", 0)");
 
-      var questionnaireTip = d34.select(".students-ability-chart").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
+    //set y axis title
+    var yAxisTitle = yAxisGroup.append("text")
+      .classed("students-ability-chart__axis-label", true)
+      .attr("transform", "rotate(-90)")
+      .attr("font-family", texts.fontFamily)
+      .attr("y", -measures.gridWidth - measures.gridMargin.left + 16)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text(texts.ability);
+    yAxisTitle.attr("x", -((measures.gridHeight - yAxisTitle.node().getBoundingClientRect().height) / 2))
 
-      /**************************** Y AXIS **********************************/
+    /**************************** X AXIS **********************************/
 
-      cet.dashboard.studentsAbilityChart.axes.yAxisScale = d34.scaleLinear().domain([10, 0]).range([0, cet.dashboard.studentsAbilityChart.measures.height]);
-      var yAxis = d34.axisLeft(cet.dashboard.studentsAbilityChart.axes.yAxisScale).tickSize(cet.dashboard.studentsAbilityChart.measures.width).tickFormat(function (d) {
-        
-        return d === 0 ? "" : d ;
+    self.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length]).range([0, measures.gridWidth]);
+    var xAxis = d34.axisBottom(this.xAxisScale).ticks(cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length).tickSize(-measures.gridHeight).tickFormat(function (d) { return d === 0 ? "" : d; });
+    var xAxisGroup = svg.append("g")
+      .classed("x axis", true)
+      .attr("transform", "translate(0," + measures.gridHeight + ")")
+      .call(xAxis);
+
+    //set x axis title
+    var xAxisTitle = xAxisGroup.append("text")
+      .classed("students-ability-chart__axis-label", true)
+      .attr("y", 40)
+      .attr("font-family", texts.fontFamily)
+      .style("text-anchor", "end")
+      .text(texts.questionnaire);
+    xAxisTitle.attr("x", (measures.gridWidth + xAxisTitle.node().getBoundingClientRect().width) / 2);
+
+    //set x axis lables height
+    var xTicks = svg.selectAll('.x .tick text');
+    xTicks.attr("y", measures.xLabelHeight);
+
+
+
+    //set ticks questionaire name tooltip
+    xTicks.on("mouseover", function (tick) {
+      if (tick === 0)
+        return;
+      self.questionnaireTip.style("display", "");
+      self.questionnaireTip.html(function () { return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[tick - 1].name });
+
+      var top = self.yAxisScale(0)
+        + measures.titleHeight
+        + measures.gridMargin.top
+        - self.questionnaireTip.node().getBoundingClientRect().height;
+
+      var left = self.xAxisScale(tick)
+        + measures.gridMargin.left
+        - (self.questionnaireTip.node().getBoundingClientRect().width / 2);
+
+      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+        self.questionnaireTip.style("top", top + "px");
+        self.questionnaireTip.style("left", left + "px");
+      }
+      else {
+        self.questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )");
+      }
+
+      self.questionnaireTip.transition().duration(350).style("opacity", .8);
+
+    })
+      .on("mouseout", function (d) {
+
+        self.questionnaireTip.transition().duration(350).style("opacity", .0).on("end", function () { self.questionnaireTip.style("display", "none") });
+
       });
-      var yAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
-        .classed("y axis", true)
-        .call(yAxis)
-        .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.width + ", 0)");
 
-      //set y axis title
-      var yAxisTitle = yAxisGroup.append("text")
-        .classed("students-ability-chart__axis-label", true)
-        .attr("transform", "rotate(-90)")
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .attr("y", -cet.dashboard.studentsAbilityChart.measures.width - cet.dashboard.studentsAbilityChart.measures.margin.left + 16)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text(cet.dashboard.studentsAbilityChart.texts.ability);
-      yAxisTitle.attr("x", -(( cet.dashboard.studentsAbilityChart.measures.height - yAxisTitle.node().getBoundingClientRect().height) / 2))
+    svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
+    svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
+    svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
 
-      /**************************** X AXIS **********************************/
-
-      cet.dashboard.studentsAbilityChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityChart.measures.width]);
-      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
-      var xAxisGroup = cet.dashboard.studentsAbilityChart.app.svg.append("g")
-        .classed("x axis", true)
-        .attr("transform", "translate(0," + cet.dashboard.studentsAbilityChart.measures.height + ")")
-        .call(xAxis);
-
-      //set x axis title
-      var xAxisTitle = xAxisGroup.append("text")
-        .classed("students-ability-chart__axis-label", true)
-        .attr("y", 40)
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .style("text-anchor", "end")
-        .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
-      xAxisTitle.attr("x", (cet.dashboard.studentsAbilityChart.measures.width + xAxisTitle.node().getBoundingClientRect().width) / 2);
-
-      //set x axis lables height
-      var xTicks = cet.dashboard.studentsAbilityChart.app.svg.selectAll('.x .tick text');
-      xTicks.attr("y", cet.dashboard.studentsAbilityChart.measures.xLabelHeight);
-
-      
-      var titlesHeight = document.querySelector('.students-ability-chart__title').getBoundingClientRect().height;
-      
-
-      //set ticks questionaire name tooltip
-      xTicks.on("mouseover", function (tick) {
-        if (tick == 0)
-          return;
-        questionnaireTip.style("display", "");
-        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[tick - 1].name });
-
-        var top = cet.dashboard.studentsAbilityChart.axes.yAxisScale(0)
-          + cet.dashboard.studentsAbilityChart.measures.margin.top
-          + titlesHeight
-          - questionnaireTip.node().getBoundingClientRect().height
-          + 15;
-
-        var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
-
-        if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
-          questionnaireTip.style("top", top + "px");
-          questionnaireTip.style("left", left + "px");
-        }
-        else {
-          questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )");
-        }
-        
-        questionnaireTip.transition().duration(350).style("opacity", .8);
-        
-      })
-        .on("mouseout", function (d) {
-
-          questionnaireTip.transition().duration(350).style("opacity", .0).on("end", function () { questionnaireTip.style("display", "none") });
-
-        });
-
-      cet.dashboard.studentsAbilityChart.app.svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
-      cet.dashboard.studentsAbilityChart.app.svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
-      cet.dashboard.studentsAbilityChart.app.svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
-
-    }
+  }
 
 
-    return {
-      yAxisScale: null,
-      xAxisScale: null,
-      init: init
-    }
 
-  })();
+
+
 
 })();
 
@@ -17329,6 +17314,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
     var abilityTip;
     var tipsHtml = [];
     var titlesHeight;
+    var measures;
 
     function transform(ability) {
       return "translate(" + cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"]) + ")";
@@ -17401,14 +17387,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       var top = titlesHeight
         + cet.dashboard.studentsAbilityChart.axes.yAxisScale(ability["value"])
-        + cet.dashboard.studentsAbilityChart.measures.margin.top
+        + cet.dashboard.studentsAbilityChart.measures.gridMargin.top
         + getAbilityRadius(ability)
         + triangleHeight
 
 
 
       var left = cet.dashboard.studentsAbilityChart.axes.xAxisScale(ability["questionnaire-order"])
-        + cet.dashboard.studentsAbilityChart.measures.margin.left
+        + cet.dashboard.studentsAbilityChart.measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
 
       return {
@@ -17423,7 +17409,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top - 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
@@ -17454,8 +17440,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
       return radius;
     }
 
-    function init() {
-
+    function init(measures) {
+      
       abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
       var sortedAbilities = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().sort(function (a, b) { return b.students.length - a.students.length; })
@@ -17470,7 +17456,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         sortedAbilitiesDoubled.push(abilityFinishedPart);
       }
 
-      var objects = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("objects", true).attr("width", cet.dashboard.studentsAbilityChart.measures.width).attr("height", cet.dashboard.studentsAbilityChart.measures.height);
+      var objects = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("objects", true).attr("width", measures.width).attr("height", measures.height);
       objects.selectAll(".ability")
         .data(sortedAbilitiesDoubled)
         .enter().append("circle")
@@ -17515,103 +17501,127 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })();
 (function () {
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart.app = (function () {
-    var chart;
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityChart = window.cet.dashboard.studentsAbilityChart || {};
+  cet.dashboard.studentsAbilityChart.legend = (function () {
+    var self = this;
 
-   
-    function init(options) {
-      cet.dashboard.studentsAbilityChart.measures.init(options);
-      var report = document.getElementById('adaptive-progress-report');
-      var preloader = document.createElement("div");
+    
 
-      preloader.classList.add("students-ability-chart__preloader");
-      preloader.innerText = "loading...";
-      chart = document.querySelector(".students-ability-chart");
-      //chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
-      //chart.style.height = cet.dashboard.studentsAbilityChart.measures.outerHeight + "px";
-      chart.appendChild(preloader);
 
+    function init(svg, chartClassName) {
+
+      var namespace = cet.dashboard.studentsAbilityChart;
       
-      
-      if (options.direction === 'ltr') {
-        chart.style.marginLeft = 'auto';
-        report.style.marginLeft = 'auto';
-      }
-      cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
-        
-        var preloader = document.querySelector('.students-ability-chart__preloader');
-        if (preloader && preloader.parentNode) {
-          preloader.parentNode.removeChild(preloader);
-        }
-        d34.select(".students-ability-chart").selectAll("*").remove();
 
-        cet.dashboard.studentsAbilityChart.app.svg = d34.select(".students-ability-chart")
-                  .append("svg")
-                  .attr("width", cet.dashboard.studentsAbilityChart.measures.width)
-                  .attr("height", cet.dashboard.studentsAbilityChart.measures.height)
-                  .append("g")
-                  .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.margin.left + "," + cet.dashboard.studentsAbilityChart.measures.margin.top + ")");
-        initLegend();
-        
-        cet.dashboard.studentsAbilityChart.axes.init();
-        cet.dashboard.studentsAbilityChart.abilities.init();
-      });
-    }
-
-    function initLegend() {
-      var legend = cet.dashboard.studentsAbilityChart.app.svg.append("g")
+      var self = this;
+      var legend = svg.append("g")
         .classed("legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("circle")
         .attr("r", 8)
-        .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
+        .attr("cx", namespace.measures.gridWidth - 7)
         .attr("cy", -15)
         .classed("finished-part", true);
 
       legend.append("text")
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
-        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
+        //.attr("x", measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
         .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 115)
-        .classed('students-ability-chart__legend-text', true);
+        .attr("x", namespace.measures.gridWidth - 115)
+        .classed(chartClassName + '__legend-text', true);
 
       legend.append("circle")
         .classed("ability", true)
         .attr("r", 8)
-        .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 145)
+        .attr("cx", namespace.measures.gridWidth - 145)
         .attr("cy", -15);
 
       legend.append("text")
         .attr("y", -10)
         .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
-        .classed('students-ability-chart__legend-text', true)
-        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 276)
+        .classed(chartClassName + '__legend-text', true)
+        //.attr("x", measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
+        .attr("x", namespace.measures.gridWidth - 276)
         .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
 
-      var titleElement = document.createElement('div');
-      titleElement.classList.add('students-ability-chart__title');
-      titleElement.innerHTML = cet.dashboard.studentsAbilityChart.texts.chartName;
 
-      if (chart.childNodes[1])
-        chart.insertBefore(titleElement, chart.childNodes[1]);
-      else
-        chart.insertBefore(titleElement, chart.firstChild);
     }
 
-    return {
-      svg: null,
-      init: init
-    }
+    return { init: init };
+
+
+
+
   })();
 
-  cet.dashboard.studentsAbilityChart.init = function (options) {
-    cet.dashboard.studentsAbilityChart.app.init(options);
-  }
+  
+
+
+
+
 })();
+
+
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityChart = window.cet.dashboard.studentsAbilityChart || {};
+  cet.dashboard.studentsAbilityChart.appClass = function (options) {
+    var self = this;
+
+    self.namespace = options.namespace;
+    self.chartClassName = options.chartClassName;
+
+    var chart = document.querySelector("." + self.chartClassName);
+    var titleElement = document.createElement('div');
+    titleElement.classList.add(self.chartClassName + '__title');
+    titleElement.innerHTML = self.namespace.texts.chartName;
+    chart.appendChild(titleElement, chart.firstChild);
+
+
+    var preloader = document.createElement("div");
+    preloader.classList.add(self.chartClassName + "__preloader");
+    preloader.innerText = "loading...";
+    chart.appendChild(preloader);
+    self.measures = self.namespace.measures = new cet.dashboard.studentsAbilityChart.measuresClass(options);
+    
+
+    chart.style.width = self.measures.width + 'px';
+    chart.style.height = self.measures.height + 'px';
+
+    if (options.direction === 'ltr') {
+      chart.style.marginLeft = 'auto';
+    }
+    cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
+
+      var preloader = document.querySelector('.' + self.chartClassName + '__preloader');
+      if (preloader && preloader.parentNode) {
+        preloader.parentNode.removeChild(preloader);
+      }
+
+      self.svg = d34.select("." + self.chartClassName)
+        .append("svg")
+        .attr("width", self.measures.width)
+        .attr("height", self.measures.svgHeight)
+        .append("g")
+        .attr("transform", "translate(" + self.measures.gridMargin.left + "," + self.measures.gridMargin.top + ")");
+      self.namespace.legend.init(self.svg, self.chartClassName);
+
+      self.namespace.axes = new cet.dashboard.studentsAbilityChart.axesClass(
+        self.svg,
+        self.measures,
+        self.chartClassName
+      )
+
+      self.namespace.abilities.init(self.measures);
+    });
+    
+  }
+
+
+})();
+
+
 
 (function () {
 
@@ -17625,117 +17635,119 @@ Object.defineProperty(exports, '__esModule', { value: true });
 })();
 
 (function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
 
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityHistoryChart = cet.dashboard.studentsAbilityHistoryChart || {}
-  cet.dashboard.studentsAbilityHistoryChart.axes =  (function () {
-
-    function init() {
-
-      var questionnaireTip = d34.select(".students-ability-chart").append("div").attr("class", "questionnaire-tip").style("opacity", 0);
-
-      /**************************** Y AXIS **********************************/
-
-      cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale = d34.scaleLinear().domain([10, 0]).range([0, cet.dashboard.studentsAbilityHistoryChart.measures.height]);
-      var yAxis = d34.axisLeft(cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale).tickSize(cet.dashboard.studentsAbilityHistoryChart.measures.width).tickFormat(function (d) {
-        
-        return d === 0 ? "" : d ;
-      });
-      var yAxisGroup = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("g")
-        .classed("y axis", true)
-        .call(yAxis)
-        .attr("transform", "translate(" + cet.dashboard.studentsAbilityHistoryChart.measures.width + ", 0)");
-
-      //set y axis title
-      var yAxisTitle = yAxisGroup.append("text")
-        .classed("students-ability-chart__axis-label", true)
-        .attr("transform", "rotate(-90)")
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .attr("y", -cet.dashboard.studentsAbilityHistoryChart.measures.width - cet.dashboard.studentsAbilityHistoryChart.measures.margin.left + 16)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text(cet.dashboard.studentsAbilityChart.texts.ability);
-      yAxisTitle.attr("x", -(( cet.dashboard.studentsAbilityHistoryChart.measures.height - yAxisTitle.node().getBoundingClientRect().height) / 2))
-
-      /**************************** X AXIS **********************************/
-
-      cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale = d34.scaleLinear().domain([0, cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length]).range([0, cet.dashboard.studentsAbilityHistoryChart.measures.width]);
-      var xAxis = d34.axisBottom(cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale).ticks(cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires.length).tickSize(-cet.dashboard.studentsAbilityHistoryChart.measures.height).tickFormat(function (d) { return d === 0 ? "" : d; });
-      var xAxisGroup = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("g")
-        .classed("x axis", true)
-        .attr("transform", "translate(0," + cet.dashboard.studentsAbilityHistoryChart.measures.height + ")")
-        .call(xAxis);
-
-      //set x axis title
-      var xAxisTitle = xAxisGroup.append("text")
-        .classed("students-ability-chart__axis-label", true)
-        .attr("y", 40)
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .style("text-anchor", "end")
-        .text(cet.dashboard.studentsAbilityChart.texts.questionnaire);
-      xAxisTitle.attr("x", (cet.dashboard.studentsAbilityHistoryChart.measures.width + xAxisTitle.node().getBoundingClientRect().width) / 2);
-
-      //set x axis lables height
-      var xTicks = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.x .tick text');
-      xTicks.attr("y", cet.dashboard.studentsAbilityHistoryChart.measures.xLabelHeight);
-
-
-
-      //set ticks questionaire name tooltip
-      xTicks.on("mouseover", function (tick) {
-        if (tick === 0)
-          return;
-        questionnaireTip.style("display", "");
-        questionnaireTip.html(function () { return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[tick - 1].name });
-
-        var top = cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(0) + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top - questionnaireTip.node().getBoundingClientRect().height + 15;
-        var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(tick) + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left - (questionnaireTip.node().getBoundingClientRect().width / 2);;
-
-        if (cet.dashboard.studentsAbilityHistoryChart.utils.isIE()) {
-          questionnaireTip.style("top", top + "px");
-          questionnaireTip.style("left", left + "px");
-        }
-        else {
-          questionnaireTip.style("transform", "translate(" + left + "px ," + top + "px )");
-        }
-        
-        questionnaireTip.transition().duration(350).style("opacity", .8);
-        
-      })
-        .on("mouseout", function (d) {
-
-          questionnaireTip.transition().duration(350).style("opacity", .0).on("end", function () { questionnaireTip.style("display", "none") });
-
-        });
-
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.tick text').classed('students-ability-chart__axis-tick-text', true);
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.tick line').classed('students-ability-chart__grid-line', true);
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll('.tick').classed('students-ability-chart__axis-tick', true);
-
+  cet.dashboard.studentsAbilityHistoryChart.studentsColors = (function () {
+    var colorBank = ["#ffaacb", "#dba388", "#3cbac9", "#74a9cf", "#94af8c"];
+    var dynamicColors = JSON.parse(JSON.stringify(colorBank));
+    var currentAllocation = {};
+    function reset() {
+      currentAllocation = {};
+      dynamicColors = JSON.parse(JSON.stringify(colorBank));
     }
-
+    function getStudentColor(id) {
+      if (!currentAllocation[id])
+        currentAllocation[id] = dynamicColors.pop();
+      return currentAllocation[id];
+    }
 
     return {
-      yAxisScale: null,
-      xAxisScale: null,
-      init: init
+      getStudentColor: getStudentColor,
+      reset: reset
     }
-
   })();
 
 })();
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
+  cet.dashboard.studentsAbilityHistoryChart.legend = (function () {
+    var self = this;
+
+    
+
+
+    function init(svg, chartClassName) {
+
+      var namespace = cet.dashboard.studentsAbilityHistoryChart;
+      
+      var students = cet.dashboard.studentsAbilityProgress.data.getSelectedStudents();
+      
+      var self = this;
+      var legend = svg.append("g")
+        .classed("legend", true)
+        .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+
+      var lastPixel = namespace.measures.gridWidth - 7;
+      for (var i = 0; i < students.length; i++) {
+        
+        var c = legend.append("circle")
+          .attr("r", 8)
+          .attr("cx", lastPixel)
+          .attr("cy", -15)
+          .attr('fill', cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(students[i].id))
+        lastPixel -= 10;
+        
+        var t = legend.append("text")
+          .attr("y", -10)
+          .text(students[i].lastName + ' ' + students[i].firstName)
+          //.attr("x", measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
+          .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
+          
+          .classed(chartClassName + '__legend-text', true);
+
+        
+        lastPixel -= t.node().getBoundingClientRect().width;
+        t.attr("x", lastPixel);
+        lastPixel -= c.node().getBoundingClientRect().width ;
+      }
+      
+
+      //legend.append("circle")
+      //  .classed("ability", true)
+      //  .attr("r", 8)
+      //  .attr("cx", namespace.measures.gridWidth - 145)
+      //  .attr("cy", -15);
+
+      //legend.append("text")
+      //  .attr("y", -10)
+      //  .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
+      //  .classed(chartClassName + '__legend-text', true)
+      //  //.attr("x", measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
+      //  .attr("x", namespace.measures.gridWidth - 276)
+      //  .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
+
+
+    }
+
+    return { init: init };
+
+
+
+
+  })();
+
+  
+
+
+
+
+})();
+
+
 
 (function () {
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
   cet.dashboard.studentsAbilityHistoryChart.abilities = (function () {
     var abilityTip;
     var tipsHtml = [];
+    var measures;
 
     function transform(ability) {
       return "translate(" + cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"]) + ")";
 
     }
 
-    function getAbilityTitlesHeight() {
+    /*function getAbilityTitlesHeight() {
       var chart = document.querySelector('.students-ability-dashboard')
       var svg;
 
@@ -17746,7 +17758,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       if (!svg) return 0;
 
       return svg.getBoundingClientRect().top - chart.getBoundingClientRect().top
-    }
+    }*/
 
     function hasFinishedStudent(ability) {
       for (var i = 0; i < ability.students.length; i++) {
@@ -17766,7 +17778,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       for (var i = 0; i < ability.students.length; i++) {
 
-        var student = "<span class='ability-tip__student'>" + ability.students[i].name + "</span>";
+        var student = "<span class='ability-tip__student' style=\"color: " + cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(ability.students[i].id) + "\" >" + ability.students[i].firstName + ' ' + ability.students[i].lastName + "</span>";
         if (ability.students[i].finished)
           student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
 
@@ -17779,22 +17791,23 @@ Object.defineProperty(exports, '__esModule', { value: true });
       }
 
       result += "<div class=\"ability-tip__students\">" +
-                " <div class=\"ability-tip__students-column\">" + firstColumnStudents + "</div>" +
-                " <div class=\"ability-tip__students-column\">" + secondColumnStudents + "</div>" +
-                "</div>";
+        " <div class=\"ability-tip__students-column\">" + firstColumnStudents + "</div>" +
+        " <div class=\"ability-tip__students-column\">" + secondColumnStudents + "</div>" +
+        "</div>";
 
       return result;
     }
 
     function getAbilityTipPosition(ability) {
-      var tooltipTopMarginToPreventFlickering = getAbilityTitlesHeight();
+      var tooltipTopMarginToPreventFlickering = 0;//getAbilityTitlesHeight();
       var top = cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"])
-        + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top
-        + getAbilityRadius(ability)
+        + measures.titleHeight
+        + measures.gridMargin.top
+        + getAbilityRadius(ability);
         //+ (abilityTip.node().getBoundingClientRect().height)
-        + tooltipTopMarginToPreventFlickering;
+        //+ tooltipTopMarginToPreventFlickering;
       var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"])
-        + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left
+        + measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
 
       return {
@@ -17809,7 +17822,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityChart.utils.isIE()) {
+      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top - 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
@@ -17841,35 +17854,34 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 
 
-    function init() {
+    function init(measuresl) {
+      measures = measuresl;
+      abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
-      //abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
+      
 
-      //var abilities = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".objects .ability");
-      //abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
-      //abilities.on("click", function (e) {
-      //  cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(e);
-      //})
-      ////document.body.addEventListener('click', function (event) {
-      ////  abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
-      ////});
+      
 
+        var abilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
 
-      var data = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-      var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
+        for (var i = 0; i < abilities.length; i++) {
+          abilities[i].tipHtml = buildAbilityTipHtml(abilities[i]);
+        }
+
+        var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
 
 
       var arc = d34.arc().innerRadius(0),
-          pie = d34.pie();
+        pie = d34.pie();
 
       //var nodeData = root.children;
-      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", cet.dashboard.studentsAbilityHistoryChart.measures.width).attr("height", cet.dashboard.studentsAbilityHistoryChart.measures.height);
+      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", measures.gridWidth).attr("height", measures.gridHeight);
 
 
       var nodes = svg.selectAll("g.node")
-          .data(data).enter().append("g")
-          .attr("class", "node")
-          .attr("transform", transform);
+        .data(abilities).enter().append("g")
+        .attr("class", "node ability")
+        .attr("transform", transform);
 
       nodes.selectAll("circle")
         .data(function (d) { return [d]; })
@@ -17879,17 +17891,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
         });
 
       var arcsData = nodes.selectAll("g.arc")
-          .data(function (d) {
-            //every student has the same weight: arcs are equal 
-            var weights = d.students.map(function (s) { return 1; })
-            var arcsData = pie(weights);
-            var radius = Math.sqrt(d.students.length) * 13;
-            for (var j = 0; j < arcsData.length; j++) {
-              arcsData[j].radius = radius;
-              arcsData[j].studentId = d.students[j].id
-            }
-            return arcsData;
-          });
+        .data(function (d) {
+          //every student has the same weight: arcs are equal 
+          var weights = d.students.map(function (s) { return 1; })
+          var arcsData = pie(weights);
+          var radius = Math.sqrt(d.students.length) * 13;
+          for (var j = 0; j < arcsData.length; j++) {
+            arcsData[j].radius = radius;
+            arcsData[j].studentId = d.students[j].id
+          }
+          return arcsData;
+        });
 
 
       arcsData.enter()
@@ -17901,163 +17913,42 @@ Object.defineProperty(exports, '__esModule', { value: true });
           return arc(d);
         })
         .style("fill", function (d, i) {
-          return studentsColors.getStudentColor(d.studentId);
+          return cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(d.studentId);
         });
 
-    }
+      var abilities = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".objects .ability");
 
-    return {
-      init: init
-    }
+      abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
-  })();
-
-  var studentsColors = (function () {
-    var colorBank = ["#ffaacb", "#dba388", "#3cbac9", "#74a9cf", "#94af8c"];
-    var dynamicColors = JSON.parse(JSON.stringify(colorBank));
-    var currentAllocation = {};
-    function reset() {
-      currentAllocation = {};
-      dynamicColors = JSON.parse(JSON.stringify(colorBank));
-    }
-    function getStudentColor(id) {
-      if (!currentAllocation[id])
-        currentAllocation[id] = dynamicColors.pop();
-      return currentAllocation[id];
-    }
-
-    return {
-      getStudentColor: getStudentColor,
-      reset: reset
-    }
-  })();
-
-})();
-(function () {
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
-  cet.dashboard.studentsAbilityHistoryChart.measures = (function () {
-
-    function init(options) {
-      
-      var self = cet.dashboard.studentsAbilityHistoryChart.measures;
-      self.margin = { top: 50, right: 50, bottom: 50, left: 50 };
-      self.outerWidth = options.width,
-      self.outerHeight = options.height,
-      self.width = self.outerWidth - self.margin.left - self.margin.right,
-      self.height = self.outerHeight - self.margin.top - self.margin.bottom// - cet.dashboard.studentsAbilityHistoryChart.app.getTitleHeight();
-      
-      self.xLabelHeight = 10;
-
-      
-    }
-
-    return {
-      init: init
-    }
-  })();
-})();
-
-(function () {
-
-  var app = (function () {
-    var titleHeight;
-
-    function init(options) {
-
-      chart = document.querySelector(".students-ability-history-chart");
-      var titleElement = document.createElement('div');
-      titleElement.classList.add('students-ability-history-chart__title');
-      titleElement.innerHTML = cet.dashboard.studentsAbilityHistoryChart.texts.chartName;
-      chart.appendChild(titleElement, chart.firstChild);
-      titleHeight = titleElement.getBoundingClientRect().height;
-      titleHeight = 28;
-
-      var preloader = document.createElement("div");
-      preloader.classList.add("students-ability-history-chart__preloader");
-      preloader.innerText = "loading...";
-      chart.appendChild(preloader);
-
-      cet.dashboard.studentsAbilityHistoryChart.measures.init(options);
-
-      if (options.direction === 'ltr') {
-        chart.style.marginLeft = 'auto';
-      }
-      cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
-        
-        var preloader = document.querySelector('.students-ability-history-chart__preloader');
-        if (preloader && preloader.parentNode) {
-          preloader.parentNode.removeChild(preloader);
+      abilities.on("click", function (event) {
+        if (window.location.href.indexOf('.lab.') > -1) {
+          console.log('%c Dashboard is in phase 1 mode. remove this if statement to go into phase 2', 'font-size:24px; color: red;');
+          //return;
         }
 
+        var selectedClass = 'selected-ability'
+        var selectedAbility = document.querySelector('.' + selectedClass);
 
-        cet.dashboard.studentsAbilityHistoryChart.app.svg = d34.select(".students-ability-history-chart")
-                  .append("svg")
-                  .attr("width", cet.dashboard.studentsAbilityHistoryChart.measures.outerWidth)
-                  .attr("height", cet.dashboard.studentsAbilityHistoryChart.measures.outerHeight - getTitleHeight())
-                  .append("g")
-                  .attr("transform", "translate(50,20)");
-                  //.attr("transform", "translate(" + cet.dashboard.studentsAbilityHistoryChart.measures.margin.left + "," + cet.dashboard.studentsAbilityHistoryChart.measures.margin.top + ")");
-        //initLegend();
+        if (selectedAbility) {
+          selectedAbility.classList.remove(selectedClass);
+        }
 
-        cet.dashboard.studentsAbilityHistoryChart.axes.init();
-        cet.dashboard.studentsAbilityHistoryChart.abilities.init();
-      });
-    }
+        this.classList.add(selectedClass);
 
-    function initLegend() {
-      var legend = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("g")
-        .classed("legend", true)
-        .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+        cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(event);
+      })
 
-      legend.append("circle")
-        .attr("r", 8)
-        .attr("cx", cet.dashboard.studentsAbilityHistoryChart.measures.width - 7)
-        .attr("cy", -15)
-        .classed("finished-part", true);
-
-      legend.append("text")
-        .attr("y", -10)
-        .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
-        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .attr("x", cet.dashboard.studentsAbilityHistoryChart.measures.width - 115)
-        .classed('students-ability-history-chart__legend-text', true);
-
-      legend.append("circle")
-        .classed("ability", true)
-        .attr("r", 8)
-        .attr("cx", cet.dashboard.studentsAbilityHistoryChart.measures.width - 145)
-        .attr("cy", -15);
-
-      legend.append("text")
-        .attr("y", -10)
-        .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
-        .classed('students-ability-history-chart__legend-text', true)
-        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("x", cet.dashboard.studentsAbilityHistoryChart.measures.width - 276)
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
-
-     
-    }
-
-    function getTitleHeight() {
-      return titleHeight;
     }
 
     return {
-      init: init,
-      getTitleHeight: getTitleHeight
+      init: init
     }
 
   })();
 
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
-  cet.dashboard.studentsAbilityHistoryChart.app = app;
-  cet.dashboard.studentsAbilityHistoryChart.init = app.init;
+  
 
 })();
-
-
 // Array.prototype.forEach.call(document.getElementsByName('selectedStudents'), function(checkbox) {console.log(checkbox.checked)})
 (function () {
 
@@ -18224,9 +18115,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
     function init(options) {
       var studentsList = document.querySelector('.student-average-ability-list');
-      //studentsList.style = ['width: ', options.width, 'px;',
-      //  'height: ', options.height, 'px;'
-      //].join('');
+      studentsList.style = ['width: ', options.width, 'px;',
+        'height: ', options.height, 'px;'
+      ].join('');
 
       cet.dashboard.studentsAbilityProgress.data.on('data-selection', createStudentList);
     }
@@ -18255,18 +18146,39 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })();
 
+
+(function () {
+
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityProgress = cet.dashboard.studentsAbilityProgress || {}
+  cet.dashboard.studentsAbilityProgress.utils = (function () {
+
+    return {
+      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode;}
+    }
+
+  })();
+
+  
+
+})();
 (function () {
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityProgress = window.cet.dashboard.studentsAbilityProgress || {};
   cet.dashboard.studentsAbilityProgress.measures = (function () {
     function init(options) {
       var self = cet.dashboard.studentsAbilityProgress.measures;
-   
-        self.width = options.width,
-        self.height = options.height,
-        self.studentsAbilityChart = { width: self.width, height: self.height * 0.5 };
-        //self.studentsAbilityHistoryChart = { width: 600, height: 200 };
-        self.studentsAbilityHistoryChart = { width: self.width * 0.75, height: (self.height * 0.5) - 30 };
-        self.studentAverageAbilityList = { width: self.width * 0.1, height: self.height * 0.5 };
+      
+      
+      self.width = options.width;
+      self.height = options.height;
+
+      var titleHeight = document.querySelector('.students-ability-dashboard__title').getBoundingClientRect().height
+      var gapBetweenCharts = 12;
+      var chartsHeight = 0.5 * (self.height - titleHeight - gapBetweenCharts);
+
+
+      self.studentsAbilityChart = { width: self.width, height: chartsHeight };
+      self.studentsAbilityHistoryChart = { width: (self.width * 0.75) - gapBetweenCharts, height: chartsHeight };
+      self.studentAverageAbilityList = { width: self.width * 0.25, height: chartsHeight };
     }
     return {
       init: init
@@ -18412,6 +18324,18 @@ Object.defineProperty(exports, '__esModule', { value: true });
       return result;
     }
 
+    function getSelectedStudents() {
+      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+      var result = [];
+      for (var i = 0; i < allAbilities.length; i++) {
+        for (var j = 0; j < allAbilities[i].students.length; j++) {
+          if (result.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0)
+            result.push(allAbilities[i].students[j]);
+        }
+      }
+      return result;
+    }
+
     return {
 
       init: init,
@@ -18419,7 +18343,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
       getQuestionaireNameByOrder: getQuestionaireNameByOrder,
       setSelectedAbilities: setSelectedAbilities,
       on: on,
-      getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted
+      getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted,
+      getSelectedStudents: getSelectedStudents
 
     }
 
@@ -18443,6 +18368,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
     function getStudentsAbilityChartOptions(options) {
       var newOptions = JSON.parse(JSON.stringify(options));
       newOptions.height = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityChart.height;
+      newOptions.namespace = cet.dashboard.studentsAbilityChart;
+      newOptions.chartClassName = "students-ability-chart";
       return newOptions;
     }
 
@@ -18460,6 +18387,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
       newOptions.height = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityHistoryChart.height;
       newOptions.width = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityHistoryChart.width;
       newOptions.rootElementSelector = '.students-ability-history-chart';
+      newOptions.namespace = cet.dashboard.studentsAbilityHistoryChart;
+      newOptions.chartClassName = "students-ability-history-chart";
       return newOptions;
     }
 
@@ -18467,7 +18396,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
     function init(options) {
       // Set default width and hegit when not passed in options
       if (!options || !options.width) {
-        options.width = window.outerWidth * 0.85 - ((window.outerWidth > 1280) ? 410 : 0);
+        options.width = window.width * 0.85 - ((window.width > 1280) ? 410 : 0);
       }
 
       if (!options || !options.height) {
@@ -18481,30 +18410,31 @@ Object.defineProperty(exports, '__esModule', { value: true });
       rootElement.classList.add("students-ability-dashboard");
       containerElement.appendChild(rootElement);
 
-
-      cet.dashboard.studentsAbilityProgress.measures.init(options);
-
-      rootElement.style.width = options.width + 'px';
-      rootElement.style.height = options.height + 'px';
-
       if (options.title) {
         var titleElement = document.createElement('h2');
         titleElement.classList.add('students-ability-dashboard__title');
         titleElement.innerHTML = options.title;
         rootElement.appendChild(titleElement);
       }
+      cet.dashboard.studentsAbilityProgress.measures.init(options);
+
+      rootElement.style.width = options.width + 'px';
+      rootElement.style.height = options.height + 'px';
+
+
 
       var studentsAbilityChartElement = document.createElement('div');
       studentsAbilityChartElement.classList.add("students-ability-chart");
       rootElement.appendChild(studentsAbilityChartElement);
-      cet.dashboard.studentsAbilityChart.init(getStudentsAbilityChartOptions(options));
+      cet.dashboard.studentsAbilityChart.app = new cet.dashboard.studentsAbilityChart.appClass(getStudentsAbilityChartOptions(options));
 
       if (window.location.href.indexOf('.lab.') == -1) {
 
         var studentsAbilityHistoryChartElement = document.createElement('div');
         studentsAbilityHistoryChartElement.classList.add("students-ability-history-chart");
         rootElement.appendChild(studentsAbilityHistoryChartElement);
-        cet.dashboard.studentsAbilityHistoryChart.init(getstudentsAbilityHistoryChart(options));
+        cet.dashboard.studentsAbilityHistoryChart.app = new cet.dashboard.studentsAbilityChart.appClass(getstudentsAbilityHistoryChart(options));
+        
 
         var studentAverageAbilityListElement = document.createElement('div');
         studentAverageAbilityListElement.classList.add("student-average-ability-list");

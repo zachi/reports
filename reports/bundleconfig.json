@@ -4,19 +4,23 @@
     "outputFileName": "dashboard/students-ability-progress/bundle.js",
     "inputFiles": [
       "dashboard/lib/d3.v4.min.js",
-      "dashboard/students-ability-progress/students-ability-chart/js/utils.js",
       "dashboard/students-ability-progress/students-ability-chart/js/texts.js",
       "dashboard/students-ability-progress/students-ability-chart/js/measures.js",
       "dashboard/students-ability-progress/students-ability-chart/js/axes.js",
       "dashboard/students-ability-progress/students-ability-chart/js/abilities.js",
+      "dashboard/students-ability-progress/students-ability-chart/js/legend.js",
       "dashboard/students-ability-progress/students-ability-chart/js/app.js",
+
       "dashboard/students-ability-progress/students-ability-history-chart/js/texts.js",
-      "dashboard/students-ability-progress/students-ability-history-chart/js/axes.js",
+      "dashboard/students-ability-progress/students-ability-history-chart/js/student-colors.js",
+      "dashboard/students-ability-progress/students-ability-history-chart/js/legend.js",
+
       "dashboard/students-ability-progress/students-ability-history-chart/js/abilities.js",
-      "dashboard/students-ability-progress/students-ability-history-chart/js/measures.js",
-      "dashboard/students-ability-progress/students-ability-history-chart/js/app.js",
+
       "dashboard/students-ability-progress/student-average-ability-list/js/app.js",
       "dashboard/students-ability-progress/student-average-ability-list/js/texts.js",
+
+      "dashboard/students-ability-progress/js/utils.js",
       "dashboard/students-ability-progress/js/measures.js",
       "dashboard/students-ability-progress/js/data.js",
       "dashboard/students-ability-progress/js/app.js"

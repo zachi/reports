@@ -1,19 +1,26 @@
 ﻿(function () {
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart.measures = (function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityChart = window.cet.dashboard.studentsAbilityChart || {};
+  cet.dashboard.studentsAbilityChart.measuresClass = function (options) {
 
-    function init(options) {
-      var self = cet.dashboard.studentsAbilityChart.measures;
-      self.margin = { top: 27, right: 50, bottom: 85, left: 50 };
-      self.outerWidth = options.width,
-      self.outerHeight = options.height,
-      self.width = self.outerWidth - self.margin.left - self.margin.right,
-      self.height = self.outerHeight - self.margin.top - self.margin.bottom;
-      self.xLabelHeight = 10;
-    }
 
-    return {
-      init: init
-    }
-  })();
+
+    var self = this;
+
+    self.titleHeight = 28;
+    self.width = options.width;
+    self.height = options.height;
+    self.gridMargin = { top: 30, right: 50, left: 50, bottom: 60 };
+
+    self.gridWidth = self.width - self.gridMargin.left - self.gridMargin.right;
+    self.gridHeight = self.height - self.gridMargin.top - self.gridMargin.bottom - self.titleHeight;
+
+    self.svgHeight = self.height - self.titleHeight;
+
+    self.xLabelHeight = 10;
+
+
+
+
+
+  }
 })();

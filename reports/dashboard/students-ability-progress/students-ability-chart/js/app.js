@@ -1,98 +1,57 @@
 ﻿(function () {
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {};
-  cet.dashboard.studentsAbilityChart.app = (function () {
-    var chart;
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityChart = window.cet.dashboard.studentsAbilityChart || {};
+  cet.dashboard.studentsAbilityChart.appClass = function (options) {
+    var self = this;
 
-   
-    function init(options) {
-      cet.dashboard.studentsAbilityChart.measures.init(options);
-      var report = document.getElementById('adaptive-progress-report');
-      var preloader = document.createElement("div");
+    self.namespace = options.namespace;
+    self.chartClassName = options.chartClassName;
 
-      preloader.classList.add("students-ability-chart__preloader");
-      preloader.innerText = "loading...";
-      chart = document.querySelector(".students-ability-chart");
-      //chart.style.width = cet.dashboard.studentsAbilityChart.measures.outerWidth + "px";
-      //chart.style.height = cet.dashboard.studentsAbilityChart.measures.outerHeight + "px";
-      chart.appendChild(preloader);
+    var chart = document.querySelector("." + self.chartClassName);
+    var titleElement = document.createElement('div');
+    titleElement.classList.add(self.chartClassName + '__title');
+    titleElement.innerHTML = self.namespace.texts.chartName;
+    chart.appendChild(titleElement, chart.firstChild);
 
-      
-      
-      if (options.direction === 'ltr') {
-        chart.style.marginLeft = 'auto';
-        report.style.marginLeft = 'auto';
+
+    var preloader = document.createElement("div");
+    preloader.classList.add(self.chartClassName + "__preloader");
+    preloader.innerText = "loading...";
+    chart.appendChild(preloader);
+    self.measures = self.namespace.measures = new cet.dashboard.studentsAbilityChart.measuresClass(options);
+    
+
+    chart.style.width = self.measures.width + 'px';
+    chart.style.height = self.measures.height + 'px';
+
+    if (options.direction === 'ltr') {
+      chart.style.marginLeft = 'auto';
+    }
+    cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
+
+      var preloader = document.querySelector('.' + self.chartClassName + '__preloader');
+      if (preloader && preloader.parentNode) {
+        preloader.parentNode.removeChild(preloader);
       }
-      cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
-        
-        var preloader = document.querySelector('.students-ability-chart__preloader');
-        if (preloader && preloader.parentNode) {
-          preloader.parentNode.removeChild(preloader);
-        }
-        d34.select(".students-ability-chart").selectAll("*").remove();
 
-        cet.dashboard.studentsAbilityChart.app.svg = d34.select(".students-ability-chart")
-                  .append("svg")
-                  .attr("width", cet.dashboard.studentsAbilityChart.measures.width)
-                  .attr("height", cet.dashboard.studentsAbilityChart.measures.height)
-                  .append("g")
-                  .attr("transform", "translate(" + cet.dashboard.studentsAbilityChart.measures.margin.left + "," + cet.dashboard.studentsAbilityChart.measures.margin.top + ")");
-        initLegend();
-        
-        cet.dashboard.studentsAbilityChart.axes.init();
-        cet.dashboard.studentsAbilityChart.abilities.init();
-      });
-    }
+      self.svg = d34.select("." + self.chartClassName)
+        .append("svg")
+        .attr("width", self.measures.width)
+        .attr("height", self.measures.svgHeight)
+        .append("g")
+        .attr("transform", "translate(" + self.measures.gridMargin.left + "," + self.measures.gridMargin.top + ")");
+      self.namespace.legend.init(self.svg, self.chartClassName);
 
-    function initLegend() {
-      var legend = cet.dashboard.studentsAbilityChart.app.svg.append("g")
-        .classed("legend", true)
-        .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
+      self.namespace.axes = new cet.dashboard.studentsAbilityChart.axesClass(
+        self.svg,
+        self.measures,
+        self.chartClassName
+      )
 
-      legend.append("circle")
-        .attr("r", 8)
-        .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 7)
-        .attr("cy", -15)
-        .classed("finished-part", true);
-
-      legend.append("text")
-        .attr("y", -10)
-        .text(cet.dashboard.studentsAbilityChart.texts.legendAbilityFinished)
-        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 115)
-        .classed('students-ability-chart__legend-text', true);
-
-      legend.append("circle")
-        .classed("ability", true)
-        .attr("r", 8)
-        .attr("cx", cet.dashboard.studentsAbilityChart.measures.width - 145)
-        .attr("cy", -15);
-
-      legend.append("text")
-        .attr("y", -10)
-        .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
-        .classed('students-ability-chart__legend-text', true)
-        //.attr("x", cet.dashboard.studentsAbilityChart.measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
-        .attr("x", cet.dashboard.studentsAbilityChart.measures.width - 276)
-        .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
-
-      var titleElement = document.createElement('div');
-      titleElement.classList.add('students-ability-chart__title');
-      titleElement.innerHTML = cet.dashboard.studentsAbilityChart.texts.chartName;
-
-      if (chart.childNodes[1])
-        chart.insertBefore(titleElement, chart.childNodes[1]);
-      else
-        chart.insertBefore(titleElement, chart.firstChild);
-    }
-
-    return {
-      svg: null,
-      init: init
-    }
-  })();
-
-  cet.dashboard.studentsAbilityChart.init = function (options) {
-    cet.dashboard.studentsAbilityChart.app.init(options);
+      self.namespace.abilities.init(self.measures);
+    });
+    
   }
+
+
 })();
+
