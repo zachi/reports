@@ -29,7 +29,7 @@
   {
     "outputFileName": "dashboard/students-ability-progress/bundle.css",
     "inputFiles": [
-      "dashboard/students-ability-progress/index.css",
+      "dashboard/students-ability-progress/css/index.css",
       "dashboard/students-ability-progress/students-ability-chart/index.css",
       "dashboard/students-ability-progress/students-ability-history-chart/index.css",
       "dashboard/students-ability-progress/student-average-ability-list/index.css"

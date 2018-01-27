@@ -12,7 +12,7 @@
     "inputFile": "dashboard/students-ability-progress/student-average-ability-list/index.less"
   },
   {
-    "outputFile": "dashboard/students-ability-progress/index.css",
-    "inputFile": "dashboard/students-ability-progress/index.less"
+    "outputFile": "dashboard/students-ability-progress/css/index.css",
+    "inputFile": "dashboard/students-ability-progress/css/index.less"
   }
 ]
