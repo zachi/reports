@@ -1,5 +1,5 @@
 ﻿.student-average-ability-list__button {
-  background-color: #808080;
+  background-color: #a2a0a0;
   color: #fff;
   border: none;
   padding: 3px;
@@ -18,7 +18,7 @@
   display: flex;
 }
 .student-average-ability-list__show-btn {
-  background-color: #808080;
+  background-color: #a2a0a0;
   color: #fff;
   border: none;
   padding: 3px;
@@ -30,7 +30,7 @@
   text-align: center;
 }
 .student-average-ability-list__order-name-btn {
-  background-color: #808080;
+  background-color: #a2a0a0;
   color: #fff;
   border: none;
   padding: 3px;
@@ -41,7 +41,7 @@
   flex-grow: 1;
 }
 .student-average-ability-list__order-average-btn {
-  background-color: #808080;
+  background-color: #a2a0a0;
   color: #fff;
   border: none;
   padding: 3px;
@@ -80,22 +80,22 @@
   color: #ccc;
 }
 .student-average-ability-list__item.student-average-ability-list__item--is-disabled .student-average-ability-list__item__checkbox {
-  border: solid 1px #ccc;
+  border: solid 1px #a2a0a0;
   cursor: default;
 }
 .student-average-ability-list__item__checkbox {
   width: 12px;
   height: 12px;
-  border: solid 1px #444;
+  border: solid 1px #a2a0a0;
   border-radius: 50%;
   display: inline-block;
-  margin: 0 13px;
+  margin: 0 20px;
   position: relative;
   top: 1px;
   cursor: pointer;
 }
 .student-average-ability-list__item__checkbox.student-average-ability-list__item__checkbox--is-checked {
-  background-color: #444;
+  background-color: #a2a0a0;
 }
 .student-average-ability-list__item__checkbox.student-average-ability-list__item__checkbox--is-checked:after {
   content: '✔';
