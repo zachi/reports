@@ -17440,8 +17440,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
       return radius;
     }
 
-    function init(measures) {
-      
+    function init() {
+      measures = measures = cet.dashboard.studentsAbilityChart.measures;
+
       abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
       var sortedAbilities = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().sort(function (a, b) { return b.students.length - a.students.length; })
@@ -17511,9 +17512,13 @@ Object.defineProperty(exports, '__esModule', { value: true });
     function init(svg, chartClassName) {
 
       var namespace = cet.dashboard.studentsAbilityChart;
-      
+
+
 
       var self = this;
+
+      
+
       var legend = svg.append("g")
         .classed("legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
@@ -17613,7 +17618,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         self.chartClassName
       )
 
-      self.namespace.abilities.init(self.measures);
+      self.namespace.abilities.init();
     });
     
   }
@@ -17662,74 +17667,90 @@ Object.defineProperty(exports, '__esModule', { value: true });
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
   cet.dashboard.studentsAbilityHistoryChart.legend = (function () {
     var self = this;
+    var svg, chartClassName;
 
-    
-
-
-    function init(svg, chartClassName) {
-
+    function reload() {
       var namespace = cet.dashboard.studentsAbilityHistoryChart;
-      
+
       var students = cet.dashboard.studentsAbilityProgress.data.getSelectedStudents();
-      
+
       var self = this;
+
+      svg.selectAll("g.legend").remove();
+
       var legend = svg.append("g")
         .classed("legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       var lastPixel = namespace.measures.gridWidth - 7;
       for (var i = 0; i < students.length; i++) {
-        
+
         var c = legend.append("circle")
           .attr("r", 8)
           .attr("cx", lastPixel)
           .attr("cy", -15)
           .attr('fill', cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(students[i].id))
         lastPixel -= 10;
-        
+
         var t = legend.append("text")
           .attr("y", -10)
           .text(students[i].lastName + ' ' + students[i].firstName)
           //.attr("x", measures.width - 20) //the correct calculation when 'direction:rtl' is working (not on IE11)
           .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily)
-          
+
           .classed(chartClassName + '__legend-text', true);
 
-        
+
         lastPixel -= t.node().getBoundingClientRect().width;
         t.attr("x", lastPixel);
-        lastPixel -= c.node().getBoundingClientRect().width ;
+        lastPixel -= c.node().getBoundingClientRect().width;
       }
-      
 
-      //legend.append("circle")
-      //  .classed("ability", true)
-      //  .attr("r", 8)
-      //  .attr("cx", namespace.measures.gridWidth - 145)
-      //  .attr("cy", -15);
+    }
 
-      //legend.append("text")
-      //  .attr("y", -10)
-      //  .text(cet.dashboard.studentsAbilityChart.texts.legendAbility)
-      //  .classed(chartClassName + '__legend-text', true)
-      //  //.attr("x", measures.width - 108); //the correct calculation when 'direction:rtl' is working (not on IE11)
-      //  .attr("x", namespace.measures.gridWidth - 276)
-      //  .attr("font-family", cet.dashboard.studentsAbilityChart.texts.fontFamily);
+    function init(svgP, chartClassNameP) {
+      svg = svgP;
+      chartClassName = chartClassNameP
+      reload();
 
 
     }
 
-    return { init: init };
+    return {
+      init: init,
+      reload: reload
+    };
 
 
 
 
   })();
 
-  
 
 
 
+
+
+})();
+
+
+(function () {
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
+  cet.dashboard.studentsAbilityHistoryChart.AppExtention = function (options) {
+    var self = this;
+
+    self.namespace = options.namespace;
+    self.chartClassName = options.chartClassName;
+    
+    cet.dashboard.studentsAbilityProgress.data.on('students-selection-changed', function () {
+
+      cet.dashboard.studentsAbilityHistoryChart.legend.reload();
+      
+      cet.dashboard.studentsAbilityHistoryChart.abilities.reload();
+    
+    });
+    
+  }
 
 })();
 
@@ -17739,7 +17760,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
   cet.dashboard.studentsAbilityHistoryChart.abilities = (function () {
     var abilityTip;
-    var tipsHtml = [];
+    //var tipsHtml = {};
     var measures;
 
     function transform(ability) {
@@ -17804,8 +17825,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
         + measures.titleHeight
         + measures.gridMargin.top
         + getAbilityRadius(ability);
-        //+ (abilityTip.node().getBoundingClientRect().height)
-        //+ tooltipTopMarginToPreventFlickering;
+      //+ (abilityTip.node().getBoundingClientRect().height)
+      //+ tooltipTopMarginToPreventFlickering;
       var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"])
         + measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
@@ -17852,32 +17873,26 @@ Object.defineProperty(exports, '__esModule', { value: true });
       return radius;
     }
 
+    function reload() {
+      var abilities = cet.dashboard.studentsAbilityProgress.data.getSelectedStudentsAbilities();
+      if (!abilities)
+        return;
 
 
-    function init(measuresl) {
-      measures = measuresl;
-      abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
+      for (var i = 0; i < abilities.length; i++) {
+        abilities[i].tipHtml = buildAbilityTipHtml(abilities[i]);
+      }
 
-      
-
-      
-
-        var abilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-
-        for (var i = 0; i < abilities.length; i++) {
-          abilities[i].tipHtml = buildAbilityTipHtml(abilities[i]);
-        }
-
-        var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
+      var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
 
 
       var arc = d34.arc().innerRadius(0),
         pie = d34.pie();
 
-      //var nodeData = root.children;
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll("svg.objects").remove();
+      
       var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", measures.gridWidth).attr("height", measures.gridHeight);
-
-
+      
       var nodes = svg.selectAll("g.node")
         .data(abilities).enter().append("g")
         .attr("class", "node ability")
@@ -17920,33 +17935,30 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
       abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
-      abilities.on("click", function (event) {
-        if (window.location.href.indexOf('.lab.') > -1) {
-          console.log('%c Dashboard is in phase 1 mode. remove this if statement to go into phase 2', 'font-size:24px; color: red;');
-          //return;
-        }
+    }
 
-        var selectedClass = 'selected-ability'
-        var selectedAbility = document.querySelector('.' + selectedClass);
 
-        if (selectedAbility) {
-          selectedAbility.classList.remove(selectedClass);
-        }
+    function init() {
+      measures = cet.dashboard.studentsAbilityHistoryChart.measures;
+      abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
-        this.classList.add(selectedClass);
 
-        cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(event);
-      })
+      reload();
+
+
+     
+     
 
     }
 
     return {
-      init: init
+      init: init,
+      reload: reload
     }
 
   })();
 
-  
+
 
 })();
 // Array.prototype.forEach.call(document.getElementsByName('selectedStudents'), function(checkbox) {console.log(checkbox.checked)})
@@ -18006,6 +18018,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
       }
 
       toggleItemSelection(this.dataset.id);
+
+      cet.dashboard.studentsAbilityProgress.data.setSelectedStudents(selectedItems);
     }
 
     function toggleItemSelection(id) {
@@ -18110,6 +18124,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
         });
 
         bindButtonsEventListeners();
+        cet.dashboard.studentsAbilityProgress.data.setSelectedStudents([]);
+
       }
     }
 
@@ -18119,7 +18135,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
         'height: ', options.height, 'px;'
       ].join('');
 
-      cet.dashboard.studentsAbilityProgress.data.on('data-selection', createStudentList);
+      cet.dashboard.studentsAbilityProgress.data.on('abilities-selection-changed', createStudentList);
+
     }
 
     return {
@@ -18153,7 +18170,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
   cet.dashboard.studentsAbilityProgress.utils = (function () {
 
     return {
-      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode;}
+      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode; },
+      cloneJSON: function (json) { return   JSON.parse(JSON.stringify(json)); }
     }
 
   })();
@@ -18192,6 +18210,22 @@ Object.defineProperty(exports, '__esModule', { value: true });
   cet.dashboard.studentsAbilityProgress.data = (function () {
 
     var root;
+    var utils;
+    var allAbilities;
+    var selectedStudentsAbilities = [];
+    var selectedStudents = []; 
+    var abilitiesOfHighestSubmitted;
+
+    function init(initData) {
+
+      cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
+      cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
+
+      utils = cet.dashboard.studentsAbilityProgress.utils;
+      allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+
+      document.body.dispatchEvent(new Event('ready'));
+    }
 
     function getFinishedFraction(ability) {
       var finishedCounter = 0;
@@ -18214,6 +18248,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
           "questionnaires": [],
           "abilities": [],
           "folders": []
+       
         }
 
       };
@@ -18274,14 +18309,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
       return response;
     }
 
-    function init(initData) {
-
-      cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
-      cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
-      
-      document.body.dispatchEvent(new Event('ready'));
-    }
-
     function getQuestionaireNameByOrder(order) {
       return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order - 1].name
     }
@@ -18293,10 +18320,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
     }
 
     function setSelectedAbilities(ability) {
-      resetSelectedAbilities();
-      ability.isSelected = true;
+      cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.forEach(function (currentAbility) {
+        currentAbility.isSelected = currentAbility["questionnaire-order"] == ability["questionnaire-order"] && currentAbility.value == ability.value;
+      });
+     
 
-      window.document.body.dispatchEvent(new Event('data-selection'));
+      window.document.body.dispatchEvent(new Event('abilities-selection-changed'));
     }
 
     function on(eventName, method) {
@@ -18304,9 +18333,10 @@ Object.defineProperty(exports, '__esModule', { value: true });
     }
 
     function getAbilitiesOfHighestSubmitted() {
+      if (abilitiesOfHighestSubmitted)
+        return abilitiesOfHighestSubmitted;
 
-      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-      var result = [];
+      abilitiesOfHighestSubmitted = [];
       for (var i = 0; i < allAbilities.length; i++) {
         
         var highestSubmittedStudents = allAbilities[i].students.filter((student) => { return student.highestSubmitted; })
@@ -18318,21 +18348,41 @@ Object.defineProperty(exports, '__esModule', { value: true });
           "students": highestSubmittedStudents,
         }
         ability.finishedFraction = getFinishedFraction(ability);
-        result.push(ability);
+        abilitiesOfHighestSubmitted.push(ability);
         
       }
-      return result;
+      return abilitiesOfHighestSubmitted;
+    }
+
+    function setSelectedStudents(students) {
+
+      selectedStudents = utils.cloneJSON(students);
+      
+      selectedStudentsAbilities = [];
+
+      for (var i = 0; i < allAbilities.length; i++) {
+        var ability = utils.cloneJSON(allAbilities[i]);
+        for (var j = allAbilities[i].students.length -1; j >= 0 ; j--) {
+          var index = students.indexOf(allAbilities[i].students[j].id)
+          if ( index == -1)
+            ability.students.splice(j, 1);
+          else if (selectedStudents.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0) {
+            selectedStudents[index] = allAbilities[i].students[j];
+          }
+        }
+        selectedStudentsAbilities.push(ability);
+      }
+      window.document.body.dispatchEvent(new Event('students-selection-changed'));
+    }
+
+    function getSelectedStudentsAbilities() {
+      return selectedStudentsAbilities;
     }
 
     function getSelectedStudents() {
-      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-      var result = [];
-      for (var i = 0; i < allAbilities.length; i++) {
-        for (var j = 0; j < allAbilities[i].students.length; j++) {
-          if (result.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0)
-            result.push(allAbilities[i].students[j]);
-        }
-      }
+      return selectedStudents;
+
+      
       return result;
     }
 
@@ -18341,10 +18391,12 @@ Object.defineProperty(exports, '__esModule', { value: true });
       init: init,
       root: root,
       getQuestionaireNameByOrder: getQuestionaireNameByOrder,
-      setSelectedAbilities: setSelectedAbilities,
       on: on,
       getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted,
-      getSelectedStudents: getSelectedStudents
+      setSelectedAbilities: setSelectedAbilities,
+      setSelectedStudents: setSelectedStudents,
+      getSelectedStudents: getSelectedStudents,
+      getSelectedStudentsAbilities: getSelectedStudentsAbilities
 
     }
 
@@ -18434,7 +18486,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         studentsAbilityHistoryChartElement.classList.add("students-ability-history-chart");
         rootElement.appendChild(studentsAbilityHistoryChartElement);
         cet.dashboard.studentsAbilityHistoryChart.app = new cet.dashboard.studentsAbilityChart.appClass(getstudentsAbilityHistoryChart(options));
-        
+        cet.dashboard.studentsAbilityHistoryChart.appExtention = new cet.dashboard.studentsAbilityHistoryChart.AppExtention(getstudentsAbilityHistoryChart(options));
 
         var studentAverageAbilityListElement = document.createElement('div');
         studentAverageAbilityListElement.classList.add("student-average-ability-list");

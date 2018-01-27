@@ -81,7 +81,7 @@
         studentsAbilityHistoryChartElement.classList.add("students-ability-history-chart");
         rootElement.appendChild(studentsAbilityHistoryChartElement);
         cet.dashboard.studentsAbilityHistoryChart.app = new cet.dashboard.studentsAbilityChart.appClass(getstudentsAbilityHistoryChart(options));
-        
+        cet.dashboard.studentsAbilityHistoryChart.appExtention = new cet.dashboard.studentsAbilityHistoryChart.AppExtention(getstudentsAbilityHistoryChart(options));
 
         var studentAverageAbilityListElement = document.createElement('div');
         studentAverageAbilityListElement.classList.add("student-average-ability-list");

@@ -9,9 +9,13 @@
     function init(svg, chartClassName) {
 
       var namespace = cet.dashboard.studentsAbilityChart;
-      
+
+
 
       var self = this;
+
+      
+
       var legend = svg.append("g")
         .classed("legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });

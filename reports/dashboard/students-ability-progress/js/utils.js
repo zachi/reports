@@ -5,7 +5,8 @@
   cet.dashboard.studentsAbilityProgress.utils = (function () {
 
     return {
-      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode;}
+      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode; },
+      cloneJSON: function (json) { return   JSON.parse(JSON.stringify(json)); }
     }
 
   })();

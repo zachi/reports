@@ -55,6 +55,8 @@
       }
 
       toggleItemSelection(this.dataset.id);
+
+      cet.dashboard.studentsAbilityProgress.data.setSelectedStudents(selectedItems);
     }
 
     function toggleItemSelection(id) {
@@ -159,6 +161,8 @@
         });
 
         bindButtonsEventListeners();
+        cet.dashboard.studentsAbilityProgress.data.setSelectedStudents([]);
+
       }
     }
 
@@ -168,7 +172,8 @@
         'height: ', options.height, 'px;'
       ].join('');
 
-      cet.dashboard.studentsAbilityProgress.data.on('data-selection', createStudentList);
+      cet.dashboard.studentsAbilityProgress.data.on('abilities-selection-changed', createStudentList);
+
     }
 
     return {

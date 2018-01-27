@@ -5,6 +5,22 @@
   cet.dashboard.studentsAbilityProgress.data = (function () {
 
     var root;
+    var utils;
+    var allAbilities;
+    var selectedStudentsAbilities = [];
+    var selectedStudents = []; 
+    var abilitiesOfHighestSubmitted;
+
+    function init(initData) {
+
+      cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
+      cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
+
+      utils = cet.dashboard.studentsAbilityProgress.utils;
+      allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+
+      document.body.dispatchEvent(new Event('ready'));
+    }
 
     function getFinishedFraction(ability) {
       var finishedCounter = 0;
@@ -27,6 +43,7 @@
           "questionnaires": [],
           "abilities": [],
           "folders": []
+       
         }
 
       };
@@ -87,14 +104,6 @@
       return response;
     }
 
-    function init(initData) {
-
-      cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
-      cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
-      
-      document.body.dispatchEvent(new Event('ready'));
-    }
-
     function getQuestionaireNameByOrder(order) {
       return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order - 1].name
     }
@@ -106,10 +115,12 @@
     }
 
     function setSelectedAbilities(ability) {
-      resetSelectedAbilities();
-      ability.isSelected = true;
+      cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.forEach(function (currentAbility) {
+        currentAbility.isSelected = currentAbility["questionnaire-order"] == ability["questionnaire-order"] && currentAbility.value == ability.value;
+      });
+     
 
-      window.document.body.dispatchEvent(new Event('data-selection'));
+      window.document.body.dispatchEvent(new Event('abilities-selection-changed'));
     }
 
     function on(eventName, method) {
@@ -117,9 +128,10 @@
     }
 
     function getAbilitiesOfHighestSubmitted() {
+      if (abilitiesOfHighestSubmitted)
+        return abilitiesOfHighestSubmitted;
 
-      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-      var result = [];
+      abilitiesOfHighestSubmitted = [];
       for (var i = 0; i < allAbilities.length; i++) {
         
         var highestSubmittedStudents = allAbilities[i].students.filter((student) => { return student.highestSubmitted; })
@@ -131,21 +143,41 @@
           "students": highestSubmittedStudents,
         }
         ability.finishedFraction = getFinishedFraction(ability);
-        result.push(ability);
+        abilitiesOfHighestSubmitted.push(ability);
         
       }
-      return result;
+      return abilitiesOfHighestSubmitted;
+    }
+
+    function setSelectedStudents(students) {
+
+      selectedStudents = utils.cloneJSON(students);
+      
+      selectedStudentsAbilities = [];
+
+      for (var i = 0; i < allAbilities.length; i++) {
+        var ability = utils.cloneJSON(allAbilities[i]);
+        for (var j = allAbilities[i].students.length -1; j >= 0 ; j--) {
+          var index = students.indexOf(allAbilities[i].students[j].id)
+          if ( index == -1)
+            ability.students.splice(j, 1);
+          else if (selectedStudents.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0) {
+            selectedStudents[index] = allAbilities[i].students[j];
+          }
+        }
+        selectedStudentsAbilities.push(ability);
+      }
+      window.document.body.dispatchEvent(new Event('students-selection-changed'));
+    }
+
+    function getSelectedStudentsAbilities() {
+      return selectedStudentsAbilities;
     }
 
     function getSelectedStudents() {
-      var allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-      var result = [];
-      for (var i = 0; i < allAbilities.length; i++) {
-        for (var j = 0; j < allAbilities[i].students.length; j++) {
-          if (result.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0)
-            result.push(allAbilities[i].students[j]);
-        }
-      }
+      return selectedStudents;
+
+      
       return result;
     }
 
@@ -154,10 +186,12 @@
       init: init,
       root: root,
       getQuestionaireNameByOrder: getQuestionaireNameByOrder,
-      setSelectedAbilities: setSelectedAbilities,
       on: on,
       getAbilitiesOfHighestSubmitted: getAbilitiesOfHighestSubmitted,
-      getSelectedStudents: getSelectedStudents
+      setSelectedAbilities: setSelectedAbilities,
+      setSelectedStudents: setSelectedStudents,
+      getSelectedStudents: getSelectedStudents,
+      getSelectedStudentsAbilities: getSelectedStudentsAbilities
 
     }
 

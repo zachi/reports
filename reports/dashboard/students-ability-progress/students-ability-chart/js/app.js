@@ -47,7 +47,7 @@
         self.chartClassName
       )
 
-      self.namespace.abilities.init(self.measures);
+      self.namespace.abilities.init();
     });
     
   }

@@ -3,7 +3,7 @@
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityHistoryChart = window.cet.dashboard.studentsAbilityHistoryChart || {};
   cet.dashboard.studentsAbilityHistoryChart.abilities = (function () {
     var abilityTip;
-    var tipsHtml = [];
+    //var tipsHtml = {};
     var measures;
 
     function transform(ability) {
@@ -68,8 +68,8 @@
         + measures.titleHeight
         + measures.gridMargin.top
         + getAbilityRadius(ability);
-        //+ (abilityTip.node().getBoundingClientRect().height)
-        //+ tooltipTopMarginToPreventFlickering;
+      //+ (abilityTip.node().getBoundingClientRect().height)
+      //+ tooltipTopMarginToPreventFlickering;
       var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"])
         + measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
@@ -116,32 +116,26 @@
       return radius;
     }
 
+    function reload() {
+      var abilities = cet.dashboard.studentsAbilityProgress.data.getSelectedStudentsAbilities();
+      if (!abilities)
+        return;
 
 
-    function init(measuresl) {
-      measures = measuresl;
-      abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
+      for (var i = 0; i < abilities.length; i++) {
+        abilities[i].tipHtml = buildAbilityTipHtml(abilities[i]);
+      }
 
-      
-
-      
-
-        var abilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
-
-        for (var i = 0; i < abilities.length; i++) {
-          abilities[i].tipHtml = buildAbilityTipHtml(abilities[i]);
-        }
-
-        var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
+      var color = d34.scaleOrdinal().range(["#94af8c", "#74a9cf", "#3cbac9", "#dba388", "#ffaacb"]);
 
 
       var arc = d34.arc().innerRadius(0),
         pie = d34.pie();
 
-      //var nodeData = root.children;
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll("svg.objects").remove();
+      
       var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("objects", true).attr("width", measures.gridWidth).attr("height", measures.gridHeight);
-
-
+      
       var nodes = svg.selectAll("g.node")
         .data(abilities).enter().append("g")
         .attr("class", "node ability")
@@ -184,32 +178,29 @@
 
       abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
-      abilities.on("click", function (event) {
-        if (window.location.href.indexOf('.lab.') > -1) {
-          console.log('%c Dashboard is in phase 1 mode. remove this if statement to go into phase 2', 'font-size:24px; color: red;');
-          //return;
-        }
+    }
 
-        var selectedClass = 'selected-ability'
-        var selectedAbility = document.querySelector('.' + selectedClass);
 
-        if (selectedAbility) {
-          selectedAbility.classList.remove(selectedClass);
-        }
+    function init() {
+      measures = cet.dashboard.studentsAbilityHistoryChart.measures;
+      abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
-        this.classList.add(selectedClass);
 
-        cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(event);
-      })
+      reload();
+
+
+     
+     
 
     }
 
     return {
-      init: init
+      init: init,
+      reload: reload
     }
 
   })();
 
-  
+
 
 })();

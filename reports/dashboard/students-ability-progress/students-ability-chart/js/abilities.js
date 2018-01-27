@@ -132,8 +132,9 @@
       return radius;
     }
 
-    function init(measures) {
-      
+    function init() {
+      measures = measures = cet.dashboard.studentsAbilityChart.measures;
+
       abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
 
       var sortedAbilities = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().sort(function (a, b) { return b.students.length - a.students.length; })

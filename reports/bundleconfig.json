@@ -14,7 +14,7 @@
       "dashboard/students-ability-progress/students-ability-history-chart/js/texts.js",
       "dashboard/students-ability-progress/students-ability-history-chart/js/student-colors.js",
       "dashboard/students-ability-progress/students-ability-history-chart/js/legend.js",
-
+      "dashboard/students-ability-progress/students-ability-history-chart/js/app-extention.js",
       "dashboard/students-ability-progress/students-ability-history-chart/js/abilities.js",
 
       "dashboard/students-ability-progress/student-average-ability-list/js/app.js",

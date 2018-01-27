@@ -1,10 +1,13 @@
 ﻿
-do we need language (for questionnaire)
-search specific student
-check actual resolutions
-mobile?
-set real preloader
-namespacing
+fix abilities.js:    function init(measuresl) {
+fix tipsHTML saved on model data
+fix laim rendering of main title 
+
+
+
+
+
+
 
 
 
