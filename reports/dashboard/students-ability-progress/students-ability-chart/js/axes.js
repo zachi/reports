@@ -5,7 +5,7 @@
   cet.dashboard.studentsAbilityChart.axesClass = function (svg, measures, chartClassName) {
     var self = this;
     var texts = cet.dashboard.studentsAbilityChart.texts
-    self.questionnaireTip = d34.select("." + chartClassName ).append("div").attr("class", "questionnaire-tip").style("opacity", 0);
+    self.questionnaireTip = d34.select("." + chartClassName).append("div").attr("class", "students-ability-chart__questionnaire-tip").style("opacity", 0);
     
     /**************************** Y AXIS **********************************/
 

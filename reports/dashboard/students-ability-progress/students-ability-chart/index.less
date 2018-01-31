@@ -1,9 +1,11 @@
-﻿@grid-line-color: rgba(0,0,0,.2);
+﻿@import "../css/variables.less";
+
+@grid-line-color: rgba(0,0,0,.2);
 @ability-color: #929090;
 @ability-border-color: #929090;
 @ability-finished-color: #5ede04;
 @ability-finished-border-color: #5ede04;
-@texts-color: #a2a0a0;
+//@texts-color: #a2a0a0;
 @ability-tip-max-width: 350px;
 
 .students-ability-chart, .students-ability-history-chart {
@@ -22,7 +24,7 @@
 }
 
 //TODO add prefix students-ability-chart
-.students-ability-chart .ability {
+.students-ability-chart__ability {
   fill: @ability-color;
   fill-opacity: .7;
   stroke: @ability-border-color;
@@ -30,7 +32,7 @@
   stroke-opacity: 0.9;
 }
 
-.finished-part {
+.students-ability-chart__ability-finished-part {
     fill: @ability-finished-color;
     stroke: @ability-finished-border-color;
     pointer-events: none;
@@ -41,10 +43,13 @@
 .students-ability-chart__preloader {
     position: absolute;
     width: 100%;
-    height: 100%;
     text-align: center;
-    line-height: 350px;
     font-size: 30px;
+    display:none;
+
+}
+.students-ability-chart--loading .students-ability-chart__preloader{
+  display:block;
 }
 
 .students-ability-chart__axis-tick--strong text {
@@ -54,6 +59,7 @@
 
 .students-ability-chart svg, .students-ability-history-chart svg {
     overflow: visible;
+    direction:ltr;
 }
 
 
@@ -61,33 +67,33 @@
     margin: 10px auto 0;
     width: 143px;
     line-height: 18px;
-    color: @texts-color;
+    color: @text-color;
     font-size: 18px;
     font-weight: 600;
 }
 
 
-.legend .finished-part {
+.legend .students-ability-chart__ability-finished-part {
     fill: #4baf04;
 }
 
 .students-ability-chart__legend-text, .students-ability-history-chart__legend-text {
-  fill: @texts-color;
+  fill: @text-color;
   font-size: 13px;
   /*direction: rtl;*/ //should be on, but not on IE11
 }
 
 .students-ability-chart__axis-tick-text {
     font-size: 1.4em;
-    fill: @texts-color;
+    fill: @text-color;
 }
 
 .students-ability-chart__axis-label {
-    fill: @texts-color;
+    fill: @text-color;
     font-size: 18px;
 }
 
-.ability-tip, .questionnaire-tip {
+.students-ability-chart__ability-tip, .students-ability-chart__questionnaire-tip {
     position: absolute;
     top: -10px;
     left: 0;
@@ -99,13 +105,13 @@
     direction: rtl;
 }
 
-.ability-tip {
+.students-ability-chart__ability-tip {
     max-width: @ability-tip-max-width;
     min-width: 150px;
     top: 12px;
 }
 
-.ability-tip:after, .questionnaire-tip:after {
+.students-ability-chart__ability-tip:after, .students-ability-chart__questionnaire-tip:after {
     box-sizing: border-box;
     display: inline;
     font-size: 17px;
@@ -120,7 +126,7 @@
     height: 12px;
 }
 
-.ability-tip:after {
+.students-ability-chart__ability-tip:after {
     content: "\25B2";
     top: -11px;
     height: 12px;
@@ -187,7 +193,7 @@
     }
 }
 
-.selected-ability {
-    /*stroke: #000;
-    stroke-width: 3px;*/
+.students-ability-chart__ability--selected {
+    stroke: #000;
+    stroke-width: 3px;
 }

@@ -144,8 +144,8 @@
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75551",
-          "firstName": "מה",
-          "lastName": "קשור",
+          "firstName": "קשור",
+          "lastName": "מה",
           "ability": 40,
           "score": 67.0,
           "isScopeFinished": false,
@@ -184,7 +184,7 @@
           "lastName": "דמו",
           "ability": 70,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
           "isHighestSubmitted": true
         },
@@ -241,24 +241,24 @@
     {
       "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
       "firstName": "תלמיד",
-      "lastName": "דמו",
-      "avgAbility": 100.0,
+      "lastName": "דמו 2",
+      "avgAbility": 80.0,
       "avgScore": 83.5,
       "isScopeFinished": false
     },
     {
       "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
       "firstName": "תלמיד",
-      "lastName": "דמו",
-      "avgAbility": 100.0,
+      "lastName": "דמו 3",
+      "avgAbility": 80.0,
       "avgScore": 83.5,
       "isScopeFinished": false
     },
     {
       "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75554",
       "firstName": "תלמיד",
-      "lastName": "דמו",
-      "avgAbility": 100.0,
+      "lastName": "דמו 4",
+      "avgAbility": 50.0,
       "avgScore": 83.5,
       "isScopeFinished": false
     },
@@ -266,16 +266,16 @@
       "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75550",
       "firstName": "ואופירה",
       "lastName": "ברקו",
-      "avgAbility": 100.0,
+      "avgAbility": 20.0,
       "avgScore": 83.5,
       "isScopeFinished": false
 
     },
     {
       "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75551",
-      "firstName": "מה",
-      "lastName": "קשור",
-      "avgAbility": 100.0,
+      "firstName": "קשור",
+      "lastName": "מה",
+      "avgAbility": 30.0,
       "avgScore": 83.5,
       "isScopeFinished": false
     }

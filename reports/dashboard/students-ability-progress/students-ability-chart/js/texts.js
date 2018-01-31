@@ -11,7 +11,9 @@
     legendAbilityFinished: "לומדים שסיימו נושא",
     legendAbility: "לומדים שטרם סיימו נושא",
     chartName: "רמת יכולות לומדים",
-    fontFamily: "'Assistant', sans-serif"
+    fontFamily: "'Assistant', sans-serif",
+    loading: "טוען...",
+    titilePrefix: "נושא"
   }
 
 })();

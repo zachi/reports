@@ -1,7 +1,7 @@
 ﻿@import "../css/variables.less";
 
 .student-average-ability-list__button {
-  background-color: @text-color;
+  background-color: #808080;
   color: #fff;
   border: none;
   padding: 3px;
@@ -17,7 +17,7 @@
   direction: rtl;
   padding: 16px 0 16px 16px;
   box-sizing: border-box;
-  font-family:@font-family;
+  font-family: @font-family;
 }
 
 .student-average-ability-list button {
@@ -25,7 +25,7 @@
 }
 
 .student-average-ability-list__buttons {
-  margin: 0 24px 8px 0;
+  margin: 0 18px 8px 0;
   display: flex;
 }
 
@@ -33,6 +33,7 @@
   .student-average-ability-list__button;
   width: 36px;
   text-align: center;
+  cursor: default;
 }
 
 .student-average-ability-list__order-name-btn {
@@ -51,6 +52,7 @@
   overflow-y: auto;
   direction: ltr;
   height: 89%;
+  color: #808080;
 
   &::-webkit-scrollbar-track {
     background-color: #e6e6e6;
@@ -73,9 +75,19 @@
   direction: rtl;
   text-align: right;
   font-size: 15px;
+  cursor: pointer;
+
+  .student-average-ability-list__item__name {
+    cursor: pointer;
+  }
 
   &.student-average-ability-list__item--is-disabled {
     color: #ccc;
+    cursor: default;
+
+    .student-average-ability-list__item__name {
+      cursor: default;
+    }
 
     .student-average-ability-list__item__checkbox {
       border: solid 1px #ccc;
@@ -87,7 +99,7 @@
 .student-average-ability-list__item__checkbox {
   width: 12px;
   height: 12px;
-  border: solid 1px @text-color;
+  border: solid 1px #808080;
   border-radius: 50%;
   display: inline-block;
   margin: 0 20px;
@@ -96,7 +108,7 @@
   cursor: pointer;
 
   &.student-average-ability-list__item__checkbox--is-checked {
-    background-color: @text-color;
+    background-color: #808080;
 
     &:after {
       content: '✔';
@@ -104,7 +116,7 @@
       font-size: 9px;
       position: absolute;
       top: -1px;
-      left: 3px;
+      left: 2px;
     }
   }
 }
@@ -124,11 +136,31 @@
   vertical-align: top;
 }
 
-.sorting-arrows {
+.student-average-ability-list__sorting-arrows {
   font-size: 7px;
   float: left;
   height: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 2px;
+}
+
+.student-average-ability-list__sort:focus {
+  outline: none;
+}
+
+.student-average-ability-list__sort .student-average-ability-list__arrow {
+  display: block;
+  color: #b5b5b5;
+}
+
+.student-average-ability-list__sort--active .student-average-ability-list__arrow {
+  display: none;
+
+  &.student-average-ability-list__arrow--active {
+    display: block;
+    color: white;
+    margin-top: 1px;
+  }
 }

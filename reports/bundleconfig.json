@@ -3,6 +3,8 @@
   {
     "outputFileName": "dashboard/students-ability-progress/bundle.js",
     "inputFiles": [
+      "dashboard/students-ability-progress/js/custom-event-ie-polyfill.js",
+
       "dashboard/lib/d3.v4.min.js",
       "dashboard/students-ability-progress/students-ability-chart/js/texts.js",
       "dashboard/students-ability-progress/students-ability-chart/js/measures.js",

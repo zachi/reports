@@ -17,14 +17,14 @@
       
 
       var legend = svg.append("g")
-        .classed("legend", true)
+        .classed("students-ability-chart__legend", true)
         .attr("transform", function (d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("circle")
         .attr("r", 8)
         .attr("cx", namespace.measures.gridWidth - 7)
         .attr("cy", -15)
-        .classed("finished-part", true);
+        .classed("students-ability-chart__ability-finished-part", true);
 
       legend.append("text")
         .attr("y", -10)
@@ -35,7 +35,7 @@
         .classed(chartClassName + '__legend-text', true);
 
       legend.append("circle")
-        .classed("ability", true)
+        .classed("students-ability-chart__ability", true)
         .attr("r", 8)
         .attr("cx", namespace.measures.gridWidth - 145)
         .attr("cy", -15);

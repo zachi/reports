@@ -5,9 +5,11 @@
 
     self.namespace = options.namespace;
     self.chartClassName = options.chartClassName;
+    document.querySelector("." + self.chartClassName).classList.remove('students-ability-chart--loading');
     
     cet.dashboard.studentsAbilityProgress.data.on('students-selection-changed', function () {
 
+      cet.dashboard.studentsAbilityHistoryChart.studentsColors.reload();
       cet.dashboard.studentsAbilityHistoryChart.legend.reload();
       
       cet.dashboard.studentsAbilityHistoryChart.abilities.reload();

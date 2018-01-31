@@ -13,12 +13,17 @@
     chart.appendChild(titleElement, chart.firstChild);
 
 
-    var preloader = document.createElement("div");
-    preloader.classList.add(self.chartClassName + "__preloader");
-    preloader.innerText = "loading...";
-    chart.appendChild(preloader);
+    
     self.measures = self.namespace.measures = new cet.dashboard.studentsAbilityChart.measuresClass(options);
     
+
+    var preloader = document.createElement("div");
+    preloader.classList.add("students-ability-chart__preloader");
+    preloader.innerText = cet.dashboard.studentsAbilityChart.texts.loading;
+    preloader.style.top = (self.namespace.measures.svgHeight / 2)  + 'px';
+    chart.appendChild(preloader);
+    chart.classList.add('students-ability-chart--loading');
+
 
     chart.style.width = self.measures.width + 'px';
     chart.style.height = self.measures.height + 'px';
@@ -28,10 +33,12 @@
     }
     cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
 
-      var preloader = document.querySelector('.' + self.chartClassName + '__preloader');
-      if (preloader && preloader.parentNode) {
-        preloader.parentNode.removeChild(preloader);
-      }
+      //var preloader = document.querySelector('.' + self.chartClassName + '__preloader');
+      //if (preloader && preloader.parentNode) {
+      //  preloader.parentNode.removeChild(preloader);
+      //}
+
+      chart.classList.remove('students-ability-chart--loading');
 
       self.svg = d34.select("." + self.chartClassName)
         .append("svg")

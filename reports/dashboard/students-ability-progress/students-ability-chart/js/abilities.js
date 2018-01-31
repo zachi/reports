@@ -18,18 +18,6 @@
         titlesHeight = document.querySelector('.students-ability-chart__title').getBoundingClientRect().height;
       }
       return titlesHeight;
-
-
-      //var chart = document.querySelector('.students-ability-dashboard')
-      //var svg;
-
-      //if (!chart) return 0;
-
-      //svg = chart.querySelector('svg');
-
-      //if (!svg) return 0;
-
-      //return svg.getBoundingClientRect().top - chart.getBoundingClientRect().top
     }
 
     function hasFinishedStudent(ability) {
@@ -49,10 +37,10 @@
       var secondColumnStudents = "";
 
       for (var i = 0; i < ability.students.length; i++) {
-
+        
         var student = "<span class='ability-tip__student'>" + ability.students[i].firstName + ' ' + ability.students[i].lastName + "</span>";
         if (ability.students[i].finished)
-          student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
+          student = student.replace("ability-tip__student", "students-ability-chart__ability-tip__student ability-tip-student--finished");
 
         if (i % 2 === 0)
           firstColumnStudents += student;
@@ -135,7 +123,7 @@
     function init() {
       measures = measures = cet.dashboard.studentsAbilityChart.measures;
 
-      abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "ability-tip").style("opacity", 0);
+      abilityTip = d34.select(".students-ability-chart").append("div").attr("class", "students-ability-chart__ability-tip").style("opacity", 0);
 
       var sortedAbilities = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().sort(function (a, b) { return b.students.length - a.students.length; })
 
@@ -149,35 +137,35 @@
         sortedAbilitiesDoubled.push(abilityFinishedPart);
       }
 
-      var objects = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("objects", true).attr("width", measures.width).attr("height", measures.height);
-      objects.selectAll(".ability")
+      var abilitiesContainer = cet.dashboard.studentsAbilityChart.app.svg.append("svg").classed("students-ability-chart__abilities", true).attr("width", measures.width).attr("height", measures.height);
+      abilitiesContainer.selectAll(".students-ability-chart__ability")
         .data(sortedAbilitiesDoubled)
         .enter().append("circle")
-        .classed("ability", function (ability) { return !ability.finishedPart; })
-        .classed("finished-part", function (ability) { return ability.finishedPart; })
+        .classed("students-ability-chart__ability", function (ability) { return !ability.finishedPart; })
+        .classed("students-ability-chart__ability-finished-part", function (ability) { return ability.finishedPart; })
         .attr("r", "1")
         .attr("transform", transform)
         .transition().attr("r", getAbilityRadius).duration(1000);
 
 
-      var abilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".objects .ability");
+      var abilities = cet.dashboard.studentsAbilityChart.app.svg.selectAll(".students-ability-chart__abilities .students-ability-chart__ability");
 
       abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
 
       abilities.on("click", function (event) {
-        if (window.location.href.indexOf('.lab.') > -1) {
-          console.log('%c Dashboard is in phase 1 mode. remove this if statement to go into phase 2', 'font-size:24px; color: red;');
-          //return;
-        }
+        //if (window.location.href.indexOf('.lab.') > -1) {
+        //  return;
+        //}
 
-        var selectedClass = 'selected-ability'
+        var selectedClass = 'students-ability-chart__ability--selected'
         var selectedAbility = document.querySelector('.' + selectedClass);
 
         if (selectedAbility) {
           selectedAbility.classList.remove(selectedClass);
         }
 
-        this.classList.add(selectedClass);
+        this.attributes['class'] += ' ' + selectedClass;
+        //this.classList.add(selectedClass);
 
         cet.dashboard.studentsAbilityProgress.data.setSelectedAbilities(event);
       })

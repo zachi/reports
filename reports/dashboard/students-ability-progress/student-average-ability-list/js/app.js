@@ -1,44 +1,34 @@
-﻿// Array.prototype.forEach.call(document.getElementsByName('selectedStudents'), function(checkbox) {console.log(checkbox.checked)})
+﻿
 (function () {
 
   var app = (function () {
     var sortByProp = 'lastName', sortByDir = 1;
     var selectedItems = [];
+    var sortByButtons;
+    var sortingArrows;
 
     function handleSortBy(event) {
       event.preventDefault();
+      Array.prototype.forEach.call(sortByButtons, function (btn) {
+        btn.classList.remove('student-average-ability-list__sort--active');
+      })
+      var srcButton = event.target;
+      if (!srcButton.classList.contains('student-average-ability-list__sort'))
+        srcButton = cet.dashboard.studentsAbilityProgress.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
 
-      if (sortByProp === event.target.dataset.type) {
+      srcButton.classList.add('student-average-ability-list__sort--active')
+      if (sortByProp === srcButton.dataset.type) {
         sortByDir *= -1;
       } else {
-        sortByProp = event.target.dataset.type;
+        sortByProp = srcButton.dataset.type;
         sortByDir = 1;
       }
+      Array.prototype.forEach.call(sortingArrows, function (arrow) {
+        arrow.classList.remove('student-average-ability-list__arrow--active');
+      })
+      srcButton.querySelector('.student-average-ability-list__arrow-' + (sortByDir == 1 ? 'up' : 'down')).classList.add('student-average-ability-list__arrow--active')
 
       createStudentList();
-    }
-
-    function handleSortMouseEnter(event) {
-      toggleArrows(this, 'visible');
-    }
-
-    function handleSortMouseLeave(event) {
-      toggleArrows(this, 'hidden');
-    }
-
-    function toggleArrows(button, visbility) {
-      var sortingArrows = button.querySelector('.sorting-arrows')
-      
-      if (button.dataset.type !== sortByProp && sortingArrows) {
-        sortingArrows.style.visibility = visbility;
-        var arrows = sortingArrows.querySelectorAll('div');
-        if (arrows) {
-          Array.prototype.forEach.call(arrows, function (arrow) {
-            arrow.style.visibility = visbility;
-          })
-        }
-      }
-
     }
 
     function handleItemSelect(event) {
@@ -95,31 +85,29 @@
 
     function bindButtonsEventListeners() {
 
-      var sortByButtons = document.querySelectorAll('.student-average-ability-list__sort')
-
+      sortByButtons = document.querySelectorAll('.student-average-ability-list__sort')
       Array.prototype.forEach.call(sortByButtons, function (btn) {
         btn.addEventListener('click', handleSortBy);
-        btn.addEventListener('mouseenter', handleSortMouseEnter);
-        btn.addEventListener('mouseleave', handleSortMouseLeave);
       })
     }
 
     function createStudentListHeader() {
+      
       return [
         '<div class="student-average-ability-list__buttons">',
         ' <div class="student-average-ability-list__show-btn">', cet.dashboard.studentAverageAbilityList.texts.showButton, '</div>',
         ' <button data-type="lastName" class="student-average-ability-list__sort student-average-ability-list__order-name-btn">',
         cet.dashboard.studentAverageAbilityList.texts.orderByNameButton,
-        '   <div class="sorting-arrows" ', (sortByProp === 'lastName' ? '' : 'style="visibility:hidden"'), '>',
-        '     <div ', (sortByProp === 'lastName' && sortByDir === 1 ? '' : 'style="visibility:hidden"'), ' class="arrow-up">▲</div>',
-        '     <div ', (sortByProp === 'lastName' && sortByDir === -1 ? '' : 'style="visibility:hidden"'), 'class="arrow-down">▼</div>',
+        '   <div class="student-average-ability-list__sorting-arrows" >',
+        '     <div class="student-average-ability-list__arrow student-average-ability-list__arrow-up ', (sortByProp === 'lastName' && sortByDir === 1 ? 'student-average-ability-list__arrow--active' : ''), '" >▲</div>',
+        '     <div class="student-average-ability-list__arrow student-average-ability-list__arrow-down ', (sortByProp === 'lastName' && sortByDir === -1 ? 'student-average-ability-list__arrow--active': ''), '" >▼</div>',
         '   </div>',
         ' </button>',
         ' <button data-type="avgAbility" class="student-average-ability-list__sort student-average-ability-list__order-average-btn">',
         cet.dashboard.studentAverageAbilityList.texts.orderByAverageButton,
-        '   <div class="sorting-arrows" ', (sortByProp === 'average' ? '' : 'style="visibility:hidden"'), '>',
-        '     <div ', (sortByProp === 'avgAbility' && sortByDir === 1 ? '' : 'style="visibility:hidden"'), ' class="arrow-up">▲</div>',
-        '     <div ', (sortByProp === 'avgAbility' && sortByDir === -1 ? '' : 'style="visibility:hidden"'), 'class="arrow-down">▼</div>',
+        '   <div class="student-average-ability-list__sorting-arrows" >',
+        '     <div class="student-average-ability-list__arrow student-average-ability-list__arrow-up ', (sortByProp === 'avgAbility' && sortByDir === 1 ? 'student-average-ability-list__arrow--active' : ''), '" >▲</div>',
+        '     <div class="student-average-ability-list__arrow student-average-ability-list__arrow-down ', (sortByProp === 'avgAbility' && sortByDir === -1 ? 'student-average-ability-list__arrow--active' : ''), '" >▼</div>',
         '   </div>',
         ' </div>',
         '</button>'
@@ -127,15 +115,21 @@
     }
 
     function createStudentList() {
-      var selectedAbility = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.filter(function (a) { return a.isSelected })[0];
+      var selectedAbility = cet.dashboard.studentsAbilityProgress.data.getAbilitiesOfHighestSubmitted().filter(function (a) { return a.isSelected })[0];
       var sortedStudents = selectedAbility.students.sort(function (a, b) {
-        if (sortByDir > 0) return a[sortByProp] > b[sortByProp];
+        if (sortByDir > 0)
+          return a[sortByProp] > b[sortByProp] ? 1 : -1;
 
-        return a[sortByProp] <= b[sortByProp]
+        return a[sortByProp] <= b[sortByProp] ? 1 : -1;
       });
 
       var studentsList = document.querySelector('.student-average-ability-list');
-
+      var previousStudents = studentsList.querySelector('.student-average-ability-list__students');
+      if(previousStudents)
+        previousStudents.remove();
+      //if no sort selected yet, sort by name is defaulted
+      if (!studentsList.querySelector('.student-average-ability-list__sort--active'))
+        studentsList.querySelector('.student-average-ability-list__order-name-btn').classList.add('student-average-ability-list__sort--active');
       var ul, li;
       if (selectedAbility) {
         ul = document.createElement('ul');
@@ -144,8 +138,8 @@
           li = document.createElement('li');
           li.className = 'student-average-ability-list__item'
           li.innerHTML = ['',
-                          '<label class="student-average-ability-list__item__name"><span class="student-average-ability-list__item__checkbox"></span>', st.lastName, ' ' , st.firstName, '</label>',
-                          '<span class="student-average-ability-list__item__average">', st.avgAbility, '</span>'].join('');
+                          '<label class="student-average-ability-list__item__name" title="', st.lastName, ' ', st.firstName, '"><span class="student-average-ability-list__item__checkbox"></span>', st.lastName, ' ', st.firstName, '</label>',
+                          '<span class="student-average-ability-list__item__average">', Number(st.avgAbility).toFixed(1), '</span>'].join('');
 
           li.dataset.id = st.id;
           li.addEventListener('click', handleItemSelect);
@@ -153,26 +147,34 @@
           ul.appendChild(li);         
         });
 
-        studentsList.innerHTML = createStudentListHeader();
+        //studentsList.innerHTML = createStudentListHeader();
         studentsList.appendChild(ul);
+
 
         sortedStudents.forEach(function (st) {
           toggleItemSelection(st.id);
         });
+        
+        for (var i = selectedItems.length - 1; i >= 0; i--) {
 
+          if (sortedStudents.filter(function (ss) { return ss.id === selectedItems[i]; }).length === 0)
+            selectedItems.splice(i, 1);
+        }
+        
+        
         bindButtonsEventListeners();
-        cet.dashboard.studentsAbilityProgress.data.setSelectedStudents([]);
+        cet.dashboard.studentsAbilityProgress.data.setSelectedStudents(selectedItems);
 
       }
     }
 
     function init(options) {
       var studentsList = document.querySelector('.student-average-ability-list');
-      studentsList.style = ['width: ', options.width, 'px;',
-        'height: ', options.height, 'px;'
-      ].join('');
-
+      studentsList.style.width = options.width + 'px';
+      studentsList.style.height = options.height + 'px';
+      studentsList.innerHTML = createStudentListHeader();
       cet.dashboard.studentsAbilityProgress.data.on('abilities-selection-changed', createStudentList);
+      sortingArrows = studentsList.querySelectorAll('.student-average-ability-list__arrow');
 
     }
 

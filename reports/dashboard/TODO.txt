@@ -1,0 +1,12 @@
+﻿
+do we need language (for questionnaire)
+search specific student
+check actual resolutions
+mobile?
+set real preloader
+namespacing
+
+
+
+
+.

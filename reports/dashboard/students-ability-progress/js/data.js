@@ -7,19 +7,32 @@
     var root;
     var utils;
     var allAbilities;
+    var allLines;
     var selectedStudentsAbilities = [];
-    var selectedStudents = []; 
+    var selectedStudentsLines = [];
+    var selectedStudents = [];
     var abilitiesOfHighestSubmitted;
+    var rootElement;
+    const ABILITY_NORMALIZE_FACTOR = 10;
 
-    function init(initData) {
+    function init(rootElementP) {
+      rootElement = rootElementP;
+    }
+
+    function load(initData) {
 
       cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
       cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
 
       utils = cet.dashboard.studentsAbilityProgress.utils;
       allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
+      allLines = cet.dashboard.studentsAbilityProgress.data.root.folder.lines;
 
-      document.body.dispatchEvent(new Event('ready'));
+      invokeReady();
+    }
+
+    function invokeReady() {
+      rootElement.dispatchEvent(new CustomEvent('ready'));
     }
 
     function getFinishedFraction(ability) {
@@ -42,16 +55,18 @@
           "name": before.name,
           "questionnaires": [],
           "abilities": [],
+          "lines": [],
           "folders": []
-       
         }
 
       };
 
+      after.folder.lines = buildLinesArray(before.questionnaires);
+
       for (var i = 0; before.questionnaires && i < before.questionnaires.length; i++) {
         var abilities = {};
         for (var j = 0; j < before.questionnaires[i].students.length; j++) {
-          var abilityGrade = Math.round(before.questionnaires[i].students[j].ability / 10);
+          var abilityGrade = Math.round(normalizeAbility(before.questionnaires[i].students[j].ability));
           var ability = abilities[i + abilityGrade];
           if (!ability) {
             ability = {
@@ -64,21 +79,21 @@
           var currentStudent = {}, avgAbilityForStudent = 0, avgScoreForStudent = 0;
           if (before.students) {
             currentStudent = before.students.filter(function (st) { return before.questionnaires[i].students[j].id === st.id })[0];
-            avgAbilityForStudent = Number(currentStudent.avgAbility).toFixed(1);
-            avgScoreForStudent = Number(currentStudent.avgScore).toFixed(1);
+            avgAbilityForStudent = currentStudent.avgAbility;
+            avgScoreForStudent = currentStudent.avgScore;
           }
-          //if (before.questionnaires[i].students[j].isHighestSubmitted) {
-            ability.students.push({
-              "id": before.questionnaires[i].students[j].id,
-              "firstName": before.questionnaires[i].students[j].firstName,
-              "lastName": before.questionnaires[i].students[j].lastName,
-              "finished": before.questionnaires[i].students[j].isScopeFinished,
-              "highestSubmitted": before.questionnaires[i].students[j].isHighestSubmitted,
-              "avgAbility": avgAbilityForStudent,
-              "avgScore": avgScoreForStudent
-              
-            })
-          //}
+
+          ability.students.push({
+            "id": before.questionnaires[i].students[j].id,
+            "firstName": before.questionnaires[i].students[j].firstName,
+            "lastName": before.questionnaires[i].students[j].lastName,
+            "finished": before.questionnaires[i].students[j].isScopeFinished,
+            "highestSubmitted": before.questionnaires[i].students[j].isHighestSubmitted,
+            "avgAbility": avgAbilityForStudent,
+            "avgScore": avgScoreForStudent
+
+          })
+
           abilities[i + abilityGrade] = ability;
         }
 
@@ -104,27 +119,90 @@
       return response;
     }
 
+    function normalizeAbility(ability) {
+      return ability / ABILITY_NORMALIZE_FACTOR;
+    }
+
+    function buildLinesArray(questionnaires) {
+
+      /* comparator functions: */
+      const findStartedLine = function (point, studentId) {
+        return point.to === null && point.studentId === studentId
+      };
+      const findLine = function (line, qIndex, ability) {
+        return line.from.x === foundStartLine.from.x
+        && line.from.y === foundStartLine.from.y
+        && line.to
+        && line.to.x === qIndex
+        && line.to.y === ability
+      }
+
+      /* create lines array: */
+      let linesArray = [];
+      let questionnaireIndex = 1;
+      let foundStartLine, foundLines;
+      questionnaires.forEach(function (questionnaire) {
+        questionnaire.students.forEach(function (student) {
+          /* for each student, first identify if this point completes a started line: */
+          foundStartLine = linesArray.filter(function (point) { return findStartedLine(point, student.id) })[0];
+          if (foundStartLine) {
+            /* now check case of duplicate (ie, same line is already in list) */
+            foundLines = linesArray.filter(function (line) { return findLine(line, questionnaireIndex, normalizeAbility(student.ability)) });
+            if (foundLines.length > 0) {
+              /* if so, indicate it's a duplicate: */
+              foundStartLine.duplicates = foundLines.length + 1;
+              foundStartLine.duplicateIndex = foundLines.length;
+              for (let i = 0; i < foundLines; i++) {
+                /* indicate the other duplicates, too: */
+                /* (duplicates & duplicateIndex - because we cannot trust the order of iterating) */
+                foundLine.duplicates = foundLines.length + 1;
+                foundLine.duplicateIndex = i;
+              }
+            }
+            foundStartLine.to = { x: questionnaireIndex, y: normalizeAbility(student.ability) }
+            foundStartLine.skip = foundStartLine.to.x - foundStartLine.from.x > 1;
+          }
+          /* in any case, it's a starting of new line: */
+          linesArray.push({
+            from: { x: questionnaireIndex, y: normalizeAbility(student.ability) },
+            to: null,
+            studentId: student.id
+          });
+        });
+        questionnaireIndex++;
+      });
+
+      /* finally, remove from the array the lines without ends: */
+      for (let i = 0; i < linesArray.length; i++) {
+        if (linesArray[i].to === null) {
+          linesArray.splice(i, 1);
+          i--;
+        }
+      }
+      return linesArray;
+    }
+
     function getQuestionaireNameByOrder(order) {
       return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order - 1].name
     }
 
     function resetSelectedAbilities() {
-      cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.forEach(function (ability) {
+      abilitiesOfHighestSubmitted.forEach(function (ability) {
         ability.isSelected = false;
       });
     }
 
     function setSelectedAbilities(ability) {
-      cet.dashboard.studentsAbilityProgress.data.root.folder.abilities.forEach(function (currentAbility) {
+      abilitiesOfHighestSubmitted.forEach(function (currentAbility) {
         currentAbility.isSelected = currentAbility["questionnaire-order"] == ability["questionnaire-order"] && currentAbility.value == ability.value;
       });
-     
 
-      window.document.body.dispatchEvent(new Event('abilities-selection-changed'));
+
+      rootElement.dispatchEvent(new CustomEvent('abilities-selection-changed'));
     }
 
     function on(eventName, method) {
-      document.body.addEventListener(eventName, method);
+      rootElement.addEventListener(eventName, method);
     }
 
     function getAbilitiesOfHighestSubmitted() {
@@ -133,8 +211,8 @@
 
       abilitiesOfHighestSubmitted = [];
       for (var i = 0; i < allAbilities.length; i++) {
-        
-        var highestSubmittedStudents = allAbilities[i].students.filter((student) => { return student.highestSubmitted; })
+
+        var highestSubmittedStudents = allAbilities[i].students.filter(function (student) { return student.highestSubmitted; })
         if (highestSubmittedStudents.length == 0)
           continue;
         var ability = {
@@ -144,7 +222,7 @@
         }
         ability.finishedFraction = getFinishedFraction(ability);
         abilitiesOfHighestSubmitted.push(ability);
-        
+
       }
       return abilitiesOfHighestSubmitted;
     }
@@ -152,14 +230,20 @@
     function setSelectedStudents(students) {
 
       selectedStudents = utils.cloneJSON(students);
-      
-      selectedStudentsAbilities = [];
 
+      updateAbilities(students);
+      updatePaths(students);
+
+      rootElement.dispatchEvent(new CustomEvent('students-selection-changed'));
+    }
+
+    function updateAbilities(students) {
+      selectedStudentsAbilities = [];
       for (var i = 0; i < allAbilities.length; i++) {
         var ability = utils.cloneJSON(allAbilities[i]);
-        for (var j = allAbilities[i].students.length -1; j >= 0 ; j--) {
+        for (var j = allAbilities[i].students.length - 1; j >= 0 ; j--) {
           var index = students.indexOf(allAbilities[i].students[j].id)
-          if ( index == -1)
+          if (index == -1)
             ability.students.splice(j, 1);
           else if (selectedStudents.filter(function (student) { return student.id == allAbilities[i].students[j].id; }).length == 0) {
             selectedStudents[index] = allAbilities[i].students[j];
@@ -167,23 +251,28 @@
         }
         selectedStudentsAbilities.push(ability);
       }
-      window.document.body.dispatchEvent(new Event('students-selection-changed'));
+    }
+
+    function updatePaths(students) {
+      let selectedStudentsIds = selectedStudents.map(function (selectedStudent) { return selectedStudent.id });
+      selectedStudentsLines = allLines.filter(function (line) { return selectedStudentsIds.indexOf(line.studentId) > -1 });
     }
 
     function getSelectedStudentsAbilities() {
       return selectedStudentsAbilities;
     }
+    function getSelectedStudentsLines() {
+      return selectedStudentsLines;
+    }
 
     function getSelectedStudents() {
       return selectedStudents;
-
-      
-      return result;
     }
 
     return {
 
       init: init,
+      load: load,
       root: root,
       getQuestionaireNameByOrder: getQuestionaireNameByOrder,
       on: on,
@@ -191,8 +280,9 @@
       setSelectedAbilities: setSelectedAbilities,
       setSelectedStudents: setSelectedStudents,
       getSelectedStudents: getSelectedStudents,
-      getSelectedStudentsAbilities: getSelectedStudentsAbilities
-
+      getSelectedStudentsAbilities: getSelectedStudentsAbilities,
+      getSelectedStudentsLines: getSelectedStudentsLines,
+      invokeReady: invokeReady
     }
 
   })();

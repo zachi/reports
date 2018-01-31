@@ -16,9 +16,19 @@
       return currentAllocation[id];
     }
 
+    function reload() {
+      var students = cet.dashboard.studentsAbilityProgress.data.getSelectedStudents();
+      for (var id in currentAllocation) {
+        if (students.filter(function (student) { return student.id === id }).length === 0) {
+          dynamicColors.push(currentAllocation[id]);
+          delete currentAllocation[id];
+        }
+      }
+    }
     return {
       getStudentColor: getStudentColor,
-      reset: reset
+      reset: reset,
+      reload:reload
     }
   })();
 
