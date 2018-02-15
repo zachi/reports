@@ -18462,9 +18462,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         studentsList.appendChild(ul);
 
 
-        sortedStudents.forEach(function (st) {
-          toggleItemSelection(st.id);
-        });
+    
         
         for (var i = selectedItems.length - 1; i >= 0; i--) {
 
@@ -18472,7 +18470,9 @@ Object.defineProperty(exports, '__esModule', { value: true });
             selectedItems.splice(i, 1);
         }
         
-        
+        sortedStudents.forEach(function (st) {
+          toggleItemSelection(st.id);
+        });
         bindButtonsEventListeners();
         cet.dashboard.studentsAbilityProgress.data.setSelectedStudents(selectedItems);
 

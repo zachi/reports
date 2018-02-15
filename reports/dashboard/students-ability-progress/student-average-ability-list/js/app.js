@@ -151,9 +151,7 @@
         studentsList.appendChild(ul);
 
 
-        sortedStudents.forEach(function (st) {
-          toggleItemSelection(st.id);
-        });
+    
         
         for (var i = selectedItems.length - 1; i >= 0; i--) {
 
@@ -161,7 +159,9 @@
             selectedItems.splice(i, 1);
         }
         
-        
+        sortedStudents.forEach(function (st) {
+          toggleItemSelection(st.id);
+        });
         bindButtonsEventListeners();
         cet.dashboard.studentsAbilityProgress.data.setSelectedStudents(selectedItems);
 
