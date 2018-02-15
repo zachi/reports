@@ -13,7 +13,8 @@
           "score": 100.0,
           "isScopeFinished": false,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [83, 66, 90, 100,65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98,66]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
@@ -23,7 +24,8 @@
           "score": 67.0,
           "isScopeFinished": false,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         }
       ]
     },
@@ -35,11 +37,12 @@
           "id": "2e290814-0f24-4e5b-b777-359db924bca0",
           "firstName": "תלמיד",
           "lastName": "בדיקה",
-          "ability": 80,
+          "ability": 0,
           "score": 80.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": true,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
@@ -49,7 +52,8 @@
           "score": 100.0,
           "isScopeFinished": false,
           "isLastSubmitted": true,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         }
       ]
     },
@@ -88,9 +92,10 @@
           "lastName": "בדיקה",
           "ability": 40,
           "score": 100.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
@@ -98,9 +103,10 @@
           "lastName": "דמו",
           "ability": 40,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
@@ -108,9 +114,10 @@
           "lastName": "גל",
           "ability": 40,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
@@ -118,9 +125,10 @@
           "lastName": "מימון",
           "ability": 40,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75554",
@@ -128,9 +136,10 @@
           "lastName": "לוי",
           "ability": 60,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75550",
@@ -138,9 +147,10 @@
           "lastName": "ברקו",
           "ability": 40,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75551",
@@ -148,9 +158,165 @@
           "lastName": "מה",
           "ability": 40,
           "score": 67.0,
-          "isScopeFinished": false,
+          "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+          "firstName": "תלמיד",
+          "lastName": "בדיקה",
+          "ability": 40,
+          "score": 100.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
+          "firstName": "דובי",
+          "lastName": "גל",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
+          "firstName": "שירי",
+          "lastName": "מימון",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75554",
+          "firstName": "רמי",
+          "lastName": "לוי",
+          "ability": 60,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75550",
+          "firstName": "ואופירה",
+          "lastName": "ברקו",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75551",
+          "firstName": "קשור",
+          "lastName": "מה",
+          "ability": 40,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+
+        {
+          "id": "2e290814-0f24-4e5b-b777-359db924bca0",
+          "firstName": "תלמיד",
+          "lastName": "בדיקה",
+          "ability": 50,
+          "score": 100.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
+          "firstName": "תלמיד",
+          "lastName": "דמו",
+          "ability": 50,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
+          "firstName": "דובי",
+          "lastName": "גל",
+          "ability": 50,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
+          "firstName": "שירי",
+          "lastName": "מימון",
+          "ability": 50,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75554",
+          "firstName": "רמי",
+          "lastName": "לוי",
+          "ability": 50,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75550",
+          "firstName": "ואופירה",
+          "lastName": "ברקו",
+          "ability": 50,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
+        },
+        {
+          "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75551",
+          "firstName": "קשור",
+          "lastName": "מה",
+          "ability": 50,
+          "score": 67.0,
+          "isScopeFinished": true,
+          "isLastSubmitted": false,
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         }
       ]
     },
@@ -172,41 +338,45 @@
           "id": "2e290814-0f24-4e5b-b777-359db924bca0",
           "firstName": "תלמיד",
           "lastName": "בדיקה",
-          "ability": 70,
+          "ability": 100,
           "score": 100.0,
           "isScopeFinished": false,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75557",
           "firstName": "תלמיד",
           "lastName": "דמו",
-          "ability": 70,
+          "ability": 100,
           "score": 67.0,
           "isScopeFinished": true,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75552",
           "firstName": "תלמיד",
           "lastName": "דמו",
-          "ability": 70,
+          "ability": 100,
           "score": 67.0,
           "isScopeFinished": false,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         },
         {
           "id": "c53e051a-6d12-4ce2-a9a6-0c5930f75553",
           "firstName": "תלמיד",
           "lastName": "דמו",
-          "ability": 70,
+          "ability": 100,
           "score": 67.0,
           "isScopeFinished": false,
           "isLastSubmitted": false,
-          "isHighestSubmitted": true
+          "isHighestSubmitted": true,
+          "questionsAbility": [ 83, 66, 90, 100, 65, 88, 100, 70, 75, 65, 89, 12, 45, 65, 98, 66 ]
         }
       ]
     },

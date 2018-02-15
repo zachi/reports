@@ -1,26 +1,24 @@
 ﻿@import "../css/variables.less";
-
 @grid-line-color: rgba(0,0,0,.2);
 @ability-color: #929090;
 @ability-border-color: #929090;
 @ability-finished-color: #5ede04;
-@ability-finished-border-color: #5ede04;
-//@texts-color: #a2a0a0;
+@ability-finished-border-color: #50af0e;
 @ability-tip-max-width: 350px;
 
+
 .students-ability-chart, .students-ability-history-chart {
- 
   position: relative;
 }
 
 .students-ability-chart .axis path, .students-ability-history-chart .axis path {
-    display: none;
+  display: none;
 }
 
 .students-ability-chart__grid-line, .students-ability-history-chart__grid-line {
-    stroke: @grid-line-color;
-    stroke-width: 1px;
-    stroke-dasharray: 2px;
+  stroke: @grid-line-color;
+  stroke-width: 1px;
+  stroke-dasharray: 2px;
 }
 
 //TODO add prefix students-ability-chart
@@ -30,52 +28,58 @@
   stroke: @ability-border-color;
   stroke-width: 1;
   stroke-opacity: 0.9;
+  cursor: pointer;
 }
 
 .students-ability-chart__ability-finished-part {
-    fill: @ability-finished-color;
-    stroke: @ability-finished-border-color;
-    pointer-events: none;
-    fill-opacity: 0.6;
-    stroke-opacity: 0.8;
+  fill: @ability-finished-color;
+  stroke: @ability-finished-border-color;
+  pointer-events: none;
+  fill-opacity: 0.6;
+  stroke-opacity: 0.8;
+}
+
+.students-ability-chart__ability--selected {
+  stroke: #484747;
+  stroke-width: 3px;
 }
 
 .students-ability-chart__preloader {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    font-size: 30px;
-    display:none;
-
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  display: none;
 }
-.students-ability-chart--loading .students-ability-chart__preloader{
-  display:block;
+
+.students-ability-chart--loading .students-ability-chart__preloader {
+  display: block;
 }
 
 .students-ability-chart__axis-tick--strong text {
-    font-weight: bold;
-    fill: #000000 !important;
+  font-weight: bold;
+  fill: #000000 !important;
 }
 
 .students-ability-chart svg, .students-ability-history-chart svg {
-    overflow: visible;
-    direction:ltr;
+  overflow: visible;
+  direction: ltr;
 }
 
 
 .students-ability-chart__title, .students-ability-history-chart__title {
-    margin: 10px auto 0;
-    width: 143px;
-    line-height: 18px;
-    color: @text-color;
-    font-size: 18px;
-    font-weight: 600;
+  margin: 10px auto 0;
+  width: 143px;
+  line-height: 18px;
+  color: @text-color;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-
-.legend .students-ability-chart__ability-finished-part {
-    fill: #4baf04;
+.students-ability-chart__legend {
+  pointer-events: none;
 }
+
 
 .students-ability-chart__legend-text, .students-ability-history-chart__legend-text {
   fill: @text-color;
@@ -84,116 +88,184 @@
 }
 
 .students-ability-chart__axis-tick-text {
-    font-size: 1.4em;
-    fill: @text-color;
+  font-size: 1.4em;
+  fill: @text-color;
 }
 
 .students-ability-chart__axis-label {
-    fill: @text-color;
-    font-size: 18px;
+  fill: @text-color;
+  font-size: 18px;
 }
 
 .students-ability-chart__ability-tip, .students-ability-chart__questionnaire-tip {
-    position: absolute;
-    top: -10px;
-    left: 0;
-    background: black;
-    /*border-radius: 3px;*/
-    padding: 10px 20px;
-    color: white;
-    text-align: right;
-    direction: rtl;
+  position: absolute;
+  top: -10px;
+  left: 0;
+  background: black;
+  /*border-radius: 3px;*/
+  padding: 10px 20px;
+  color: white;
+  text-align: right;
+  direction: rtl;
 }
 
 .students-ability-chart__ability-tip {
-    max-width: @ability-tip-max-width;
-    min-width: 150px;
-    top: 12px;
+  max-width: @ability-tip-max-width;
+  min-width: 150px;
+  top: 12px;
+  z-index: 2;
 }
 
 .students-ability-chart__ability-tip:after, .students-ability-chart__questionnaire-tip:after {
-    box-sizing: border-box;
-    display: inline;
-    font-size: 17px;
-    width: 100%;
-    line-height: 13px;
-    color: #000000;
-    content: "\25BC";
-    position: absolute;
-    top: ~"calc(100% - 2px)";
-    left: 0;
-    text-align: center;
-    height: 12px;
+  box-sizing: border-box;
+  display: inline;
+  font-size: 17px;
+  width: 100%;
+  line-height: 13px;
+  color: #000000;
+  content: "\25BC";
+  position: absolute;
+  top: ~"calc(100% - 2px)";
+  left: 0;
+  text-align: center;
+  height: 12px;
 }
 
 .students-ability-chart__ability-tip:after {
-    content: "\25B2";
-    top: -11px;
-    height: 12px;
+  content: "\25B2";
+  top: -11px;
+  height: 12px;
 }
 
 .ability-tip__student {
-    display: block;
-    max-width: @ability-tip-max-width/2;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    direction: rtl;
-    overflow: hidden;
-    /*min-width: @ability-tip-max-width/4;*/
+  display: block;
+  max-width: @ability-tip-max-width/2;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  overflow: hidden;
+  color: white;
+  cursor:pointer;
+  /*min-width: @ability-tip-max-width/4;*/
 }
 
 .ability-tip__student--finished {
-    color: @ability-finished-color;
+  color: @ability-finished-color;
+}
+
+a .ability-tip__student {
+  text-decoration: none;
+}
+
+a:hover .ability-tip__student {
+  text-decoration: underline;
+  text-decoration-color: inherit;
 }
 
 .ability-tip__title {
-    margin-bottom: 6px;
-    border-bottom: 2px outset #b7b5b5;
-    text-align: center;
-    padding-bottom: 4px;
-    line-height: 18px;
+  margin-bottom: 6px;
+  border-bottom: 2px outset #b7b5b5;
+  text-align: center;
+  padding-bottom: 4px;
+  line-height: 18px;
 }
 
 .ability-tip__students {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .ability-tip__students-column {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .ability-tip__students-column:first-child {
-    margin-left: 15px;
+  margin-left: 15px;
+}
+
+.students-ability-chart__questions-popup {
+  width: 90%;
+  height: 115px;
+  text-align: right;
+  direction: rtl;
+  z-index: 1;
+  background-color:white;
+  overflow: auto;
+  box-shadow: 1px 1px 10px grey;
+  position:absolute;
+  top:0;
+  left:0;
+
+
+
+  th span {
+    display: block;
+    width: 40px;
+    background: #808080;
+    color: white;
+    font-size: 12px;
+    font-weight:500;
+    padding: 2px 5px;
+
+  }
+
+  th:nth-child(2) span, th:nth-child(1) span {
+    width: 60px;
+  }
+
+  td {
+    text-align: center;
+    font-size: 12px;
+  }
+}
+
+.questions-popup__table-container {
+  margin: 33px 25px 10px;
+  width: ~"calc( 100% - 50px )";
+  overflow: auto;
+}
+
+.questions-popup__close-button {
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  text-align: center;
+  cursor: pointer;
 }
 
 #adaptive-progress-report {
-    width: ~"calc(100% - 405px + 56px)";
-    margin: 0px 0 0 50px;
+  width: ~"calc(100% - 405px + 56px)";
+  margin: 0px 0 0 50px;
 }
 
 #adaptive-progress-container {
-    padding: 100px 0 0 0;
+  padding: 100px 0 0 0;
 }
 
 @media screen and (max-width: 1280px) {
-    #adaptive-progress-report {
-        width: auto;
-        margin: 50px 0 0 0;
-    }
+  #adaptive-progress-report {
+    width: auto;
+    margin: 20px 0 0 0;
+  }
 
-    #adaptive-progress-container {
-        padding: 50px 0 0 0;
-    }
+  #adaptive-progress-container {
+    padding: 50px 0 0 0;
+  }
 
-    .students-ability-chart {
-        margin-left: 20px;
-    }
-}
 
-.students-ability-chart__ability--selected {
-    stroke: #000;
-    stroke-width: 3px;
+
+
+  .students-ability-dashboard .student-average-ability-list {
+    padding: 16px 6px;
+  }
+
+  .students-ability-dashboard .student-average-ability-list__students {
+    margin: 0;
+    padding: 0;
+  }
 }

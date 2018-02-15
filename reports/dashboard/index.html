@@ -9,6 +9,8 @@
     body {
       margin: 0;
         font-family: 'Assistant', sans-serif;
+
+     
     }
 
     .header, .footer {
@@ -29,22 +31,34 @@
     }
   </style>
 </head>
-<body>
+<body onload="init()">
   <div class="header">יכולות תלמידים - כיתה ט'</div>
   <div class="dashboard-container"></div>
   <script src="students-ability-progress/bundle.js"></script>
-  <script> cet.dashboard.studentsAbilityProgress.init({
-   rootElementSelector: '.dashboard-container',
-   //domain: 'http://dashboard.dev.cet.ac.il',
-   audienceId: '087db026-d3f4-4888-98b2-9710d61ced79',
-   folderId: '087db026-d3f4-4888-98b2-9710d61ced79',
-   useDemoData: true,
-   title:'דמו יכולות תלמידים',
-   width: window.outerWidth * 0.85 - ((window.outerWidth > 1280) ? 410 : 0),
-   height: window.innerHeight * 0.85 - 102
-    //width: 500,
-    //height: 500
- });</script>
+  <script> 
+  
+    function init(width, height) {
+
+     
+      cet.dashboard.studentsAbilityProgress.init({
+        rootElementSelector: '.dashboard-container',
+        //domain: 'http://dashboard.dev.cet.ac.il',
+        audienceId: '087db026-d3f4-4888-98b2-9710d61ced79',
+        folderId: '087db026-d3f4-4888-98b2-9710d61ced79',
+        useDemoData: true,
+        title: 'דמו יכולות תלמידים',
+        //width: window.outerWidth * 0.85 - ((window.outerWidth > 1280) ? 410 : 0), 
+        //height: window.innerHeight * 0.85 - 102,
+        direction: 'rtl'
+
+
+      });
+
+    }
+
+  </script>
   <div class="footer">בית ספר ליידי דייויס</div>
+  <button onclick="cet.dashboard.studentsAbilityProgress.resize(600, 600)">resize(600, 600)</button>
+  <button onclick="cet.dashboard.studentsAbilityProgress.resize(800, 800)">resize(800, 800)</button>
 </body>
 </html>

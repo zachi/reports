@@ -5,6 +5,8 @@
     var abilityTip;
     //var tipsHtml = {};
     var measures;
+    var mouseleaveTimeout;
+    var timeTillHidingTipMs = 100;
     const CONSTS = {
       RADIUS_FACTOR: 13,
       LINE_WIDTH: 2,
@@ -14,7 +16,7 @@
     }
 
     function transform(ability) {
-      return "translate(" + cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"]) + "," + cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"]) + ")";
+      return "translate(" + cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"] + 1 ) + "," + cet.dashboard.studentsAbilityHistoryChart.axes.yAxisScale(ability["value"]) + ")";
 
     }
 
@@ -40,18 +42,29 @@
     }
 
     function buildAbilityTipHtml(ability) {
-      var result = "<div class=\"ability-tip__title\" >" +
-        cet.dashboard.studentsAbilityChart.texts.ability + " " + ability["value"] + "<br>" + cet.dashboard.studentsAbilityProgress.data.getQuestionaireNameByOrder(ability["questionnaire-order"]) +
-        "</div>";
+
+      var result = [
+        "<div data-questionnaire-order='", ability["questionnaire-order"], "' class='ability-tip__title' >",
+          cet.dashboard.studentsAbilityChart.texts.ability, " ", ability["value"], "<br>", cet.dashboard.studentsAbilityProgress.data.getQuestionaireNameByOrder(ability["questionnaire-order"]),
+        "</div>"].join('');
 
       var firstColumnStudents = "";
       var secondColumnStudents = "";
 
       for (var i = 0; i < ability.students.length; i++) {
 
-        var student = "<span class='ability-tip__student' style=\"color: " + cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(ability.students[i].id) + "\" >" + ability.students[i].firstName + ' ' + ability.students[i].lastName + "</span>";
+        var student = [
+            "<span class='ability-tip__student'  data-avg-ability='", ability.students[i].avgAbility, "' data-id='", ability.students[i].id, "' style='color: ", cet.dashboard.studentsAbilityHistoryChart.studentsColors.getStudentColor(ability.students[i].id) + "' >",
+              ability.students[i].firstName, ' ', ability.students[i].lastName,
+            "</span>"].join('');
+
         if (ability.students[i].finished)
           student = student.replace("ability-tip__student", "ability-tip__student ability-tip__student--finished");
+
+        //student = [
+        //  "<a target='_blank' href='", ability.students[i].taskUrl, "'>",
+        //    student,
+        //  "</a>"].join('');
 
         if (i % 2 === 0)
           firstColumnStudents += student;
@@ -77,7 +90,7 @@
         + getAbilityRadius(ability);
       //+ (abilityTip.node().getBoundingClientRect().height)
       //+ tooltipTopMarginToPreventFlickering;
-      var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"])
+      var left = cet.dashboard.studentsAbilityHistoryChart.axes.xAxisScale(ability["questionnaire-order"] + 1)
         + measures.gridMargin.left
         - (abilityTip.node().getBoundingClientRect().width / 2);
 
@@ -89,12 +102,14 @@
 
     function showAbilityTooltip(ability) {
 
+      clearTimeout(mouseleaveTimeout);
+
       abilityTip.html(ability.tipHtml);
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
       if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
-        abilityTip.style("top", (tipPosition.top - 10) + "px");
+        abilityTip.style("top", (tipPosition.top + 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
       else {
@@ -104,16 +119,37 @@
       abilityTip.transition().duration(350).style("opacity", .8);
 
       //highlight axes 
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - ability["value"]) + ")").classed('students-ability-chart__axis-tick--strong', true);
-
+      clearCoordinatesLabelsMarking();
+      markCoordinatesLabels(ability["questionnaire-order"], ability["value"]);
+      abilityTip.selectAll('.ability-tip__student').on('click', function () {
+        cet.dashboard.studentsAbilityHistoryChart.questionsAbility.show(this);
+      });
     }
 
-    function hideAbilityTooltip(ability) {
+    function handleAbilityMouseLeave(ability) {
+      mouseleaveTimeout = setTimeout(function () {
+        abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
+        clearCoordinatesLabelsMarking();
+      }, timeTillHidingTipMs);
+    }
 
+    function handleTipMouseOver() {
+      clearTimeout(mouseleaveTimeout);
+    }
+
+    function handleTipMouseLeave() {
       abilityTip.transition().duration(350).style("opacity", .0).on("end", function () { abilityTip.style("display", "none") });
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (ability["questionnaire-order"] + 2) + ")").classed('students-ability-chart__axis-tick--strong', false);
-      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - ability["value"]) + ")").classed('students-ability-chart__axis-tick--strong', false);
+      clearCoordinatesLabelsMarking();
+    }
+
+    function markCoordinatesLabels(x, y) {
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick:nth-child(" + (x + 2) + ")").classed('students-ability-chart__axis-tick--strong', true);
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick:nth-child(" + (12 - y) + ")").classed('students-ability-chart__axis-tick--strong', true);
+    }
+
+    function clearCoordinatesLabelsMarking() {
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".x.axis .students-ability-chart__axis-tick").classed('students-ability-chart__axis-tick--strong', false);
+      cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".y.axis .students-ability-chart__axis-tick").classed('students-ability-chart__axis-tick--strong', false);
     }
 
     function getAbilityRadius(ability) {
@@ -140,7 +176,7 @@
 
       cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll("svg.students-ability-chart__abilities").remove();
 
-      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.append("svg").classed("students-ability-chart__abilities", true).attr("width", measures.gridWidth).attr("height", measures.gridHeight);
+      var svg = cet.dashboard.studentsAbilityHistoryChart.app.svg.insert("svg", ":first-child").classed("students-ability-chart__abilities", true).attr("width", measures.gridWidth).attr("height", measures.gridHeight);
 
       if (!dontShowPaths) {
         drawPaths(svg, cet.dashboard.studentsAbilityProgress.data.getSelectedStudentsLines());
@@ -185,8 +221,7 @@
         });
 
       var abilities = cet.dashboard.studentsAbilityHistoryChart.app.svg.selectAll(".students-ability-chart__abilities .students-ability-history-chart__ability");
-
-      abilities.on("mouseover", showAbilityTooltip).on("mouseout", hideAbilityTooltip);
+      abilities.on("mouseover", showAbilityTooltip).on("mouseleave", handleAbilityMouseLeave);
 
     }
 
@@ -194,11 +229,13 @@
     function init() {
       measures = cet.dashboard.studentsAbilityHistoryChart.measures;
       abilityTip = d34.select(".students-ability-history-chart").append("div").attr("class", "students-ability-chart__ability-tip").style("opacity", 0);
+      abilityTip.on("mouseover", handleTipMouseOver).on("mouseleave", handleTipMouseLeave);
 
       reload();
     }
 
     function drawPaths(svg, linesData) {
+      let linesDataCloned = linesData.map(function (lineData) { return Object.assign({}, lineData) });
       let lines = [];
 
       const curveFunction = d34.line()
@@ -215,12 +252,28 @@
         return num * sign
       }
 
-      linesData.forEach(function (lineData) {
+      let lineData;
+      for (let i = 0; i < linesDataCloned.length; i++) {
+        lineData = linesDataCloned[i];
         let x1 = xAxisScale(lineData.from.x);
         let y1 = yAxisScale(lineData.from.y);
         let x2 = xAxisScale(lineData.to.x);
         let y2 = yAxisScale(lineData.to.y);
-        let shift = lineData.duplicates ? duplicateShift(lineData.duplicateIndex) * CONSTS.TIGHT_FACTOR : 0;
+
+        /* detect duplicate for shifting: */
+        /* find the last line which is identical to the current line, if any. if so, increase the current's duplicate index by 1. */
+        for (let j = i - 1; j >= 0; j--) {
+          if (lineData.from.x === linesDataCloned[j].from.x
+            && lineData.from.y === linesDataCloned[j].from.y
+            && lineData.to.x === linesDataCloned[j].to.x
+            && lineData.to.y === linesDataCloned[j].to.y
+            ) {
+            /* mark this duplicate index for this iteration and for the next duplicate, if will be. */
+            lineData.duplicateIndex = linesDataCloned[j].duplicateIndex ? linesDataCloned[j].duplicateIndex + 1 : 1;
+            break;
+          }
+        }
+        let shift = lineData.duplicateIndex ? duplicateShift(lineData.duplicateIndex) * CONSTS.TIGHT_FACTOR : 0;
 
         let line =
           {
@@ -241,14 +294,17 @@
           line.points.splice(1, 0, curvePoint);
         }
         lines.push(line);
-      });
+      }
 
-      svg.selectAll("path")
-        .data(lines)
+      var nodes = svg.selectAll("g.students-ability-history-chart__student-path")
+        .data(lines).enter().append("g")
+        .attr("class", "students-ability-history-chart__student-path")
+
+      nodes.selectAll("path")
+        .data(function (d) { return [d]; })
         .enter()
         .append("path")
         .attr("d", function (line) { return curveFunction(line.points) })
-        .attr("class", function (line) { return line.points.length > 2 ? 'curve' : 'straight' })
         .attr("stroke", function (line) { return line.color })
         .attr("stroke-width", function (line) { return line.width })
         .attr("stroke-dasharray", function (line) { return line.points.length > 2 ? CONSTS.LINE_DASH : 0 })

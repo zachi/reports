@@ -25,6 +25,7 @@
         }
       }
     }
+
     return {
       getStudentColor: getStudentColor,
       reset: reset,
