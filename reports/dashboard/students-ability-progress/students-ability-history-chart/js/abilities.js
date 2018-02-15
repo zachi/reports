@@ -108,7 +108,7 @@
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+      if (cet.dashboard.lib.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top + 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }

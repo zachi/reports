@@ -9,7 +9,7 @@
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
       var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/reports/";
-      return baseUrl + "dashboard/data/data.json";
+      return baseUrl + "dashboard/students-ability-progress/data/data.json";
     }
 
     function getStudentsAbilityChartOptions(options) {

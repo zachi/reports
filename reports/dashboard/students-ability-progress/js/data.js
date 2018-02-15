@@ -29,7 +29,7 @@
       cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
       cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
 
-      utils = cet.dashboard.studentsAbilityProgress.utils;
+      utils = cet.dashboard.lib.utils;
       allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
       allLines = cet.dashboard.studentsAbilityProgress.data.root.folder.lines;
 

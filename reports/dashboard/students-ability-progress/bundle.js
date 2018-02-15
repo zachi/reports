@@ -1,3 +1,4 @@
+/*CustomEvent*/
 (function () {
 
   if (typeof window.CustomEvent === "function") return false;
@@ -14,6 +15,7 @@
   window.CustomEvent = CustomEvent;
 })();
 
+/*element.remove*/
 (function () {
   if (!('remove' in Element.prototype)) {
     Element.prototype.remove = function () {
@@ -17191,6 +17193,26 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 (function () {
 
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.lib = cet.dashboard.lib || {}
+  cet.dashboard.lib.utils = (function () {
+
+    return {
+      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode; },
+      cloneJSON: function (json) { return JSON.parse(JSON.stringify(json)); },
+      findAncestor: function (el, cls) {
+        while ((el = el.parentElement) && !el.classList.contains(cls));
+        return el;
+      }
+    }
+
+  })();
+
+
+
+})();
+
+(function () {
+
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityChart = cet.dashboard.studentsAbilityChart || {}
   cet.dashboard.studentsAbilityChart.texts = {
     questionnaires: "יחידות לימוד",
@@ -17304,7 +17326,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         + measures.gridMargin.left
         - (self.questionnaireTip.node().getBoundingClientRect().width / 2);
 
-      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+      if (cet.dashboard.lib.utils.isIE()) {
         self.questionnaireTip.style("top", top + "px");
         self.questionnaireTip.style("left", left + "px");
       }
@@ -17380,7 +17402,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
     this.questionsTable.html(this.getQuestionsTableHtml(studentElement));
     var popupPosition = this.getQuestionsTablePosition();
-    //if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+    //if (cet.dashboard.lib.utils.isIE()) {
     this.questionsPopup.style("top", popupPosition.top + "px");
     this.questionsPopup.style("left", popupPosition.left + "px");
     //}
@@ -17528,7 +17550,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+      if (cet.dashboard.lib.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top + 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
@@ -18077,7 +18099,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       abilityTip.style("display", "");
 
       var tipPosition = getAbilityTipPosition(ability);
-      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+      if (cet.dashboard.lib.utils.isIE()) {
         abilityTip.style("top", (tipPosition.top + 10) + "px");
         abilityTip.style("left", tipPosition.left + "px");
       }
@@ -18303,7 +18325,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       })
       var srcButton = event.target;
       if (!srcButton.classList.contains('student-average-ability-list__sort'))
-        srcButton = cet.dashboard.studentsAbilityProgress.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
+        srcButton = cet.dashboard.lib.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
 
       srcButton.classList.add('student-average-ability-list__sort--active')
       if (sortByProp === srcButton.dataset.type) {
@@ -18491,26 +18513,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 })();
 
-
-(function () {
-
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; cet.dashboard.studentsAbilityProgress = cet.dashboard.studentsAbilityProgress || {}
-  cet.dashboard.studentsAbilityProgress.utils = (function () {
-
-    return {
-      isIE: function () { return !!window.MSInputMethodContext && !!document.documentMode; },
-      cloneJSON: function (json) { return JSON.parse(JSON.stringify(json)); },
-      findAncestor: function (el, cls) {
-        while ((el = el.parentElement) && !el.classList.contains(cls));
-        return el;
-      }
-    }
-
-  })();
-
-
-
-})();
 (function () {
   window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityProgress = window.cet.dashboard.studentsAbilityProgress || {};
   cet.dashboard.studentsAbilityProgress.measures = (function () {
@@ -18589,7 +18591,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
       cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
       cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
 
-      utils = cet.dashboard.studentsAbilityProgress.utils;
+      utils = cet.dashboard.lib.utils;
       allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
       allLines = cet.dashboard.studentsAbilityProgress.data.root.folder.lines;
 
@@ -18857,7 +18859,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
       var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/reports/";
-      return baseUrl + "dashboard/data/data.json";
+      return baseUrl + "dashboard/students-ability-progress/data/data.json";
     }
 
     function getStudentsAbilityChartOptions(options) {

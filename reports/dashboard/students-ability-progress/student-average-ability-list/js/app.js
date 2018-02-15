@@ -14,7 +14,7 @@
       })
       var srcButton = event.target;
       if (!srcButton.classList.contains('student-average-ability-list__sort'))
-        srcButton = cet.dashboard.studentsAbilityProgress.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
+        srcButton = cet.dashboard.lib.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
 
       srcButton.classList.add('student-average-ability-list__sort--active')
       if (sortByProp === srcButton.dataset.type) {

@@ -45,7 +45,7 @@
 
     this.questionsTable.html(this.getQuestionsTableHtml(studentElement));
     var popupPosition = this.getQuestionsTablePosition();
-    //if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+    //if (cet.dashboard.lib.utils.isIE()) {
     this.questionsPopup.style("top", popupPosition.top + "px");
     this.questionsPopup.style("left", popupPosition.left + "px");
     //}

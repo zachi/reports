@@ -3,9 +3,10 @@
   {
     "outputFileName": "dashboard/students-ability-progress/bundle.js",
     "inputFiles": [
-      "dashboard/students-ability-progress/js/custom-event-ie-polyfill.js",
+      "dashboard/lib/ie-polyfills.js",
 
       "dashboard/lib/d3.v4.min.js",
+      "dashboard/lib/utils.js",
       "dashboard/students-ability-progress/students-ability-chart/js/texts.js",
       "dashboard/students-ability-progress/students-ability-chart/js/measures.js",
       "dashboard/students-ability-progress/students-ability-chart/js/axes.js",
@@ -23,7 +24,6 @@
       "dashboard/students-ability-progress/student-average-ability-list/js/app.js",
       "dashboard/students-ability-progress/student-average-ability-list/js/texts.js",
 
-      "dashboard/students-ability-progress/js/utils.js",
       "dashboard/students-ability-progress/js/measures.js",
       "dashboard/students-ability-progress/js/data.js",
       "dashboard/students-ability-progress/js/app.js"

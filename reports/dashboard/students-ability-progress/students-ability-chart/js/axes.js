@@ -69,7 +69,7 @@
         + measures.gridMargin.left
         - (self.questionnaireTip.node().getBoundingClientRect().width / 2);
 
-      if (cet.dashboard.studentsAbilityProgress.utils.isIE()) {
+      if (cet.dashboard.lib.utils.isIE()) {
         self.questionnaireTip.style("top", top + "px");
         self.questionnaireTip.style("left", left + "px");
       }
