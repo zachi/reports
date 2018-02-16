@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/css?family=Assistant:300,400,600,700&amp;subset=hebrew" rel="stylesheet">
+  <link href="bundle.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+        font-family: 'Assistant', sans-serif;
+
+     
+    }
+
+    .header, .footer {
+      width: 100%;
+      height: 80px;
+      background-color: #a0af7c;
+      color: white;
+      text-align: center;
+      font-size: 41px;
+      line-height: 80px;
+      direction: rtl;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      display:none;
+    }
+  </style>
+</head>
+<body onload="init()">
+  <div class="header">יכולות תלמידים - כיתה ט'</div>
+  <div class="dashboard-container"></div>
+  <script src="bundle.js"></script>
+  <script> 
+  
+    function init(width, height) {
+
+     
+      cet.dashboard.studentsAbilityProgress.init({
+        rootElementSelector: '.dashboard-container',
+        //domain: 'http://dashboard.dev.cet.ac.il',
+        audienceId: '087db026-d3f4-4888-98b2-9710d61ced79',
+        folderId: '087db026-d3f4-4888-98b2-9710d61ced79',
+        useDemoData: true,
+        title: 'דמו יכולות תלמידים',
+        //width: window.outerWidth * 0.85 - ((window.outerWidth > 1280) ? 410 : 0), 
+        //height: window.innerHeight * 0.85 - 102,
+        direction: 'rtl'
+
+
+      });
+
+    }
+
+  </script>
+  <div class="footer">בית ספר ליידי דייויס</div>
+  <button onclick="cet.dashboard.studentsAbilityProgress.resize(600, 600)">resize(600, 600)</button>
+  <button onclick="cet.dashboard.studentsAbilityProgress.resize(800, 800)">resize(800, 800)</button>
+</body>
+</html>

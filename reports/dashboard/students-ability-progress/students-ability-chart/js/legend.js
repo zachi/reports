@@ -24,6 +24,11 @@
         .attr("r", 8)
         .attr("cx", namespace.measures.gridWidth - 7)
         .attr("cy", -15)
+        .classed("students-ability-chart__ability", true);
+      legend.append("circle")
+        .attr("r", 8)
+        .attr("cx", namespace.measures.gridWidth - 7)
+        .attr("cy", -15)
         .classed("students-ability-chart__ability-finished-part", true);
 
       legend.append("text")

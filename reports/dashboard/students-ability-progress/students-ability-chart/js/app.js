@@ -27,10 +27,7 @@
 
     chart.style.width = self.measures.width + 'px';
     chart.style.height = self.measures.height + 'px';
-
-    if (options.direction === 'ltr') {
-      chart.style.marginLeft = 'auto';
-    }
+       
     cet.dashboard.studentsAbilityProgress.data.on('ready', function () {
 
       //var preloader = document.querySelector('.' + self.chartClassName + '__preloader');
@@ -55,6 +52,7 @@
       )
 
       self.namespace.abilities.init();
+      self.namespace.questionsAbility = new cet.dashboard.studentsAbilityChart.questionsAbilityClass(options);
     });
     
   }

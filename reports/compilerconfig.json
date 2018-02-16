@@ -14,5 +14,9 @@
   {
     "outputFile": "dashboard/students-ability-progress/css/index.css",
     "inputFile": "dashboard/students-ability-progress/css/index.less"
+  },
+  {
+    "outputFile": "dashboard/students-ability-progress/css/index-ltr.css",
+    "inputFile": "dashboard/students-ability-progress/css/index-ltr.less"
   }
 ]

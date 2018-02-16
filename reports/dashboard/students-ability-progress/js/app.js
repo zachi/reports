@@ -8,13 +8,14 @@
         var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
-      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
-      return baseUrl + "dashboard/data/data.json";
+      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/reports/";
+      return baseUrl + "dashboard/students-ability-progress/data/data.json";
     }
 
     function getStudentsAbilityChartOptions(options) {
       var newOptions = JSON.parse(JSON.stringify(options));
       newOptions.height = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityChart.height;
+      newOptions.width = cet.dashboard.studentsAbilityProgress.measures.studentsAbilityChart.width;
       newOptions.namespace = cet.dashboard.studentsAbilityChart;
       newOptions.chartClassName = "students-ability-chart";
       return newOptions;
@@ -47,21 +48,18 @@
     }
 
     function load(options) {
-      // Set default width and hegit when not passed in options
-      if (!options || !options.width) {
-        options.width = window.innerWidth * 0.85 - ((window.innerWidth > 1280) ? 410 : 0);
-      }
 
-      if (!options || !options.height) {
-        options.height = window.innerHeight * 0.85 - 102;
-      }
 
       var containerElement = document.querySelector(options.rootElementSelector);
       containerElement.innerHTML = '';
-
+      containerElement.style.overflow = 'auto';
       var rootElement = document.createElement('div');
       rootElement.classList.add("students-ability-dashboard");
       containerElement.appendChild(rootElement);
+
+      if (options.direction) {
+        rootElement.classList.add('students-ability-dashboard--' + options.direction);
+      }
 
       if (options.title) {
         var titleElement = document.createElement('h2');
@@ -70,14 +68,12 @@
         rootElement.appendChild(titleElement);
       }
 
-      if (options.direction) {
-        rootElement.style.direction = options.direction;
-      }
+      
 
       cet.dashboard.studentsAbilityProgress.measures.init(options);
 
-      rootElement.style.width = options.width + 'px';
-      rootElement.style.height = options.height + 'px';
+      rootElement.style.width = cet.dashboard.studentsAbilityProgress.measures.width + 'px';
+      rootElement.style.height = cet.dashboard.studentsAbilityProgress.measures.height + 'px';
 
       cet.dashboard.studentsAbilityProgress.data.init(rootElement);
 
@@ -103,6 +99,8 @@
     function init(options) {
      
       optionsBackup = options;
+      //optionsBackup.width = 1200;
+      //optionsBackup.height = 700;
       load(options);
       d34.json(getUrl(options), function (response) {
         cet.dashboard.studentsAbilityProgress.data.load(response);

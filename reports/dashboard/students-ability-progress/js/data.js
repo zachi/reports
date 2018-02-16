@@ -11,6 +11,7 @@
     var selectedStudentsAbilities = [];
     var selectedStudentsLines = [];
     var selectedStudents = [];
+    var questionsAbility = [];
     var abilitiesOfHighestSubmitted;
     var rootElement;
     const ABILITY_NORMALIZE_FACTOR = 10;
@@ -20,11 +21,15 @@
     }
 
     function load(initData) {
+      selectedStudentsAbilities = [];
+      selectedStudentsLines = [];
+      selectedStudents = [];
+      abilitiesOfHighestSubmitted = null;
 
       cet.dashboard.studentsAbilityProgress.data.root = loadDataFromQueryIfNecessary(initData);
       cet.dashboard.studentsAbilityProgress.data.root = performDataSchemeTransformation(cet.dashboard.studentsAbilityProgress.data.root);
 
-      utils = cet.dashboard.studentsAbilityProgress.utils;
+      utils = cet.dashboard.lib.utils;
       allAbilities = cet.dashboard.studentsAbilityProgress.data.root.folder.abilities;
       allLines = cet.dashboard.studentsAbilityProgress.data.root.folder.lines;
 
@@ -65,12 +70,13 @@
 
       for (var i = 0; before.questionnaires && i < before.questionnaires.length; i++) {
         var abilities = {};
+        questionsAbility.push({});
         for (var j = 0; j < before.questionnaires[i].students.length; j++) {
-          var abilityGrade = Math.round(normalizeAbility(before.questionnaires[i].students[j].ability));
+          var abilityGrade = normalizeAbility(before.questionnaires[i].students[j].ability);
           var ability = abilities[i + abilityGrade];
           if (!ability) {
             ability = {
-              "questionnaire-order": i + 1,
+              "questionnaire-order": i,
               "value": abilityGrade,
               "students": []
             }
@@ -79,7 +85,7 @@
           var currentStudent = {}, avgAbilityForStudent = 0, avgScoreForStudent = 0;
           if (before.students) {
             currentStudent = before.students.filter(function (st) { return before.questionnaires[i].students[j].id === st.id })[0];
-            avgAbilityForStudent = currentStudent.avgAbility;
+            avgAbilityForStudent = normalizeAbility(currentStudent.avgAbility);
             avgScoreForStudent = currentStudent.avgScore;
           }
 
@@ -90,9 +96,12 @@
             "finished": before.questionnaires[i].students[j].isScopeFinished,
             "highestSubmitted": before.questionnaires[i].students[j].isHighestSubmitted,
             "avgAbility": avgAbilityForStudent,
-            "avgScore": avgScoreForStudent
-
+            "avgScore": avgScoreForStudent,
+            "taskUrl": "http://productplayer.cet.ac.il/iframes/lms-teacher-dashboard/student-lo.html?&task=" + before.questionnaires[i].taskId + "&student=" + before.questionnaires[i].students[j].id + "&options=noauth"
           })
+          
+          questionsAbility[i][before.questionnaires[i].students[j].id] = before.questionnaires[i].students[j].questionsAbility;
+
 
           abilities[i + abilityGrade] = ability;
         }
@@ -120,7 +129,7 @@
     }
 
     function normalizeAbility(ability) {
-      return ability / ABILITY_NORMALIZE_FACTOR;
+      return Math.round(ability / ABILITY_NORMALIZE_FACTOR);
     }
 
     function buildLinesArray(questionnaires) {
@@ -129,61 +138,43 @@
       const findStartedLine = function (point, studentId) {
         return point.to === null && point.studentId === studentId
       };
-      const findLine = function (line, qIndex, ability) {
-        return line.from.x === foundStartLine.from.x
-        && line.from.y === foundStartLine.from.y
-        && line.to
-        && line.to.x === qIndex
-        && line.to.y === ability
-      }
 
       /* create lines array: */
       let linesArray = [];
       let questionnaireIndex = 1;
-      let foundStartLine, foundLines;
-      questionnaires.forEach(function (questionnaire) {
-        questionnaire.students.forEach(function (student) {
-          /* for each student, first identify if this point completes a started line: */
-          foundStartLine = linesArray.filter(function (point) { return findStartedLine(point, student.id) })[0];
-          if (foundStartLine) {
-            /* now check case of duplicate (ie, same line is already in list) */
-            foundLines = linesArray.filter(function (line) { return findLine(line, questionnaireIndex, normalizeAbility(student.ability)) });
-            if (foundLines.length > 0) {
-              /* if so, indicate it's a duplicate: */
-              foundStartLine.duplicates = foundLines.length + 1;
-              foundStartLine.duplicateIndex = foundLines.length;
-              for (let i = 0; i < foundLines; i++) {
-                /* indicate the other duplicates, too: */
-                /* (duplicates & duplicateIndex - because we cannot trust the order of iterating) */
-                foundLine.duplicates = foundLines.length + 1;
-                foundLine.duplicateIndex = i;
-              }
+      let foundStartLine;
+      if (questionnaires && questionnaires.length) {
+        questionnaires.forEach(function (questionnaire) {
+          questionnaire.students.forEach(function (student) {
+            /* for each student, first identify if this point completes a started line: */
+            foundStartLine = linesArray.filter(function (point) { return findStartedLine(point, student.id) })[0];
+            if (foundStartLine) {
+              foundStartLine.to = { x: questionnaireIndex, y: normalizeAbility(student.ability) }
+              foundStartLine.skip = foundStartLine.to.x - foundStartLine.from.x > 1;
             }
-            foundStartLine.to = { x: questionnaireIndex, y: normalizeAbility(student.ability) }
-            foundStartLine.skip = foundStartLine.to.x - foundStartLine.from.x > 1;
-          }
-          /* in any case, it's a starting of new line: */
-          linesArray.push({
-            from: { x: questionnaireIndex, y: normalizeAbility(student.ability) },
-            to: null,
-            studentId: student.id
+            /* in any case, it's a starting of new line: */
+            linesArray.push({
+              from: { x: questionnaireIndex, y: normalizeAbility(student.ability) },
+              to: null,
+              studentId: student.id
+            });
           });
+          questionnaireIndex++;
         });
-        questionnaireIndex++;
-      });
 
-      /* finally, remove from the array the lines without ends: */
-      for (let i = 0; i < linesArray.length; i++) {
-        if (linesArray[i].to === null) {
-          linesArray.splice(i, 1);
-          i--;
+        /* finally, remove from the array the lines without ends: */
+        for (let i = 0; i < linesArray.length; i++) {
+          if (linesArray[i].to === null) {
+            linesArray.splice(i, 1);
+            i--;
+          }
         }
       }
       return linesArray;
     }
 
     function getQuestionaireNameByOrder(order) {
-      return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order - 1].name
+      return cet.dashboard.studentsAbilityProgress.data.root.folder.questionnaires[order].name
     }
 
     function resetSelectedAbilities() {
@@ -249,7 +240,9 @@
             selectedStudents[index] = allAbilities[i].students[j];
           }
         }
-        selectedStudentsAbilities.push(ability);
+        if (ability.students.length > 0) {
+          selectedStudentsAbilities.push(ability);
+        }
       }
     }
 
@@ -269,6 +262,10 @@
       return selectedStudents;
     }
 
+    function getQuestionsAbility(questionnaireOrder, studentId) {
+      return questionsAbility[questionnaireOrder][studentId];
+    }
+
     return {
 
       init: init,
@@ -282,7 +279,8 @@
       getSelectedStudents: getSelectedStudents,
       getSelectedStudentsAbilities: getSelectedStudentsAbilities,
       getSelectedStudentsLines: getSelectedStudentsLines,
-      invokeReady: invokeReady
+      invokeReady: invokeReady,
+      getQuestionsAbility: getQuestionsAbility
     }
 
   })();

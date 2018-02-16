@@ -14,7 +14,7 @@
       })
       var srcButton = event.target;
       if (!srcButton.classList.contains('student-average-ability-list__sort'))
-        srcButton = cet.dashboard.studentsAbilityProgress.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
+        srcButton = cet.dashboard.lib.utils.findAncestor(srcButton, 'student-average-ability-list__sort');
 
       srcButton.classList.add('student-average-ability-list__sort--active')
       if (sortByProp === srcButton.dataset.type) {
@@ -151,9 +151,7 @@
         studentsList.appendChild(ul);
 
 
-        sortedStudents.forEach(function (st) {
-          toggleItemSelection(st.id);
-        });
+    
         
         for (var i = selectedItems.length - 1; i >= 0; i--) {
 
@@ -161,7 +159,9 @@
             selectedItems.splice(i, 1);
         }
         
-        
+        sortedStudents.forEach(function (st) {
+          toggleItemSelection(st.id);
+        });
         bindButtonsEventListeners();
         cet.dashboard.studentsAbilityProgress.data.setSelectedStudents(selectedItems);
 
