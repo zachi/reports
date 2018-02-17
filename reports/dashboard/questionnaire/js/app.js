@@ -9,7 +9,7 @@
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
       var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
-      return baseUrl + "dashboard/students-ability-progress/data/data.json";
+      return baseUrl + "dashboard/questionnaire/data/data.json";
     }
 
     function getStudentsAbilityChartOptions(options) {
@@ -111,16 +111,15 @@
 
     return {
       init: init,
-      dispose: dispose,
       resize: resize
     }
 
   })();
 
-  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.studentsAbilityProgress = window.cet.dashboard.studentsAbilityProgress || {};
-  cet.dashboard.studentsAbilityProgress.app = app;
-  cet.dashboard.studentsAbilityProgress.init = app.init;
-  cet.dashboard.studentsAbilityProgress.resize = app.resize;
+  window.cet = window.cet || {}; window.cet.dashboard = window.cet.dashboard || {}; window.cet.dashboard.questionnaire = window.cet.dashboard.questionnaire || {};
+  cet.dashboard.questionnaire.app = app;
+  cet.dashboard.questionnaire.init = app.init;
+  cet.dashboard.questionnaire.resize = app.resize;
 
 })()
 

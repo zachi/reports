@@ -18858,7 +18858,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
         var controllerName = options.useDemoData ? "dashboard-demo-data" : "dashboard-data";
         return options.domain + "/ability/" + controllerName + "/" + options.audienceId + "/" + options.folderId;
       }
-      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/reports/";
+      var baseUrl = document.location.href.indexOf('github') !== -1 ? '/reports/reports/' : "/";
       return baseUrl + "dashboard/students-ability-progress/data/data.json";
     }
 
